@@ -1,0 +1,49 @@
+{
+  "name": "room-planner",
+  "version": "1.0.0",
+  "description": "room planner using webgl",
+  "main": "src/app.js",
+  "scripts": {
+    "build": "webpack & json-server -p 3000 --watch state.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Giogia/Room-Planner.git"
+  },
+  "author": "Giogia",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Giogia/Room-Planner/issues"
+  },
+  "homepage": "https://github.com/Giogia/Room-Planner#readme",
+  "devDependencies": {
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10"
+  },
+  "dependencies": {
+    "@google/model-viewer": "^0.7.2",
+    "@material/drawer": "^4.0.0",
+    "@material/ripple": "^4.0.0",
+    "@windfish-studio/three-map-controls": "^1.1.6",
+    "graph.js": "^1.21.1",
+    "handlebars": "^4.5.3",
+    "http-server": "^0.11.1",
+    "json-server": "^0.15.1",
+    "line-intersect": "^2.2.3",
+    "lodash": "^4.17.15",
+    "material-components-web": "^4.0.0",
+    "material-design-icons": "^3.0.1",
+    "math": "0.0.3",
+    "path": "^0.12.7",
+    "point-in-polygon": "^1.0.1",
+    "random-int": "^2.0.1",
+    "serialize-javascript": "^2.1.2",
+    "serve": "^11.2.0",
+    "three": "^0.110.0",
+    "three-controls": "^1.0.1",
+    "three-dragger": "^1.0.1",
+    "three-orbitcontrols": "^2.110.1",
+    "tween.js": "^16.6.0",
+    "webpack-dev-server": "^3.9.0"
+  }
+}

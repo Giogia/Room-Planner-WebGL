@@ -1,0 +1,327 @@
+{
+  "floorPlan": {
+    "points": [
+      {
+        "x": -5,
+        "z": -5,
+        "selected": false
+      },
+      {
+        "x": 0,
+        "z": -5,
+        "selected": false
+      },
+      {
+        "x": -5,
+        "z": 0,
+        "selected": false
+      },
+      {
+        "x": 0,
+        "z": 0,
+        "selected": false
+      },
+      {
+        "x": -5,
+        "z": 3,
+        "selected": false
+      },
+      {
+        "x": 0,
+        "z": 2,
+        "selected": false
+      },
+      {
+        "x": 1,
+        "z": 2,
+        "selected": false
+      },
+      {
+        "x": 5,
+        "z": 2,
+        "selected": false
+      },
+      {
+        "x": -5,
+        "z": 5,
+        "selected": false
+      },
+      {
+        "x": 1,
+        "z": 5,
+        "selected": false
+      },
+      {
+        "x": 5,
+        "z": 5,
+        "selected": false
+      },
+      {
+        "x": 0,
+        "z": 3,
+        "selected": false
+      },
+      {
+        "x": 5,
+        "z": 0,
+        "selected": false
+      }
+    ],
+    "walls": [
+      {
+        "from": {
+          "x": -5,
+          "z": -5
+        },
+        "to": {
+          "x": -5,
+          "z": 0
+        },
+        "mesh": "23B798DC-C218-4180-9301-24F66B53AFC0",
+        "texture": "plaster"
+      },
+      {
+        "from": {
+          "x": -5,
+          "z": 0
+        },
+        "to": {
+          "x": -5,
+          "z": 3
+        },
+        "mesh": "AA516A35-5678-40BE-9AE1-5066C43A23BA",
+        "texture": "plaster"
+      },
+      {
+        "from": {
+          "x": -5,
+          "z": 3
+        },
+        "to": {
+          "x": -5,
+          "z": 5
+        },
+        "mesh": "52E539D2-B7DC-49FA-ADA7-CA9E60609954",
+        "texture": "plaster"
+      },
+      {
+        "from": {
+          "x": -5,
+          "z": 5
+        },
+        "to": {
+          "x": 1,
+          "z": 5
+        },
+        "mesh": "184C66BC-1A94-401C-AED9-23BDF7C1065A",
+        "texture": "plaster"
+      },
+      {
+        "from": {
+          "x": 1,
+          "z": 5
+        },
+        "to": {
+          "x": 5,
+          "z": 5
+        },
+        "mesh": "D9C20E8A-EEBA-4296-81BB-0C9D5FABC0A4",
+        "texture": "plaster"
+      },
+      {
+        "from": {
+          "x": 5,
+          "z": 5
+        },
+        "to": {
+          "x": 5,
+          "z": 2
+        },
+        "mesh": "367D8E48-084D-4DF0-B54D-850274B7A048",
+        "texture": "plaster"
+      },
+      {
+        "from": {
+          "x": 5,
+          "z": 2
+        },
+        "to": {
+          "x": 5,
+          "z": 0
+        },
+        "mesh": "6697DBCB-D1E9-4F66-BC61-41334D28E272",
+        "texture": "plaster"
+      },
+      {
+        "from": {
+          "x": 5,
+          "z": 0
+        },
+        "to": {
+          "x": 0,
+          "z": 0
+        },
+        "mesh": "6303019F-7C9A-4CEC-951F-7EF8023C7F15",
+        "texture": "plaster"
+      },
+      {
+        "from": {
+          "x": 0,
+          "z": 0
+        },
+        "to": {
+          "x": 0,
+          "z": -5
+        },
+        "mesh": "E726F4C9-E04A-4058-81B1-7A112D6A1D5E",
+        "texture": "plaster"
+      },
+      {
+        "from": {
+          "x": 0,
+          "z": -5
+        },
+        "to": {
+          "x": -5,
+          "z": -5
+        },
+        "mesh": "35FD6859-F372-402F-9377-D09CB4D92869",
+        "texture": "plaster"
+      },
+      {
+        "from": {
+          "x": 0,
+          "z": 0
+        },
+        "to": {
+          "x": -5,
+          "z": 0
+        },
+        "mesh": "62E42641-2A1A-475F-9D55-F7919C4F4900",
+        "texture": "plaster"
+      },
+      {
+        "from": {
+          "x": 0,
+          "z": 0
+        },
+        "to": {
+          "x": 0,
+          "z": 2
+        },
+        "mesh": "4A60DA61-79E6-464A-98A2-24B40247CC7F",
+        "texture": "plaster"
+      },
+      {
+        "from": {
+          "x": 0,
+          "z": 2
+        },
+        "to": {
+          "x": 0,
+          "z": 3
+        },
+        "mesh": "78360844-9ACE-48D2-AC7A-99C0DDE4647C",
+        "texture": "plaster"
+      },
+      {
+        "from": {
+          "x": 0,
+          "z": 3
+        },
+        "to": {
+          "x": -5,
+          "z": 3
+        },
+        "mesh": "5281F0E1-4688-4862-AF21-DD34A8C80802",
+        "texture": "plaster"
+      },
+      {
+        "from": {
+          "x": 1,
+          "z": 2
+        },
+        "to": {
+          "x": 0,
+          "z": 2
+        },
+        "mesh": "69EB348E-DD4E-4450-81B6-F7FF0E27FD28",
+        "texture": "plaster"
+      },
+      {
+        "from": {
+          "x": 5,
+          "z": 2
+        },
+        "to": {
+          "x": 1,
+          "z": 2
+        },
+        "mesh": "9C1094DE-3B07-45D5-8656-E8488053745D",
+        "texture": "plaster"
+      },
+      {
+        "from": {
+          "x": 1,
+          "z": 2
+        },
+        "to": {
+          "x": 1,
+          "z": 5
+        },
+        "mesh": "D1BFB2CC-2854-4416-9B0C-1CD41D32DBCD",
+        "texture": "plaster"
+      }
+    ],
+    "rooms": [
+      {
+        "center": {
+          "x": -2.5,
+          "y": -2.5,
+          "z": 0.014999999664723873
+        },
+        "mesh": "A20CFD1A-0AA3-4688-9DC1-DC1C2A9EA781",
+        "texture": "wood2"
+      },
+      {
+        "center": {
+          "x": -2.5,
+          "y": 1.5,
+          "z": 0.014999999664723873
+        },
+        "mesh": "46182062-3801-42A9-9F55-987B0E30F2D5",
+        "texture": "wood2"
+      },
+      {
+        "center": {
+          "x": 2.5,
+          "y": 1,
+          "z": 0.014999999664723873
+        },
+        "mesh": "B4DCD6EA-A9B0-49BC-98EA-291ACFF1C54E",
+        "texture": "wood2"
+      },
+      {
+        "center": {
+          "x": -2,
+          "y": 3.5,
+          "z": 0.014999999664723873
+        },
+        "mesh": "ECD4B804-038F-4B45-B752-A07A50E5EA97",
+        "texture": "wood2"
+      },
+      {
+        "center": {
+          "x": 3,
+          "y": 3.5,
+          "z": 0.014999999664723873
+        },
+        "mesh": "7CA6AAE5-E13B-4369-8528-7A8F901A70AE",
+        "texture": "wood2"
+      }
+    ]
+  },
+  "currentObjects": {
+    "objects": []
+  }
+}

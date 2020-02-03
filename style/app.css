@@ -1,0 +1,241 @@
+@import '../node_modules/material-components-web/dist/material-components-web.css';
+@import '../node_modules/material-design-icons/iconfont/material-icons.css';
+
+html, body {
+    height : 100%;
+    width: 100%;
+    margin: 0;
+    border: 0;
+    padding: 0;
+    background-color: #3d4043;
+}
+
+canvas{
+    position: relative;
+    width: 100%;
+}
+
+:root{
+    --mdc-theme-primary: white;
+    --mdc-theme-on-primary: sienna;
+    --mdc-theme-secondary: white;
+    --mdc-theme-on-secondary: #ce7b6e;
+ }
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+        transform: perspective(1px) scale(0);
+    }
+    75% {
+        opacity: 1;
+        transform: perspective(1px) scale(1);
+    }
+    100% {
+        opacity: 1;
+        transform: perspective(1px) scale(0.9);
+    }
+}
+
+@keyframes disappear {
+    0% {
+        opacity: 0;
+        transform: perspective(1px) scale(0.9);
+    }
+    25% {
+        opacity: 1;
+        transform: perspective(1px) scale(1);
+    }
+    100% {
+        opacity: 1;
+        transform: perspective(1px) scale(0);
+    }
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+        transform: perspective(1px) scale(0);
+    }
+    100% {
+        opacity: 1;
+        transform: perspective(1px) scale(1);
+    }
+}
+
+#loading-screen {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    transition: opacity 1s;
+    background-color: #3d4043;
+    z-index: 90;
+    pointer-events: none;
+}
+
+
+#loading-animation {
+    position: absolute;
+    width: 7.5%;
+    height: 7.5%;
+    bottom: 15%;
+    background-color: transparent;
+    animation: fade-in 0.5 both;
+}
+
+#loading-icon {
+    position: absolute;
+    background-color: transparent;
+    zoom: 75%;
+    animation: appear 1s both;
+    animation-delay: 1s;
+}
+
+#logo {
+    position: absolute;
+    bottom: 5%;
+    width: 100%;
+    text-align: center;
+    display: block;
+    z-index: 100;
+    font-family: Arial, serif;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+#drawer {
+    position: absolute;
+    height: 100%;
+    width: 25%;
+    padding: 0.5%;
+    background: rgba(100, 100, 100, 0.5);
+    z-index: 100;
+}
+
+#search-form{
+    position: relative;
+    width: 100%;
+}
+
+#search-icon{
+    float: right;
+    vertical-align: middle;
+}
+
+#search-input{
+    float: left;
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    font-size: 16px;
+}
+
+#search-input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px white inset;
+}
+
+#search-message{
+    text-align: center;
+    width: 100%;
+    color: white;
+    font-size: 18px;
+    padding-top: 100%;
+}
+
+#list{
+    background: transparent;
+    height: max-content;
+    max-height: 100%;
+    overflow: scroll;
+    border-radius: 5px;
+    margin-top: 1%;
+}
+
+ul {
+    margin: 1% 0 1% 0;
+    list-style: none;
+    padding: 0;
+}
+
+li{
+    padding: 1%;
+    display: inline-block;
+    width: 48%;
+}
+
+model-viewer{
+    display:block;
+    width:100%;
+    position:relative;
+    border-radius: 3%;
+}
+
+#view-button{
+    margin: 25%;
+    transform: scale(0);
+}
+
+#first-icon{
+    display: block;
+}
+
+#second-icon{
+    display: none;
+}
+
+.buttons {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    zoom: 110%;
+    z-index: 100;
+    padding: 1%;
+    margin-right: 3%;
+    margin-bottom: 1%;
+}
+
+.fab-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: visible;
+    height: max-content;
+    width: max-content;
+}
+
+.mdc-fab{
+    margin: 25%;
+    transition: transform 0.1s ease-in-out;
+}
+
+.mdc-fab__icon{
+    transition: transform 0.1s ease-in-out;
+}
+
+
+#canvas{
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+    z-index: 0;
+}
+
+#controls{
+    position: absolute;
+    display: block;
+    right: 0;
+    width: 75%;
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+

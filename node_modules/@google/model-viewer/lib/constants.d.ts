@@ -1,0 +1,14 @@
+export declare const HAS_WEBXR_DEVICE_API: boolean;
+export declare const HAS_WEBXR_HIT_TEST_API: false | ((ray: XRRay, frameOfReference: XRFrameOfReference) => Promise<XRHitResult[]>);
+export declare const HAS_RESIZE_OBSERVER: boolean;
+export declare const HAS_INTERSECTION_OBSERVER: boolean;
+export declare const IS_WEBXR_AR_CANDIDATE: false | ((ray: XRRay, frameOfReference: XRFrameOfReference) => Promise<XRHitResult[]>);
+export declare const IS_MOBILE: boolean;
+export declare const HAS_OFFSCREEN_CANVAS: boolean;
+export declare const OFFSCREEN_CANVAS_SUPPORT_BITMAP: boolean;
+export declare const IS_ANDROID: boolean;
+export declare const IS_IOS: boolean;
+export declare const IS_AR_QUICKLOOK_CANDIDATE: boolean;
+export declare const IS_IOS_CHROME: boolean;
+export declare const IS_IOS_SAFARI: boolean;
+export declare const IS_IE11: boolean;

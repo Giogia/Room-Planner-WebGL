@@ -1,2 +1,2 @@
-# Room-Planner-WebGL
- Computer graphics project
+# Room Planner
+ Room Planner 3d - Computer Graphics Project 2019
