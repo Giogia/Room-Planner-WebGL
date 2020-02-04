@@ -45,9 +45,9 @@ function orbitMove(event) {
             let elevation = utils.radToDeg(Math.asin(camera.position.y/radius));
             let angle = utils.radToDeg(Math.atan(camera.position.x/camera.position.z));
 
-            angle = angle > 0? angle : angle + 360;
+            angle = camera.position.z >= 0 ? angle : angle + 180;
 
-		    console.log(camera.position.x, camera.position.z ,angle);
+		    //console.log(camera.position.x, camera.position.z ,angle);
 
 		    elevation = elevation + 0.75 * dy;
 		    angle = angle + 0.75 * dx;
@@ -55,6 +55,8 @@ function orbitMove(event) {
             let x = radius * Math.sin(utils.degToRad(angle)) * Math.cos(utils.degToRad(elevation));
             let y = radius * Math.sin(utils.degToRad(elevation));
             let z = radius * Math.cos(utils.degToRad(angle)) * Math.cos(utils.degToRad(elevation));
+
+            console.log(x,y,z, angle);
 
 		    if(0 < y && y < 0.95*radius){
 
