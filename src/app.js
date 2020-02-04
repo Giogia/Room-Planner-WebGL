@@ -3,7 +3,7 @@
 import * as THREE from 'three';
 import * as TWEEN from 'tween.js';
 
-import {dragControls, mapControls, draggableObjects} from "./controls"
+import {dragControls, draggableObjects} from "./controls"
 import { enableDragControls, enableMapControls, enableOrbitControls} from "./controls"
 import {addLights} from "./lights";
 import {
@@ -14,7 +14,7 @@ import {
     selectObject
 } from "./objects";
 import {createModel} from "./walls";
-import {enableMap, hideCloseWalls, showRoomCenters, tweenCamera} from "./view";
+import {hideCloseWalls, showRoomCenters, tweenCamera} from "./view";
 import {createButtons, downloadButton, showButton, viewButton} from "./buttons";
 import {MDCDrawer} from "@material/drawer/component";
 
@@ -167,9 +167,7 @@ export function animate() {
     requestAnimationFrame( animate );
 
     TWEEN.update();
-
-    //mapControls.update();
-    dragControls.update(draggableObjects);
+    //dragControls.update(draggableObjects);
 
     hideCloseWalls();
     showRoomCenters();

@@ -63,7 +63,7 @@ export async function selectObject(event){
 }
 
 
-function intersect(event, objects){
+export function intersect(event, objects){
 
     let mouse = new THREE.Vector2();
 
@@ -143,6 +143,12 @@ export function selectDraggableObject(event){
             object.overrideMaterial = null;
             selectedObject = null;
         }
+    }
+    if(intersects.length === 0){
+        hideButton(removeButton);
+        removeButton.removeEventListener('click', removeDraggableObject);
+        document.removeEventListener('keydown', transformDraggableObject);
+        selectedObject = null;
     }
 }
 

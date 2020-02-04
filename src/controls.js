@@ -1,37 +1,77 @@
 'use strict';
 
 import * as THREE from 'three';
-import MapControls from 'three-controls/src/js/MapControls';
-import {camera, canvas, renderer, scene} from "./app";
-import ThreeDragger from 'three-dragger';
+import {camera, canvas} from "./app";
 import {currentMode, deleteMode, editMode, viewMode} from "./buttons";
 import {currentObjects, selectDraggableObject, selectObject} from "./objects";
 import {saveJson} from "./loader";
 import {utils} from "./utils";
-import {enableMap, enableOrbit} from "./view";
+import {intersect} from "./objects";
 
-
-export var dragControls, mapControls, transformControls, orbitControls, pointerLockControls;
+export var dragControls;
 export var draggableObjects = [];
 
-
+let controlZone = document.getElementById( 'controls');
 
 let moveControls = false;
 let lastMouseX = -100, lastMouseY = -100;
 
+let delta;
+let object = null;
+
+let enable = {
+    orbit: true,
+    map: false,
+    drag: false
+};
+
+export { enable };
+
 
 function doMouseDown(event) {
+
 	lastMouseX = event.pageX;
 	lastMouseY = event.pageY;
-	moveControls = true;
+
+	let intersects = intersect(event, draggableObjects);
+
+    if(intersects.length > 0) {
+
+        object = intersects[0].object;
+
+        while (object.type !== 'Scene') {
+            object = object.parent;
+        }
+
+        let position = getDraggablePosition(event);
+
+        delta = {
+            x: position.x - object.position.x,
+            y: position.y - object.position.y,
+            z: position.z - object.position.z
+        };
+
+        canvas.removeEventListener('dblclick', selectObject);
+        canvas.removeEventListener('click', selectDraggableObject);
+
+        enable.drag = true;
+    }
+
+    if(intersects.length === 0){
+        moveControls = true;
+    }
 }
 
-function doMouseUp(event) {
+
+async function doMouseUp(event) {
+
 	lastMouseX = -100;
 	lastMouseY = -100;
+
 	moveControls = false;
 
-	if(enableMap){
+	if(enable.map){
+
 	    setTimeout( () => {
 
             if(currentMode === "edit"){
@@ -42,10 +82,30 @@ function doMouseUp(event) {
             }
         }, 100);
     }
+
+	if(enable.drag){
+
+	    enable.drag = false;
+
+	    setTimeout(() => {
+            canvas.addEventListener('dblclick', selectObject);
+            canvas.addEventListener('click', selectDraggableObject);
+        }, 10);
+
+        let dragged = _.find(currentObjects.objects, {mesh: object.uuid});
+
+        dragged.x = object.position.x;
+        dragged.z = object.position.z;
+        
+        object = null;
+
+        await saveJson('currentObjects', currentObjects);
+	}
 }
 
+
 function orbitMove(event) {
-	if(enableOrbit && moveControls) {
+	if(enable.orbit && moveControls) {
 
 		let dx = lastMouseX - event.pageX;
 		let dy = event.pageY - lastMouseY;
@@ -72,15 +132,15 @@ function orbitMove(event) {
 
 		        camera.position.set(x,y,z);
 		        camera.lookAt(0,0,0);
-		        //camera.updateProjectionMatrix();
             }
 		}
 	}
 }
 
+
 function orbitZoom(event) {
 
-    if(enableOrbit){
+    if(enable.orbit){
         let radius = Math.sqrt(Math.pow(camera.position.x, 2) + Math.pow(camera.position.y, 2) +  Math.pow(camera.position.z, 2));
 	    let newRadius = radius - event.wheelDelta/50.0;
 
@@ -97,11 +157,12 @@ function orbitZoom(event) {
 
 export function enableOrbitControls(){
 
-    canvas.addEventListener("mousedown", doMouseDown, false);
-	canvas.addEventListener("mouseup", doMouseUp, false);
-	canvas.addEventListener("mousemove", orbitMove, false);
-	canvas.addEventListener("mousewheel", orbitZoom, false);
+    controlZone.addEventListener("mousedown", doMouseDown, false);
+	controlZone.addEventListener("mouseup", doMouseUp, false);
+	controlZone.addEventListener("mousemove", orbitMove, false);
+	controlZone.addEventListener("mousewheel", orbitZoom, false);
 }
+
 
 //TODO use this for gl renderer
 export function updateOrbitControls(){
@@ -115,8 +176,9 @@ export function updateOrbitControls(){
 
 }
 
+
 function mapMove(event){
-    if(enableMap && moveControls) {
+    if(enable.map && moveControls) {
 
         viewMode();
 
@@ -130,14 +192,13 @@ function mapMove(event){
             camera.position.z = camera.position.z + 0.05 * dx;
             camera.position.x = camera.position.x + 0.05 * dy;
             camera.up.set(0,1,0);
-            console.log(camera.position);
             camera.updateProjectionMatrix();
         }
     }
 }
 
 function mapZoom(event){
-    if(enableMap){
+    if(enable.map){
 
 	    let y = camera.position.y - event.wheelDelta/50.0;
 
@@ -151,61 +212,27 @@ function mapZoom(event){
 
 export function enableMapControls(){
 
-    canvas.addEventListener("mousedown", doMouseDown, false);
-	canvas.addEventListener("mouseup", doMouseUp, false);
-	canvas.addEventListener("mousemove", mapMove, false);
-	canvas.addEventListener("mousewheel", mapZoom, false);
+    controlZone.addEventListener("mousedown", doMouseDown, false);
+	controlZone.addEventListener("mouseup", doMouseUp, false);
+	controlZone.addEventListener("mousemove", mapMove, false);
+	controlZone.addEventListener("mousewheel", mapZoom, false);
 }
 
 
+function drag(event){
+
+    if(enable.drag){
+
+        let position = getDraggablePosition(event);
+        object.position.set(position.x - delta.x, position.y - delta.y, position.z - delta.z);
+    }
+}
+
 export function enableDragControls(){
 
-    let dragZone = document.getElementById( 'controls');
+    controlZone.addEventListener("mousedown", doMouseDown, false);
+    controlZone.addEventListener("mousemove", drag, false);
 
-    let delta = new THREE.Vector3();
-
-    dragControls = new ThreeDragger(draggableObjects, camera, dragZone);
-
-    dragControls.on( 'dragstart', function (event) {
-
-        enableOrbit = false;
-
-        canvas.removeEventListener('dblclick', selectObject);
-        //canvas.removeEventListener('click', selectDraggableObject);
-
-        let group = getDraggablePosition(event).group;
-        let position = getDraggablePosition(event).position;
-
-        delta.set(position.x - group.position.x, position.y - group.position.y, position.z - group.position.z);
-
-    } );
-
-    dragControls.on('drag', function (event) {
-
-        let group = getDraggablePosition(event).group;
-        let position = getDraggablePosition(event).position;
-
-        group.position.set(position.x - delta.x, position.y - delta.y, position.z - delta.z);
-    });
-
-    dragControls.on( 'dragend', async function (event) {
-
-        enableOrbit = true;
-
-        setTimeout(() => {
-            canvas.addEventListener('dblclick', selectObject);
-            canvas.addEventListener('click', selectDraggableObject);
-        }, 10);
-
-        let object = getDraggablePosition(event).group;
-
-        let dragged = _.find(currentObjects.objects, { mesh: object.uuid });
-
-        dragged.x = object.position.x;
-        dragged.z = object.position.z;
-
-        await saveJson('currentObjects', currentObjects);
-    });
 }
 
 
@@ -215,8 +242,8 @@ function getDraggablePosition(event){
     let position = new THREE.Vector3();
 
     vector.set(
-            ( event.event.clientX / canvas.clientWidth ) * 2 - 1,
-            - ( event.event.clientY / canvas.clientHeight ) * 2 + 1,
+            ( event.clientX / canvas.clientWidth ) * 2 - 1,
+            - ( event.clientY / canvas.clientHeight ) * 2 + 1,
             -1,
     );
 
@@ -227,12 +254,6 @@ function getDraggablePosition(event){
 
     position.copy( camera.position ).add( vector.multiplyScalar( distance ) );
 
-    let group = event.target;
-
-    while(group.type !== 'Scene'){
-        group = group.parent
-    }
-
-    return {group: group, position: position};
+    return position;
 }
 
