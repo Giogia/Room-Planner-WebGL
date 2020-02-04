@@ -4,8 +4,7 @@ import * as TWEEN from "tween.js";
 import {
     dragControls,
     draggableObjects,
-    enableOrbitControls,
-    mapControls, enableOrbit
+    mapControls
 } from "./controls";
 
 import {camera, canvas, drawer, list, scene} from "./app";
@@ -28,8 +27,9 @@ import {
 } from "./buttons";
 import {directional} from "./lights";
 
-
 let floorPlanView = false;
+export let enableOrbit = true;
+export let enableMap = false;
 
 
 export function toggleView(event) {
@@ -72,7 +72,7 @@ function drawView(){
 
 function modelView(){
 
-    mapControls.reset();
+    //mapControls.reset();
 
     drawer.open = true;
 
@@ -112,7 +112,9 @@ export function tweenCamera(targetPosition, duration=2500){
 
     deactivateButtons();
 
-    mapControls.enabled = false;
+    //mapControls.enabled = false;
+    enableOrbit = false;
+    enableMap = false;
     //dragControls.enabled = false;
 
     let position = new THREE.Vector3().copy(camera.position);
@@ -125,18 +127,22 @@ export function tweenCamera(targetPosition, duration=2500){
 
         .onUpdate( () => {
             camera.position.copy(position);
+            camera.lookAt(0,0,0);
         })
 
         .onComplete( function () {
 
             camera.position.copy(targetPosition);
+            camera.lookAt(0,0,0);
 
             if (floorPlanView) {
-                mapControls.saveState();
-                mapControls.enabled = true;
+                //mapControls.saveState();
+                //mapControls.enabled = true;
+                enableMap = true;
             }
             if (!floorPlanView) {
-                //dragControls.enabled = true;
+                enableOrbit = true;
+                dragControls.enabled = true;
             }
         })
 

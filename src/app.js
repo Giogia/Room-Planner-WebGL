@@ -3,7 +3,7 @@
 import * as THREE from 'three';
 import * as TWEEN from 'tween.js';
 
-import {dragControls, mapControls, orbitControls, draggableObjects, updateOrbitControls} from "./controls"
+import {dragControls, mapControls, draggableObjects} from "./controls"
 import { enableDragControls, enableMapControls, enableOrbitControls} from "./controls"
 import {addLights} from "./lights";
 import {
@@ -14,7 +14,7 @@ import {
     selectObject
 } from "./objects";
 import {createModel} from "./walls";
-import {hideCloseWalls, showRoomCenters, tweenCamera} from "./view";
+import {enableMap, hideCloseWalls, showRoomCenters, tweenCamera} from "./view";
 import {createButtons, downloadButton, showButton, viewButton} from "./buttons";
 import {MDCDrawer} from "@material/drawer/component";
 
@@ -57,7 +57,6 @@ async function init(){
     animate();
 
     loadingAnimation();
-
 }
 
 
@@ -125,6 +124,8 @@ function createCamera(){
     const far = 100;
     camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
     camera.position.set(-4, 100, 12);
+    camera.lookAt(new THREE.Vector3(0,0,0));
+    //camera.position.set(-7, 9, -16);
 }
 
 
@@ -167,7 +168,7 @@ export function animate() {
 
     TWEEN.update();
 
-    mapControls.update();
+    //mapControls.update();
     dragControls.update(draggableObjects);
 
     hideCloseWalls();

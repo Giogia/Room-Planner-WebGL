@@ -8,30 +8,44 @@ import {currentMode, deleteMode, editMode, viewMode} from "./buttons";
 import {currentObjects, selectDraggableObject, selectObject} from "./objects";
 import {saveJson} from "./loader";
 import {utils} from "./utils";
+import {enableMap, enableOrbit} from "./view";
 
 
 export var dragControls, mapControls, transformControls, orbitControls, pointerLockControls;
 export var draggableObjects = [];
 
-export let enableOrbit = true;
-let moveOrbit = false;
+
+
+let moveControls = false;
 let lastMouseX = -100, lastMouseY = -100;
 
 
 function doMouseDown(event) {
 	lastMouseX = event.pageX;
 	lastMouseY = event.pageY;
-	moveOrbit = true;
+	moveControls = true;
 }
 
 function doMouseUp(event) {
 	lastMouseX = -100;
 	lastMouseY = -100;
-	moveOrbit = false;
+	moveControls = false;
+
+	if(enableMap){
+	    setTimeout( () => {
+
+            if(currentMode === "edit"){
+                editMode();
+            }
+            if(currentMode === "delete"){
+                deleteMode();
+            }
+        }, 100);
+    }
 }
 
 function orbitMove(event) {
-	if(enableOrbit && moveOrbit) {
+	if(enableOrbit && moveControls) {
 
 		let dx = lastMouseX - event.pageX;
 		let dy = event.pageY - lastMouseY;
@@ -47,8 +61,6 @@ function orbitMove(event) {
 
             angle = camera.position.z >= 0 ? angle : angle + 180;
 
-		    //console.log(camera.position.x, camera.position.z ,angle);
-
 		    elevation = elevation + 0.75 * dy;
 		    angle = angle + 0.75 * dx;
 
@@ -56,12 +68,11 @@ function orbitMove(event) {
             let y = radius * Math.sin(utils.degToRad(elevation));
             let z = radius * Math.cos(utils.degToRad(angle)) * Math.cos(utils.degToRad(elevation));
 
-            console.log(x,y,z, angle);
-
 		    if(0 < y && y < 0.95*radius){
 
 		        camera.position.set(x,y,z);
-		        camera.updateProjectionMatrix();
+		        camera.lookAt(0,0,0);
+		        //camera.updateProjectionMatrix();
             }
 		}
 	}
@@ -104,41 +115,45 @@ export function updateOrbitControls(){
 
 }
 
+function mapMove(event){
+    if(enableMap && moveControls) {
+
+        viewMode();
+
+		let dx = lastMouseX - event.pageX;
+		let dy = event.pageY - lastMouseY;
+
+		lastMouseX = event.pageX;
+		lastMouseY = event.pageY;
+
+		if((dx !== 0) || (dy !== 0)) {
+            camera.position.z = camera.position.z + 0.05 * dx;
+            camera.position.x = camera.position.x + 0.05 * dy;
+            camera.up.set(0,1,0);
+            camera.updateProjectionMatrix();
+        }
+    }
+}
+
+function mapZoom(event){
+    if(enableMap){
+
+	    let y = camera.position.y - event.wheelDelta/50.0;
+
+	    if((y > 5.0) && (y < 100.0)) {
+	        camera.position.y = y;
+            camera.up.set(0,1,0);
+	        camera.updateProjectionMatrix();
+	    }
+    }
+}
 
 export function enableMapControls(){
 
-    mapControls = new MapControls(camera, renderer.domElement, {
-        target: new THREE.Plane(new THREE.Vector3(0,1,0),0),
-    });
-
-    mapControls.enableRotate = false;
-    mapControls.screenSpacePanning = false;
-    mapControls.enableDamping = false;
-
-    mapControls.enableZoom = true;
-    mapControls.minDistance = 5;
-    mapControls.maxDistance = 100;
-
-    mapControls.enabled = false;
-    mapControls.update();
-
-    mapControls.addEventListener('change', () => {
-        setTimeout( () => {
-            viewMode();
-        }, 100);
-    });
-
-    mapControls.addEventListener('end', () => {
-        setTimeout( () => {
-
-            if(currentMode === "edit"){
-                editMode();
-            }
-            if(currentMode === "delete"){
-                deleteMode();
-            }
-        }, 100);
-    });
+    canvas.addEventListener("mousedown", doMouseDown, false);
+	canvas.addEventListener("mouseup", doMouseUp, false);
+	canvas.addEventListener("mousemove", mapMove, false);
+	canvas.addEventListener("mousewheel", mapZoom, false);
 }
 
 
@@ -153,7 +168,7 @@ export function enableDragControls(){
     dragControls.on( 'dragstart', function (event) {
 
         enableOrbit = false;
-        console.log(enableOrbit);
+
         canvas.removeEventListener('dblclick', selectObject);
         //canvas.removeEventListener('click', selectDraggableObject);
 
@@ -175,7 +190,7 @@ export function enableDragControls(){
     dragControls.on( 'dragend', async function (event) {
 
         enableOrbit = true;
-        console.log(enableOrbit);
+
         setTimeout(() => {
             canvas.addEventListener('dblclick', selectObject);
             canvas.addEventListener('click', selectDraggableObject);
