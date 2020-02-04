@@ -130,6 +130,7 @@ function mapMove(event){
             camera.position.z = camera.position.z + 0.05 * dx;
             camera.position.x = camera.position.x + 0.05 * dy;
             camera.up.set(0,1,0);
+            console.log(camera.position);
             camera.updateProjectionMatrix();
         }
     }

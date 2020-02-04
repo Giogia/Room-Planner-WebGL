@@ -72,47 +72,50 @@ function drawView(){
 
 function modelView(){
 
-    //mapControls.reset();
+    tweenCamera(new THREE.Vector3(-0.01, 30, 0), 1000, true);
 
-    drawer.open = true;
+    setTimeout( ()=>{
 
-    deactivateDrawButtons();
-    hideDrawButtons();
+        drawer.open = true;
 
-    setTimeout( () => {
-        activateModelButtons();
-        showModelButtons();
-        showModelIcon();
-    }, 500);
+        deactivateDrawButtons();
+        hideDrawButtons();
 
-    deactivateDrawButtons();
+        setTimeout( () => {
+            activateModelButtons();
+            showModelButtons();
+            showModelIcon();
+        }, 500);
 
-    list.addEventListener('click', addObject);
-    canvas.addEventListener('mousedown', selectDraggableObject);
-    canvas.addEventListener('mouseup', selectDraggableObject);
-    canvas.addEventListener('dblclick', selectObject);
+        deactivateDrawButtons();
 
-    scene.add( directional );
+        list.addEventListener('click', addObject);
+        canvas.addEventListener('mousedown', selectDraggableObject);
+        canvas.addEventListener('mouseup', selectDraggableObject);
+        canvas.addEventListener('dblclick', selectObject);
 
-    hide(drawModel.children);
-    show(floorModel.children);
-    show(skirtingModel.children);
-    show(wallsModel.children);
-    show(draggableObjects);
-    show(roomCenters.children);
+        scene.add( directional );
 
-    setTimeout( () => {
-        tweenCamera(new THREE.Vector3(-7, 9, -16));
-    }, 100);
+        hide(drawModel.children);
+        show(floorModel.children);
+        show(skirtingModel.children);
+        show(wallsModel.children);
+        show(draggableObjects);
+        show(roomCenters.children);
+
+        setTimeout( () => {
+            tweenCamera(new THREE.Vector3(-7, 9, -16));
+        }, 100);
+
+    }, 1000);
 
 }
 
 
-export function tweenCamera(targetPosition, duration=2500){
+export function tweenCamera(targetPosition, duration=2500, resetMap=false){
 
     deactivateButtons();
 
-    //mapControls.enabled = false;
     enableOrbit = false;
     enableMap = false;
     //dragControls.enabled = false;
@@ -127,7 +130,13 @@ export function tweenCamera(targetPosition, duration=2500){
 
         .onUpdate( () => {
             camera.position.copy(position);
-            camera.lookAt(0,0,0);
+            if(!resetMap){
+                camera.lookAt(0,0,0);
+            }
+            if(resetMap){
+                camera.up.set(0,1,0);
+            }
+
         })
 
         .onComplete( function () {
@@ -136,8 +145,6 @@ export function tweenCamera(targetPosition, duration=2500){
             camera.lookAt(0,0,0);
 
             if (floorPlanView) {
-                //mapControls.saveState();
-                //mapControls.enabled = true;
                 enableMap = true;
             }
             if (!floorPlanView) {
