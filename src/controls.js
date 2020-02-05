@@ -42,7 +42,7 @@ function doMouseDown(event) {
             object = object.parent;
         }
 
-        let position = getDraggablePosition(event);
+        let position = utils.getWorldPosition(event);
 
         delta = {
             x: position.x - object.position.x,
@@ -222,7 +222,7 @@ function drag(event){
 
     if(enable.drag){
 
-        let position = getDraggablePosition(event);
+        let position = utils.getWorldPosition(event);
         object.position.set(position.x - delta.x, position.y - delta.y, position.z - delta.z);
     }
 }
@@ -235,23 +235,3 @@ export function enableDragControls(){
 }
 
 
-function getDraggablePosition(event){
-
-    let vector = {
-        x: (event.clientX / canvas.clientWidth) * 2 - 1,
-        y: -(event.clientY / canvas.clientHeight) * 2 + 1,
-        z: -1
-    };
-
-    vector = utils.unProject( vector, camera );
-    vector = utils.subtract( vector, camera.position);
-    vector = utils.normalize(vector);
-
-    let distance = - camera.position.y / vector.y;
-
-    return {
-        x: camera.position.x + distance * vector.x,
-        y: camera.position.y + distance * vector.y,
-        z: camera.position.z + distance * vector.z
-    };
-}

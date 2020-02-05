@@ -18,12 +18,13 @@ import {Line2} from "three/examples/jsm/lines/Line2";
 
 import {checkIntersection, colinearPointWithinSegment} from "line-intersect";
 import {font, textMaterial} from "./materials";
+import {utils} from "./utils";
 
 let currentLine;
 
 export function editDrawing(event){
 
-    let position = worldCoordinates(event);
+    let position = pointWorldPosition(event);
     let point = _.find(floorPlan.points,
         { x: Math.round(position.x * 4)/4, z: Math.round( position.z * 4)/4});
 
@@ -93,7 +94,7 @@ function drawPoint(position){
 
 function showLine(event){
 
-    let position = worldCoordinates(event);
+    let position = pointWorldPosition(event);
     let point = _.find(floorPlan.points,{ selected: true });
 
     let material = new LineMaterial({
@@ -117,7 +118,7 @@ function drawLine(event){
     let points = floorPlan.points;
     let walls = floorPlan.walls;
 
-    let position = worldCoordinates(event);
+    let position = pointWorldPosition(event);
     let start = _.find(points, {selected: true});
     let end = _.find(points, {x:position.x, z:position.z});
 
@@ -162,7 +163,7 @@ export function deleteDrawing(event){
     let points = floorPlan.points;
     let walls = floorPlan.walls;
 
-    let position = worldCoordinates(event);
+    let position = pointWorldPosition(event);
     let selected = _.find(points,{ x: position.x, z: position.z });
 
     if(selected){
@@ -192,23 +193,9 @@ export function deleteDrawing(event){
 }
 
 
-export function worldCoordinates(event){
+export function pointWorldPosition(event){
 
-    let vector = new THREE.Vector3();
-    let position = new THREE.Vector3();
-
-    vector.set(
-        ( event.clientX / canvas.clientWidth ) * 2 - 1,
-        - ( event.clientY / canvas.clientHeight ) * 2 + 1,
-        -1,
-    );
-
-    vector.unproject( camera );
-    vector.sub( camera.position ).normalize();
-
-    let distance = - camera.position.y / vector.y;
-
-    position.copy( camera.position ).add( vector.multiplyScalar( distance ) );
+    let position = utils.getWorldPosition(event);
 
     position.x = Math.round( position.x * 4)/ 4;
     position.z = Math.round( position.z * 4)/ 4;

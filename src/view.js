@@ -1,12 +1,6 @@
-import * as THREE from "three";
 import * as TWEEN from "tween.js";
 
-import {
-    dragControls,
-    draggableObjects,
-    enable
-} from "./controls";
-
+import { draggableObjects, enable } from "./controls";
 import {camera, canvas, drawer, list, scene} from "./app";
 import {addObject, selectDraggableObject, selectObject} from "./objects";
 import {drawModel, floorModel, roomCenters, skirtingModel, updateModel, wallsModel} from "./walls";
@@ -25,6 +19,7 @@ import {
     showModelButtons,
     showModelIcon
 } from "./buttons";
+
 import {directional} from "./lights";
 
 let floorPlanView = false;
@@ -64,13 +59,13 @@ function drawView(){
     hide(skirtingModel.children);
     show(drawModel.children);
 
-    tweenCamera(new THREE.Vector3(-0.01, 30, 0));
+    tweenCamera({x: -0.01, y: 30, z: 0});
 }
 
 
 function modelView(){
 
-    tweenCamera(new THREE.Vector3(-0.01, 30, 0), 250, true);
+    tweenCamera({x: -0.01, y: 30, z: 0}, 250, true);
 
     setTimeout( ()=>{
 
@@ -102,7 +97,7 @@ function modelView(){
         show(roomCenters.children);
 
         setTimeout( () => {
-            tweenCamera(new THREE.Vector3(-7, 9, -16));
+            tweenCamera({x: -7, y: 9, z: -16});
         }, 100);
 
     }, 250);
@@ -117,7 +112,7 @@ export function tweenCamera(targetPosition, duration=2500, resetMap=false){
     enable.orbit = false;
     enable.map = false;
 
-    let position = new THREE.Vector3().copy(camera.position);
+    let position = camera.position;
 
     new TWEEN.Tween(position)
 
@@ -126,7 +121,7 @@ export function tweenCamera(targetPosition, duration=2500, resetMap=false){
         .easing( TWEEN.Easing.Quartic.InOut )
 
         .onUpdate( () => {
-            camera.position.copy(position);
+            camera.position.set(position.x, position.y, position.z);
             if(!resetMap){
                 camera.lookAt(0,0,0);
             }
@@ -138,7 +133,7 @@ export function tweenCamera(targetPosition, duration=2500, resetMap=false){
 
         .onComplete( function () {
 
-            camera.position.copy(targetPosition);
+            camera.position.set(targetPosition.x, targetPosition.y, targetPosition.z);
             camera.lookAt(0,0,0);
 
             if (floorPlanView) {

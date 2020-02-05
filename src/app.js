@@ -3,16 +3,9 @@
 import * as THREE from 'three';
 import * as TWEEN from 'tween.js';
 
-import {dragControls, draggableObjects} from "./controls"
 import { enableDragControls, enableMapControls, enableOrbitControls} from "./controls"
 import {addLights} from "./lights";
-import {
-    addObject,
-    initObjects,
-    selectDraggableObject,
-    selectedObject,
-    selectObject
-} from "./objects";
+import {addObject, initObjects, selectDraggableObject, selectedObject, selectObject} from "./objects";
 import {createModel} from "./walls";
 import {hideCloseWalls, showRoomCenters, tweenCamera} from "./view";
 import {createButtons, downloadButton, showButton, viewButton} from "./buttons";
@@ -70,7 +63,7 @@ function loadingAnimation(){
         let loadingScreen = document.getElementById('loading-screen');
         loadingScreen.style.opacity = '0';
 
-        tweenCamera(new THREE.Vector3(-7, 9, -16), 3000);
+        tweenCamera({x: -7, y: 9, z: -16}, 3000);
 
         setTimeout( () => {
 

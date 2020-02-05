@@ -1,3 +1,5 @@
+import {camera, canvas} from "./app";
+
 export var utils={
 
 //**** MODEL UTILS
@@ -452,7 +454,26 @@ export var utils={
 		let length = Math.sqrt(Math.pow(vector.x, 2) + Math.pow(vector.y,2 ) + Math.pow(vector.z,2));
 
 		return { x: vector.x/length, y: vector.y/length, z: vector.z/length };
-	}
+	},
 
+	getWorldPosition: function(event){
 
+		let vector = {
+			x: (event.clientX / canvas.clientWidth) * 2 - 1,
+			y: -(event.clientY / canvas.clientHeight) * 2 + 1,
+			z: -1
+		};
+
+		vector = utils.unProject( vector, camera );
+		vector = utils.subtract( vector, camera.position);
+		vector = utils.normalize(vector);
+
+		let distance = - camera.position.y / vector.y;
+
+		return {
+			x: camera.position.x + distance * vector.x,
+			y: camera.position.y + distance * vector.y,
+			z: camera.position.z + distance * vector.z
+		};
+	},
 };
