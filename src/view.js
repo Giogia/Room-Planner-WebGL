@@ -1,7 +1,7 @@
 import * as TWEEN from "tween.js";
 
 import { draggableObjects, enable } from "./controls";
-import {camera, canvas, drawer, list, scene} from "./app";
+import {camera, app, drawer, list, scene} from "./app";
 import {addObject, selectDraggableObject, selectObject} from "./objects";
 import {drawModel, floorModel, roomCenters, skirtingModel, updateModel, wallsModel} from "./walls";
 
@@ -46,9 +46,9 @@ function drawView(){
     }, 500);
 
     list.removeEventListener('click', addObject);
-    canvas.removeEventListener('mousedown', selectDraggableObject);
-    canvas.removeEventListener('mouseup', selectDraggableObject);
-    canvas.removeEventListener('dblclick', selectObject);
+    app.removeEventListener('mousedown', selectDraggableObject);
+    app.removeEventListener('mouseup', selectDraggableObject);
+    app.removeEventListener('dblclick', selectObject);
 
     scene.remove( directional );
 
@@ -83,9 +83,9 @@ function modelView(){
         deactivateDrawButtons();
 
         list.addEventListener('click', addObject);
-        canvas.addEventListener('mousedown', selectDraggableObject);
-        canvas.addEventListener('mouseup', selectDraggableObject);
-        canvas.addEventListener('dblclick', selectObject);
+        app.addEventListener('mousedown', selectDraggableObject);
+        app.addEventListener('mouseup', selectDraggableObject);
+        app.addEventListener('dblclick', selectObject);
 
         scene.add( directional );
 

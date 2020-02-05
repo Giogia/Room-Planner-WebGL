@@ -1,4 +1,4 @@
-import {camera, canvas} from "./app";
+import {camera, app} from "./app";
 
 export var utils={
 
@@ -459,8 +459,8 @@ export var utils={
 	getWorldPosition: function(event){
 
 		let vector = {
-			x: (event.clientX / canvas.clientWidth) * 2 - 1,
-			y: -(event.clientY / canvas.clientHeight) * 2 + 1,
+			x: (event.clientX / app.clientWidth) * 2 - 1,
+			y: -(event.clientY / app.clientHeight) * 2 + 1,
 			z: -1
 		};
 

@@ -11,15 +11,15 @@ import {hideCloseWalls, showRoomCenters, tweenCamera} from "./view";
 import {createButtons, downloadButton, showButton, viewButton} from "./buttons";
 import {MDCDrawer} from "@material/drawer/component";
 
-export let scene, camera, renderer, canvas, raycaster;
+export let scene, camera, renderer, app, raycaster;
 export let ground;
 export let list, drawer;
-
+let canvas, gl;
 
 async function init(){
 
-    canvas = document.getElementById( 'canvas');
-    document.body.appendChild(canvas);
+    app = document.getElementById( 'app');
+    document.body.appendChild(app);
 
     list = document.getElementById('list');
 
@@ -39,9 +39,9 @@ async function init(){
     addGround();
 
     list.addEventListener('click', addObject);
-    canvas.addEventListener('mousedown', selectDraggableObject);
-    canvas.addEventListener('click', selectDraggableObject);
-    canvas.addEventListener('dblclick', selectObject);
+    app.addEventListener('mousedown', selectDraggableObject);
+    app.addEventListener('click', selectDraggableObject);
+    app.addEventListener('dblclick', selectObject);
 
     await createModel();
     await initObjects();
@@ -94,11 +94,13 @@ function createDrawer() {
 
 
 function createRenderer(){
-    renderer = new THREE.WebGLRenderer();
+    canvas = document.createElement('canvas');
+    gl = canvas.getContext( 'webgl2', { alpha: false } );
+    renderer = new THREE.WebGLRenderer( { canvas: canvas, context: gl } );
     renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize( canvas.clientWidth, canvas.clientHeight );
+    renderer.setSize( app.clientWidth, app.clientHeight );
     renderer.gammaOutput = true;
-    canvas.appendChild(renderer.domElement);
+    app.appendChild(renderer.domElement);
 
 }
 
@@ -112,13 +114,12 @@ function createScene(){
 
 function createCamera(){
     const fov = 25;
-    const aspect = canvas.clientWidth / canvas.clientHeight;
+    const aspect = app.clientWidth / app.clientHeight;
     const near = 0.1;
     const far = 100;
     camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
     camera.position.set(-4, 100, 12);
-    camera.lookAt(new THREE.Vector3(0,0,0));
-    //camera.position.set(-7, 9, -16);
+    camera.lookAt(0,0,0);
 }
 
 
@@ -147,20 +148,29 @@ function addGround() {
 
 function autoResize(){
     window.onresize = () => {
-        camera.aspect = canvas.clientWidth / canvas.clientHeight;
+
+        camera.aspect = app.clientWidth / app.clientHeight;
         camera.updateProjectionMatrix();
-        renderer.setSize( canvas.clientWidth, canvas.clientHeight );
-        animate();
+
+        canvas.width = app.clientWidth;
+        canvas.height = app.clientHeight;
+
+        canvas.style.width = app.clientWidth + 'px';
+        canvas.style.height = app.clientHeight + 'px';
+
+        gl.clearColor(0.0, 0.0, 0.0, 1.0);
+		gl.viewport(0.0, 0.0, app.clientWidth, app.clientHeight);
+
+		animate();
     };
 }
 
 
 export function animate() {
 
-    requestAnimationFrame( animate );
+    window.requestAnimationFrame( animate );
 
     TWEEN.update();
-    //dragControls.update(draggableObjects);
 
     hideCloseWalls();
     showRoomCenters();

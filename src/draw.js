@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import _ from 'lodash';
 
-import {camera, canvas, scene} from "./app";
+import {camera, app, scene} from "./app";
 import {
     createFloorModel,
     createWallsModel,
@@ -49,14 +49,14 @@ function selectPoint(point){
 
     if(selected === undefined){
 
-        canvas.addEventListener('mousemove', showLine, false);
-        canvas.addEventListener('click', drawLine, false);
+        app.addEventListener('mousemove', showLine, false);
+        app.addEventListener('click', drawLine, false);
     }
 
     if(selected === point){
 
-        canvas.removeEventListener( 'mousemove', showLine, false);
-        canvas.removeEventListener('click', drawLine, false);
+        app.removeEventListener( 'mousemove', showLine, false);
+        app.removeEventListener('click', drawLine, false);
     }
 }
 
@@ -153,8 +153,8 @@ function drawLine(event){
     updateScene();
     updateModel();
 
-    canvas.removeEventListener( 'mousemove', showLine, false);
-    canvas.removeEventListener('click', drawLine, false);
+    app.removeEventListener( 'mousemove', showLine, false);
+    app.removeEventListener('click', drawLine, false);
 }
 
 
@@ -206,7 +206,10 @@ export function pointWorldPosition(event){
 
 export function addText(message, x, y, z){
 
-    let geometry = new THREE.ShapeBufferGeometry(font.generateShapes(message, 0.1, 100));
+    let writing = font.generateShapes(message, 0.1, 100);
+
+    let geometry = new THREE.ShapeGeometry(writing);
+
     let mesh = new THREE.Mesh(geometry, textMaterial);
 
     mesh.position.set(x, y, z);

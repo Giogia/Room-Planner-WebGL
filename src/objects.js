@@ -1,7 +1,7 @@
 import {importModel, loadJson, saveJson} from "./loader";
 import * as THREE from "three";
-import {camera, canvas, raycaster, scene} from "./app";
-import {draggableObjects, transformControls} from "./controls";
+import {camera, app, raycaster, scene} from "./app";
+import {draggableObjects} from "./controls";
 import {hideButton, removeButton, showButton} from "./buttons";
 import {selectedMaterial, setTexture} from "./materials";
 import {floorPlan} from "./walls";
@@ -67,8 +67,8 @@ export function intersect(event, objects){
 
     let mouse = new THREE.Vector2();
 
-    mouse.x = ( event.clientX / canvas.clientWidth ) * 2 - 1;
-    mouse.y = - ( event.clientY / canvas.clientHeight ) * 2 + 1;
+    mouse.x = ( event.clientX / app.clientWidth ) * 2 - 1;
+    mouse.y = - ( event.clientY / app.clientHeight ) * 2 + 1;
     mouse.z = 0.5;
 
     raycaster.setFromCamera( mouse, camera );

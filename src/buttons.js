@@ -2,7 +2,7 @@ import {MDCRipple} from "@material/ripple/component";
 
 import {toggleView} from "./view";
 import {deleteDrawing, editDrawing} from "./draw";
-import {canvas} from "./app";
+import {app} from "./app";
 import {exportScene} from "./loader";
 import {removeDraggableObject} from "./objects";
 
@@ -114,24 +114,24 @@ export function deactivateModelButtons(){
 
 
 export function viewMode(){
-    canvas.removeEventListener('click', removeDraggableObject);
-    canvas.removeEventListener( 'click', editDrawing);
-    canvas.removeEventListener( 'click', deleteDrawing);
+    app.removeEventListener('click', removeDraggableObject);
+    app.removeEventListener( 'click', editDrawing);
+    app.removeEventListener( 'click', deleteDrawing);
 }
 
 export function editMode(){
     currentMode = "edit";
-    canvas.addEventListener( 'click', editDrawing);
-    canvas.removeEventListener( 'click', deleteDrawing);
-    canvas.removeEventListener('click', removeDraggableObject);
+    app.addEventListener( 'click', editDrawing);
+    app.removeEventListener( 'click', deleteDrawing);
+    app.removeEventListener('click', removeDraggableObject);
 }
 
 
 export function deleteMode(){
     currentMode = "delete";
-    canvas.addEventListener( 'click', deleteDrawing);
-    canvas.removeEventListener( 'click', editDrawing);
-    canvas.removeEventListener('click', removeDraggableObject);
+    app.addEventListener( 'click', deleteDrawing);
+    app.removeEventListener( 'click', editDrawing);
+    app.removeEventListener('click', removeDraggableObject);
 }
 
 

@@ -1,6 +1,6 @@
 'use strict';
 
-import {camera, canvas} from "./app";
+import {camera, app} from "./app";
 import {currentMode, deleteMode, editMode, viewMode} from "./buttons";
 import {currentObjects, selectDraggableObject, selectObject} from "./objects";
 import {saveJson} from "./loader";
@@ -50,8 +50,8 @@ function doMouseDown(event) {
             z: position.z - object.position.z
         };
 
-        canvas.removeEventListener('dblclick', selectObject);
-        canvas.removeEventListener('click', selectDraggableObject);
+        app.removeEventListener('dblclick', selectObject);
+        app.removeEventListener('click', selectDraggableObject);
 
         enable.drag = true;
     }
@@ -87,8 +87,8 @@ async function doMouseUp(event) {
 	    enable.drag = false;
 
 	    setTimeout(() => {
-            canvas.addEventListener('dblclick', selectObject);
-            canvas.addEventListener('click', selectDraggableObject);
+            app.addEventListener('dblclick', selectObject);
+            app.addEventListener('click', selectDraggableObject);
         }, 10);
 
         let dragged = _.find(currentObjects.objects, {mesh: object.uuid});
