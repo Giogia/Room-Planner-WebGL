@@ -414,5 +414,45 @@ export var utils={
 		parallel[11] = (n + f) / (n - f);
 
 		return parallel;
+	},
+
+//***Custom functions
+
+	unProject: function(vector, camera){
+
+		let projectionMatrixInverse = camera.projectionMatrixInverse.elements;
+		let MatrixWorld = camera.matrixWorld.elements;
+
+		vector = utils.applyMatrix4(vector, projectionMatrixInverse);
+		vector = utils.applyMatrix4(vector, MatrixWorld);
+
+		return vector;
+	},
+
+	applyMatrix4: function(vector, matrix){
+
+		let x = vector.x, y = vector.y, z = vector.z;
+
+		let w = 1 / ( matrix[ 3 ] * x + matrix[ 7 ] * y + matrix[ 11 ] * z + matrix[ 15 ] );
+
+		vector.x = ( matrix[ 0 ] * x + matrix[ 4 ] * y + matrix[ 8 ] * z + matrix[ 12 ] ) * w;
+		vector.y = ( matrix[ 1 ] * x + matrix[ 5 ] * y + matrix[ 9 ] * z + matrix[ 13 ] ) * w;
+		vector.z = ( matrix[ 2 ] * x + matrix[ 6 ] * y + matrix[ 10 ] * z + matrix[ 14 ] ) * w;
+
+		return vector;
+	},
+
+	subtract: function(vector1, vector2){
+
+		return { x: vector1.x - vector2.x, y: vector1.y - vector2.y, z: vector1.z - vector2.z };
+	},
+
+	normalize: function(vector){
+
+		let length = Math.sqrt(Math.pow(vector.x, 2) + Math.pow(vector.y,2 ) + Math.pow(vector.z,2));
+
+		return { x: vector.x/length, y: vector.y/length, z: vector.z/length };
 	}
-}
+
+
+};

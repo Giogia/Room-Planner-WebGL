@@ -1,6 +1,5 @@
 'use strict';
 
-import * as THREE from 'three';
 import {camera, canvas} from "./app";
 import {currentMode, deleteMode, editMode, viewMode} from "./buttons";
 import {currentObjects, selectDraggableObject, selectObject} from "./objects";
@@ -96,7 +95,7 @@ async function doMouseUp(event) {
 
         dragged.x = object.position.x;
         dragged.z = object.position.z;
-        
+
         object = null;
 
         await saveJson('currentObjects', currentObjects);
@@ -238,22 +237,21 @@ export function enableDragControls(){
 
 function getDraggablePosition(event){
 
-    let vector = new THREE.Vector3();
-    let position = new THREE.Vector3();
+    let vector = {
+        x: (event.clientX / canvas.clientWidth) * 2 - 1,
+        y: -(event.clientY / canvas.clientHeight) * 2 + 1,
+        z: -1
+    };
 
-    vector.set(
-            ( event.clientX / canvas.clientWidth ) * 2 - 1,
-            - ( event.clientY / canvas.clientHeight ) * 2 + 1,
-            -1,
-    );
-
-    vector.unproject( camera );
-    vector.sub( camera.position ).normalize();
+    vector = utils.unProject( vector, camera );
+    vector = utils.subtract( vector, camera.position);
+    vector = utils.normalize(vector);
 
     let distance = - camera.position.y / vector.y;
 
-    position.copy( camera.position ).add( vector.multiplyScalar( distance ) );
-
-    return position;
+    return {
+        x: camera.position.x + distance * vector.x,
+        y: camera.position.y + distance * vector.y,
+        z: camera.position.z + distance * vector.z
+    };
 }
-
