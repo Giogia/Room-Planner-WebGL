@@ -1,22 +1,21 @@
 'use strict';
 
-import {camera, app} from "./app";
+import {app, camera} from "./app";
 import {currentMode, deleteMode, editMode, viewMode} from "./buttons";
 import {currentObjects, selectDraggableObject, selectObject} from "./objects";
 import {saveJson} from "./loader";
-import {utils} from "./utils";
-import {intersect} from "./objects";
-
-export var dragControls;
-export var draggableObjects = [];
+import {matrix} from "./maths/Matrix";
+import {utils} from "./maths/Utils";
 
 let controlZone = document.getElementById( 'controls');
 
-let moveControls = false;
-let lastMouseX = -100, lastMouseY = -100;
+export var draggableObjects = [];
 
 let delta;
 let object = null;
+
+let moveControls = false;
+let lastMouseX = -100, lastMouseY = -100;
 
 let enable = {
     orbit: true,
@@ -32,7 +31,7 @@ function doMouseDown(event) {
 	lastMouseX = event.pageX;
 	lastMouseY = event.pageY;
 
-	let intersects = intersect(event, draggableObjects);
+	let intersects = utils.intersect(event, draggableObjects);
 
     if(intersects.length > 0) {
 
@@ -166,10 +165,10 @@ export function enableOrbitControls(){
 //TODO use this for gl renderer
 export function updateOrbitControls(){
 
-    let viewMatrix = utils.MakeView(cx, cy, cz, -elevation, angle);
-    let perspProjectionMatrix = utils.MakePerspective(camera.fov, camera.aspect, camera.near, camera.far);
+    let viewMatrix = matrix.MakeView(cx, cy, cz, -elevation, angle);
+    let perspProjectionMatrix = matrix.MakePerspective(camera.fov, camera.aspect, camera.near, camera.far);
 
-    let worldViewPerspMatrix = utils.transposeMatrix(utils.multiplyMatrices(perspProjectionMatrix, viewMatrix));
+    let worldViewPerspMatrix = matrix.transpose(matrix.multiply(perspProjectionMatrix, viewMatrix));
     camera.position.set(cx, cy, cz);
     camera.updateProjectionMatrix();
 

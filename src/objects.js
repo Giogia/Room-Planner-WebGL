@@ -1,11 +1,11 @@
 import {importModel, loadJson, saveJson} from "./loader";
-import * as THREE from "three";
-import {camera, app, raycaster, scene} from "./app";
+import {scene} from "./app";
 import {draggableObjects} from "./controls";
 import {hideButton, removeButton, showButton} from "./buttons";
 import {selectedMaterial, setTexture} from "./materials";
 import {floorPlan} from "./walls";
 import {floorMaterials, wallMaterials} from "./materialsList";
+import {utils} from "./maths/Utils";
 
 export let currentObjects;
 export let selectedObject = null;
@@ -45,7 +45,7 @@ export async function addObject(event){
 
 export async function selectObject(event){
 
-    let intersects = intersect(event, scene.children);
+    let intersects = utils.intersect(event, scene.children);
 
     let i = 0;
     while (intersects[i].object.name === "" || (intersects[i].object.name === "wall" && intersects[i].distance < 10)) {
@@ -61,21 +61,6 @@ export async function selectObject(event){
         lastWallTexture = await updateTexture(intersects[i].object, floorPlan.walls, wallMaterials, lastWallTexture);
     }
 }
-
-
-export function intersect(event, objects){
-
-    let mouse = new THREE.Vector2();
-
-    mouse.x = ( event.clientX / app.clientWidth ) * 2 - 1;
-    mouse.y = - ( event.clientY / app.clientHeight ) * 2 + 1;
-    mouse.z = 0.5;
-
-    raycaster.setFromCamera( mouse, camera );
-
-    return raycaster.intersectObjects( objects, true);
-}
-
 
 async function updateTexture(object, objects, materials, lastTexture){
 
@@ -103,7 +88,7 @@ async function updateTexture(object, objects, materials, lastTexture){
 
 export function selectDraggableObject(event){
 
-    let intersects = intersect(event, draggableObjects);
+    let intersects = utils.intersect(event, draggableObjects);
 
     let object = null;
 
@@ -186,13 +171,13 @@ export async function transformDraggableObject(event){
     if(event.key === 'ArrowLeft'){
         event.preventDefault();
         selectedObject.rotation.y += Math.PI/8 ;
-        moved.angle = THREE.Math.radToDeg(selectedObject.rotation.y);
+        moved.angle = utils.radToDeg(selectedObject.rotation.y);
     }
 
     if(event.key === 'ArrowRight'){
         event.preventDefault();
         selectedObject.rotation.y -= Math.PI/8 ;
-        moved.angle = THREE.Math.radToDeg(selectedObject.rotation.y);
+        moved.angle = utils.radToDeg(selectedObject.rotation.y);
     }
 
     await saveJson('currentObjects', currentObjects);

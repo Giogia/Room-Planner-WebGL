@@ -1,9 +1,9 @@
 import * as TWEEN from "tween.js";
 
-import { draggableObjects, enable } from "./controls";
-import {camera, app, drawer, list, scene} from "./app";
+import {draggableObjects, enable} from "./controls";
+import {app, camera, drawer, list, scene} from "./app";
 import {addObject, selectDraggableObject, selectObject} from "./objects";
-import {drawModel, floorModel, roomCenters, skirtingModel, updateModel, wallsModel} from "./walls";
+import {drawModel, floorModel, roomCenters, skirtingModel, wallsModel} from "./walls";
 
 import {
     activateButtons,
@@ -21,6 +21,8 @@ import {
 } from "./buttons";
 
 import {directional} from "./lights";
+import Vector from "./maths/Vector";
+import {utils} from "./maths/Utils";
 
 let floorPlanView = false;
 
@@ -59,13 +61,13 @@ function drawView(){
     hide(skirtingModel.children);
     show(drawModel.children);
 
-    tweenCamera({x: -0.01, y: 30, z: 0});
+    tweenCamera(new Vector(-0.01, 30, 0));
 }
 
 
 function modelView(){
 
-    tweenCamera({x: -0.01, y: 30, z: 0}, 250, true);
+    tweenCamera(new Vector(-0.01, 30, 0), 250, true);
 
     setTimeout( ()=>{
 
@@ -97,7 +99,7 @@ function modelView(){
         show(roomCenters.children);
 
         setTimeout( () => {
-            tweenCamera({x: -7, y: 9, z: -16});
+            tweenCamera(new Vector(-7, 9, -16));
         }, 100);
 
     }, 250);
@@ -153,7 +155,7 @@ export function tweenCamera(targetPosition, duration=2500, resetMap=false){
 export function hideCloseWalls(){
     if(!floorPlanView){
         for( let mesh of wallsModel.children){
-            let distance = camera.position.distanceTo(mesh.position);
+            let distance = utils.distance(camera.position, mesh.position);
             mesh.visible = distance >= 5;
             mesh.material.opacity = 5 * Math.log(distance - 10) - 5;
         }
@@ -163,7 +165,7 @@ export function hideCloseWalls(){
 export function showRoomCenters(){
     if(!floorPlanView){
         for( let mesh of roomCenters.children){
-            let distance = camera.position.distanceTo(mesh.position);
+            let distance = utils.distance(camera.position, mesh.position);
             mesh.visible = distance <= 10;
         }
     }

@@ -3,18 +3,20 @@
 import * as THREE from 'three';
 import * as TWEEN from 'tween.js';
 
-import { enableDragControls, enableMapControls, enableOrbitControls} from "./controls"
+import {enableDragControls, enableMapControls, enableOrbitControls} from "./controls"
 import {addLights} from "./lights";
 import {addObject, initObjects, selectDraggableObject, selectedObject, selectObject} from "./objects";
 import {createModel} from "./walls";
 import {hideCloseWalls, showRoomCenters, tweenCamera} from "./view";
 import {createButtons, downloadButton, showButton, viewButton} from "./buttons";
 import {MDCDrawer} from "@material/drawer/component";
+import {importGlb} from "./loader";
+import Vector from "./maths/Vector";
 
 export let scene, camera, renderer, app, raycaster;
 export let ground;
 export let list, drawer;
-let canvas, gl;
+export let canvas, gl;
 
 async function init(){
 
@@ -50,6 +52,8 @@ async function init(){
     animate();
 
     loadingAnimation();
+
+    importGlb('books');
 }
 
 
@@ -63,7 +67,7 @@ function loadingAnimation(){
         let loadingScreen = document.getElementById('loading-screen');
         loadingScreen.style.opacity = '0';
 
-        tweenCamera({x: -7, y: 9, z: -16}, 3000);
+        tweenCamera(new Vector(-7, 9, -16), 3000);
 
         setTimeout( () => {
 
@@ -94,8 +98,10 @@ function createDrawer() {
 
 
 function createRenderer(){
+
     canvas = document.createElement('canvas');
     gl = canvas.getContext( 'webgl2', { alpha: false } );
+
     renderer = new THREE.WebGLRenderer( { canvas: canvas, context: gl } );
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize( app.clientWidth, app.clientHeight );
@@ -118,8 +124,12 @@ function createCamera(){
     const near = 0.1;
     const far = 100;
     camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+    /*console.log(camera);
+    camera = new Camera(fov, aspect, near, far, camera2);
     camera.position.set(-4, 100, 12);
     camera.lookAt(0,0,0);
+
+     */
 }
 
 
@@ -147,6 +157,7 @@ function addGround() {
 
 
 function autoResize(){
+
     window.onresize = () => {
 
         camera.aspect = app.clientWidth / app.clientHeight;

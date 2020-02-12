@@ -7,6 +7,8 @@ import {camera, scene} from './app';
 
 import * as THREE from 'three';
 import {draggableObjects} from "./controls";
+import {GlbParser} from "./glb/glbParser"
+
 
 let jsonUrl = 'http://localhost:3000/';
 
@@ -26,6 +28,22 @@ export async function saveJson(name, data){
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
     })
+}
+
+
+export async function importGlb(name){
+
+    let path  = './models/furniture/' + name + '.glb';
+
+    fetch(path)
+        .then( response => response.arrayBuffer())
+        .then( data => {
+
+            let glbParser = new GlbParser(data);
+            let glb = glbParser.extractGlbData();
+
+            console.log(glb);
+        });
 }
 
 

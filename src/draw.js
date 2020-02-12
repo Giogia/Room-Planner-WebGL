@@ -1,24 +1,14 @@
 import * as THREE from 'three';
 import _ from 'lodash';
 
-import {camera, app, scene} from "./app";
-import {
-    createFloorModel,
-    createWallsModel,
-    floorModel,
-    floorPlan,
-    roomCenters,
-    skirtingModel, updateModel,
-    updateScene,
-    wallsModel
-} from "./walls";
+import {app, scene} from "./app";
+import {floorPlan, updateModel, updateScene} from "./walls";
 import {LineMaterial} from "three/examples/jsm/lines/LineMaterial";
 import {LineGeometry} from "three/examples/jsm/lines/LineGeometry";
 import {Line2} from "three/examples/jsm/lines/Line2";
 
 import {checkIntersection, colinearPointWithinSegment} from "line-intersect";
 import {font, textMaterial} from "./materials";
-import {utils} from "./utils";
 
 let currentLine;
 

@@ -22,9 +22,12 @@
   },
   "dependencies": {
     "@google/model-viewer": "^0.7.2",
+    "@loaders.gl/core": "^2.0.3",
+    "@loaders.gl/gltf": "^2.0.3",
     "@material/drawer": "^4.0.0",
     "@material/ripple": "^4.0.0",
     "@windfish-studio/three-map-controls": "^1.1.6",
+    "gl-matrix": "^3.1.0",
     "graph.js": "^1.21.1",
     "handlebars": "^4.5.3",
     "http-server": "^0.11.1",

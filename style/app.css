@@ -100,7 +100,7 @@ canvas{
     width: 100%;
     text-align: center;
     display: block;
-    z-index: 100;
+    z-index: 90;
     font-family: Arial, serif;
     font-weight: bold;
     color: #ffffff;
@@ -233,7 +233,7 @@ model-viewer{
     min-height: 100%;
     margin: 0;
     padding: 0;
-    z-index: 90;
+    z-index: 95;
 }
 
 ::-webkit-scrollbar {
