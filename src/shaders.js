@@ -4,21 +4,25 @@ let vertexShaderSource = `#version 300 es
 in vec3 a_position;
 
 uniform float uPointSize;
+uniform float uAngle;
 
 void main() {
 	
 	gl_PointSize = uPointSize;
-	gl_Position = vec4(a_position, 1.0);
+	gl_Position = vec4(
+        cos(uAngle) * 0.8 + a_position.x,
+        sin(uAngle) * 0.8 + a_position.y,
+        a_position.z, 1.0 );
 }`;
 
 // Fragment shader
 let fragmentShaderSource = `#version 300 es
 precision mediump float;
 
-out vec4 finalColor;
+out vec4 color;
 
 void main() {
-	finalColor = vec4(0.0, 0.0, 0.0, 1.0);
+	color = vec4(0.0, 0.0, 0.0, 1.0);
 }`;
 
 let vertexShaderSource2 = `#version 300 es

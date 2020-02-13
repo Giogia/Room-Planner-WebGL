@@ -1,6 +1,7 @@
 import * as webGL from "./webGL.js"
 import { gl } from "./webGL.js"
 import { vertexShaderSource, fragmentShaderSource } from "./shaders.js";
+import RenderLoop from "./RenderLoop.js";
 
 
 let aPositionLoc,
@@ -25,7 +26,7 @@ function run(){
 
     gl.useProgram(null);
 
-    let vertices = new Float32Array([0,0,0, 0.5,0.5,0]);
+    let vertices = new Float32Array([0,0,0]);
     let verticesBuffer = webGL.createArrayBuffer(vertices);
 
     verticesCount = vertices.length / 3;
@@ -39,7 +40,7 @@ function run(){
     gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
     //gl.drawArrays(gl.POINTS, 0, 2);
-    renderLoop = new RenderLoop(onRender).start();
+    renderLoop = new RenderLoop(onRender, 30).start();
 }
 
 let gPointSize	= 0,

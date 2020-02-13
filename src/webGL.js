@@ -1,5 +1,3 @@
-import {fragmentShaderSource, vertexShaderSource} from "./shaders";
-
 let gl;
 let canvas;
 let app = document.getElementById( 'app');
@@ -11,15 +9,12 @@ function init(){
 
     gl = canvas.getContext( 'webgl2', { alpha: false } );
 
-     /*
     gl.cullFace(gl.BACK);								//Back is also default
     gl.frontFace(gl.CCW);								//Dont really need to set it, its ccw by default.
     gl.enable(gl.DEPTH_TEST);							//Shouldn't use this, use something else to add depth detection
     gl.enable(gl.CULL_FACE);							//Cull back face, so only show triangles that are created clockwise
     gl.depthFunc(gl.LEQUAL);							//Near things obscure far things
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);	//Setup default alpha blending
-
-    */
 
     //setClearColor("#ffffff");				//Set clear color
 }
