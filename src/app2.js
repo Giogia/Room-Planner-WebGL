@@ -1,46 +1,52 @@
 import * as webGL from "./webGL.js"
-import { gl } from "./webGL.js"
-import { vertexShaderSource, fragmentShaderSource } from "./shaders.js";
+import gl from "./webGL.js"
 import RenderLoop from "./RenderLoop.js";
-
+import Camera from "./entities/Camera.js";
+import {enableOrbitControls} from "./controls2.js";
+import createShader from "./Shader.js";
+import buildUBO from "./entities/UniformBuffer.js"
+import test from "./shaders/test.js"
+import GridFloor from "./primitives/GridFloor.js";
 
 let aPositionLoc,
     uAngle,
     uPointSizeLoc,
     verticesCount,
+    camera,
+    app,
+    gridFloor,
+    scene = [],
     renderLoop;
 
 function run(){
 
     webGL.init();
     webGL.setSize();
+    webGL.setColor("#ffffff");				//Set clear color
     webGL.clearFrame();
 
-    let program = webGL.shaderProgram(vertexShaderSource, fragmentShaderSource);
+    let uboGlobal = buildUBO( "UBOGlobal", 0, [
+        {name:"matProjection",type:"mat4"},
+        {name:"matCameraView",type:"mat4"},
+        {name:"posCamera",type:"vec3"}
+        ]);
 
-    gl.useProgram(program);
+    let shader = createShader(test);
+    shader.bind();
 
-    aPositionLoc = gl.getAttribLocation(program, "a_position");
-    uAngle = gl.getUniformLocation(program,"uAngle");
-    uPointSizeLoc = gl.getUniformLocation(program, "uPointSize");
+    app = document.getElementById( 'app');
+    document.body.appendChild(app);
 
-    gl.useProgram(null);
+    createCamera();
+    camera.position.set(0,1,3);
 
-    let vertices = new Float32Array([0,0,0]);
-    let verticesBuffer = webGL.createArrayBuffer(vertices);
+    enableOrbitControls();
 
-    verticesCount = vertices.length / 3;
+    renderLoop = new RenderLoop(onRender, 60).start();
 
-    gl.useProgram(program);
-    gl.uniform1f(uPointSizeLoc, 50.0);
+    let gridFloor = new GridFloor().model;
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, verticesBuffer);
-    gl.enableVertexAttribArray(aPositionLoc);
-    gl.vertexAttribPointer(aPositionLoc, 3, gl.FLOAT, false, 0,0);
-    gl.bindBuffer(gl.ARRAY_BUFFER, null);
-
-    //gl.drawArrays(gl.POINTS, 0, 2);
-    renderLoop = new RenderLoop(onRender, 30).start();
+    autoResize();
 }
 
 let gPointSize	= 0,
@@ -61,4 +67,30 @@ function onRender(dt){
     gl.drawArrays(gl.POINTS, 0, verticesCount);					//Draw the points
 }
 
+function createCamera(){
+
+    const fov = 25;
+    const aspect = app.clientWidth / app.clientHeight;
+    const near = 0.1;
+    const far = 100;
+    camera = new Camera(fov, aspect, near, far);
+
+    camera.position.set(-4, 100, 12);
+    camera.lookAt(0,0,0);
+}
+
+
+function autoResize(){
+
+    window.onresize = () => {
+
+        camera.aspect = app.clientWidth / app.clientHeight;
+        camera.updateProjectionMatrix();
+
+        webGL.setSize();
+    };
+}
+
 run();
+
+export { app, camera };

@@ -1,6 +1,6 @@
-import Vector from "../maths/Vector";
-import Quaternion from "../maths/Quaternion";
-import {matrix} from "../maths/Matrix";
+import Vector from "../maths/Vector.js";
+import Quaternion from "../maths/Quaternion.js";
+import {matrix} from "../maths/Matrix.js";
 
 class Transform{
 

@@ -12,6 +12,7 @@ import {createButtons, downloadButton, showButton, viewButton} from "./buttons";
 import {MDCDrawer} from "@material/drawer/component";
 import {importGlb} from "./loader";
 import Vector from "./maths/Vector";
+import Camera from "./entities/Camera";
 
 export let scene, camera, renderer, app, raycaster;
 export let ground;
@@ -52,8 +53,6 @@ async function init(){
     animate();
 
     loadingAnimation();
-
-    importGlb('books');
 }
 
 
@@ -124,12 +123,9 @@ function createCamera(){
     const near = 0.1;
     const far = 100;
     camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-    /*console.log(camera);
-    camera = new Camera(fov, aspect, near, far, camera2);
+
     camera.position.set(-4, 100, 12);
     camera.lookAt(0,0,0);
-
-     */
 }
 
 

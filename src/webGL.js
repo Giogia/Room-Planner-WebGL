@@ -1,6 +1,15 @@
-let gl;
-let canvas;
+import {utils} from "./maths/Utils.js";
+
+let gl, canvas;
+
 let app = document.getElementById( 'app');
+
+let env = { shaders    : new Map(),
+            materials  : new Map(),
+            vaos       : new Map(),
+            ubos       : new Map(),
+            textures   : new Map(),
+};
 
 function init(){
 
@@ -16,10 +25,46 @@ function init(){
     gl.depthFunc(gl.LEQUAL);							//Near things obscure far things
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);	//Setup default alpha blending
 
-    //setClearColor("#ffffff");				//Set clear color
 }
 
-function clearFrame(){ gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT); return this; };
+
+function clearFrame(){
+
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    return this;
+}
+
+
+function setColor(hex){
+
+	let rgb = utils.hexToRgbArray(hex);
+	gl.clearColor(rgb[0],rgb[1],rgb[2],1.0);
+	return this;
+}
+
+
+function setSize(){
+    canvas.width = app.clientWidth;
+    canvas.height = app.clientHeight;
+
+    canvas.style.width = app.clientWidth + 'px';
+    canvas.style.height = app.clientHeight + 'px';
+
+    gl.viewport(0.0, 0.0, app.clientWidth, app.clientHeight);
+}
+
+
+function createArrayBuffer (array, staticDraw = true){
+
+    let buffer = gl.createBuffer();
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+    gl.bufferData(gl.ARRAY_BUFFER, array, (staticDraw)? gl.STATIC_DRAW : gl.DYNAMIC_DRAW );
+    gl.bindBuffer(gl.ARRAY_BUFFER,null);
+
+    return buffer;
+}
+
 
 function createShader(type, source) {
 
@@ -45,6 +90,7 @@ function createProgram(vertexShader, fragmentShader) {
 
     gl.attachShader(program, vertexShader);
     gl.attachShader(program, fragmentShader);
+
     gl.linkProgram(program);
 
     // if successfully compiled
@@ -63,57 +109,17 @@ function createProgram(vertexShader, fragmentShader) {
     gl.deleteProgram(program);
 }
 
+
 function shaderProgram(vertexShaderSource, fragmentShaderSource){
 
     let vertexShader = createShader(gl.VERTEX_SHADER, vertexShaderSource);
     let fragmentShader = createShader(gl.FRAGMENT_SHADER, fragmentShaderSource);
 
     return createProgram(vertexShader, fragmentShader);
-	}
-
-function createArrayBuffer (array, staticDraw = true){
-
-		let buffer = gl.createBuffer();
-		gl.bindBuffer(gl.ARRAY_BUFFER,buffer);
-		gl.bufferData(gl.ARRAY_BUFFER, array, (staticDraw)? gl.STATIC_DRAW : gl.DYNAMIC_DRAW );
-		gl.bindBuffer(gl.ARRAY_BUFFER,null);
-		return buffer;
-	}
-
-function setClearColor(hex){
-
-	let rgb = hexToRgbArray(hex);
-	gl.clearColor(rgb[0],rgb[1],rgb[2],1.0);
-	return this;
 }
 
-function setSize(){
-    canvas.width = app.clientWidth;
-    canvas.height = app.clientHeight;
 
-    canvas.style.width = app.clientWidth + 'px';
-    canvas.style.height = app.clientHeight + 'px';
-
-    setClearColor("#ffffff");
-    gl.viewport(0.0, 0.0, app.clientWidth, app.clientHeight);
-}
-
-function hexToRgbArray(hex){
-
-    let rgb = [];
-
-    let position = (hex[0] === "#")?1:0;	//Determine starting position in char array to start pulling from
-
-    rgb.push(
-        parseInt(hex[position+0] + hex[position+1],16)	/ 255.0,
-        parseInt(hex[position+2] + hex[position+3],16)	/ 255.0,
-        parseInt(hex[position+4] + hex[position+5],16)	/ 255.0
-    );
-
-    return rgb;
-}
-
-export { gl, canvas, init, clearFrame, setClearColor, setSize, shaderProgram, createArrayBuffer };
+export { gl as default, canvas, env, init, clearFrame, setColor, setSize, createArrayBuffer, shaderProgram };
 
 
 

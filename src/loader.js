@@ -41,8 +41,7 @@ export async function importGlb(name){
 
             let glbParser = new GlbParser(data);
             let glb = glbParser.extractGlbData();
-
-            console.log(glb);
+            //console.log(glb);
         });
 }
 

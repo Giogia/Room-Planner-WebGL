@@ -1,26 +1,31 @@
-import Transform from "./transform";
+import Transform from "./Transform.js";
+import gl from "../webGL.js";
+import * as webGL from "../webGL.js";
 
 class Renderable extends Transform{
 
-	constructor(vao,matName){
+	constructor(vao, material){
 		super();
 		this.vao			= vao;
 		this.useCulling		= true;
 		this.useDepthTest	= true;
-		this.drawMode		= gl.ctx.TRIANGLES;
-		this.material		= (matName != null && matName !== undefined)? gl.res.materials[matName] : null;
+		this.drawMode		= gl.TRIANGLES;
+		this.material		= (material !== null && material !== undefined)? webGL.env.materials.get(material) : null;
 	}
 
 	setMaterial(matName){
-		this.material = gl.res.materials[matName];
+		this.material = webGL.env.materials.get(matName);
 	}
 
 	draw(){
-		if(this.vao.count == 0) return;
+		if(this.vao.count === 0) return;
 
-		gl.ctx.bindVertexArray(this.vao.id);
-		if(this.vao.isIndexed)	gl.ctx.drawElements(this.drawMode, this.vao.count, gl.ctx.UNSIGNED_SHORT, 0);
-		else					gl.ctx.drawArrays(this.drawMode, 0, this.vao.count);
+		gl.bindVertexArray(this.vao.id);
+
+		if(this.vao.isIndexed)
+			gl.drawElements(this.drawMode, this.vao.count, gl.UNSIGNED_SHORT, 0);
+		else
+			gl.drawArrays(this.drawMode, 0, this.vao.count);
 	}
 }
 
