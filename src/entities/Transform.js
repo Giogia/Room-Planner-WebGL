@@ -72,9 +72,15 @@ class Transform{
         if(this._parent != null){
             this.worldMatrix = matrix.multiply(this._parent.worldMatrix, this.localMatrix);
         }
-        else this.worldMatrix.copy(this.localMatrix); //if not parent, localMatrix is worldMatrix
+        else this.worldMatrix = this.copyMatrix(this.worldMatrix, this.localMatrix); //if not parent, localMatrix is worldMatrix
 
         return true;
+    }
+
+    copyMatrix(matrix1, matrix2){
+        for(let i=0; i < 16; i++)
+            matrix1[i] = matrix[i];
+            return matrix1;
     }
 }
 

@@ -2,7 +2,7 @@ import gl from "../webGL.js";
 import Renderable from "../entities/Renderable.js";
 import createVAO from "../entities/VertexArray.js"
 
-class GridFloor {
+class GridFloor{
 
 	constructor(gridSize = 0.2, lines = 70, position = 0) {
 
@@ -31,7 +31,7 @@ function gridVertices(gridSize, lines){
 		}
 		vertices.push(-size,0,0,1, size,0,0,1, 0,0,size,2, 0,0,-size,2);
 
-		return vertices
+		return vertices;
 	}
 
 export default GridFloor;

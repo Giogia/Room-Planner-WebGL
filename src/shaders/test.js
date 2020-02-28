@@ -7,8 +7,8 @@ let uniforms = [
 ];
 
 let materials = [
-	{ "name":"MatVecWColor", "uniforms":[ "uColorAry", "color", ["ff0000","00ff00","0000ff","555555","999999","dddddd"] ] },
-	{ "name":"MatGridFloor", "uniforms":[ "uColorAry", "color", ["e6e6e6","ff9999","66ff66"] ] }
+	{ "name":"MatVecWColor", "uniforms":[{ "name":"uColor", "type":"hex", "data":["ff0000","00ff00","0000ff","555555","999999","dddddd"]}] },
+	{ "name":"MatGridFloor", "uniforms":[{ "name":"uColor", "type":"hex", "data":["e6e6e6","ff9999","66ff66"]}] }
 ];
 
 

@@ -5,7 +5,7 @@ import {currentMode, deleteMode, editMode, viewMode} from "./buttons";
 import {currentObjects, selectDraggableObject, selectObject} from "./objects";
 import {saveJson} from "./loader";
 import {matrix} from "./maths/Matrix";
-import {utils} from "./maths/Utils";
+import utils from "./maths/Utils";
 
 let controlZone = document.getElementById( 'controls');
 

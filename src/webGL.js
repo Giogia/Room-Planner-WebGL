@@ -1,4 +1,4 @@
-import {utils} from "./maths/Utils.js";
+import utils from "./maths/Utils.js";
 
 let gl, canvas;
 

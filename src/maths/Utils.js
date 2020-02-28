@@ -2,7 +2,7 @@ import Vector from "./Vector.js";
 //import {app, camera, raycaster} from "../app";
 import Quaternion from "./Quaternion.js";
 
-export var utils = {
+let utils = {
 
     //***Custom functions
 
@@ -134,3 +134,5 @@ export var utils = {
 		return vector;
 	}
 };
+
+export default utils

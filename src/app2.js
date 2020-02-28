@@ -7,6 +7,7 @@ import createShader from "./Shader.js";
 import buildUBO from "./entities/UniformBuffer.js"
 import test from "./shaders/test.js"
 import GridFloor from "./primitives/GridFloor.js";
+import render from "./Renderer.js";
 
 let aPositionLoc,
     uAngle,
@@ -46,6 +47,8 @@ function run(){
 
     let gridFloor = new GridFloor().model;
 
+    scene.push(gridFloor);
+
     autoResize();
 }
 
@@ -54,17 +57,10 @@ let gPointSize	= 0,
     gAngle		= 0,
     gAngleStep	= (Math.PI / 180.0) * 90;	//90 degrees in Radians
 
-function onRender(dt){
-
-    gPointSize += gPSizeStep * dt;
-    let size = (Math.sin(gPointSize) * 10.0) + 30.0;
-    gl.uniform1f(uPointSizeLoc,size);						//Store data to the shader's uniform variable uPointSize
-
-    gAngle += gAngleStep * dt;								//Update the angle at the rate of AngleStep Per Second
-    gl.uniform1f(uAngle,gAngle);							//Pass new angle value to the shader.
-
+function onRender(){
+    camera.updateProjectionMatrix();
     webGL.clearFrame();
-    gl.drawArrays(gl.POINTS, 0, verticesCount);					//Draw the points
+    render(scene);
 }
 
 function createCamera(){

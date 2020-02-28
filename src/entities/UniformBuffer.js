@@ -19,7 +19,7 @@ class UBO {
 		let ubo = new UBO(name);
 
 		for( let item of items){
-			ubo.addItem( ubo, item.name, item.type );
+			ubo.addItem( item.name, item.type );
 		}
 
 		// Finish Setting up UBO
@@ -84,9 +84,10 @@ class UBO {
 			offset		= 0,	//Offset in the buffer allocation
 			size,				//Data Size of the current type
 			prevItem	= null,
-			key,item, i;
+			i;
 
-		for( [key,item] of items ){
+		for( let item of items.values() ){
+
 			// When dealing with arrays, Each element takes up 16 bytes regardless of type, but if the type
 			// is a factor of 16, then that values times array length will work, in case of matrices
 			size = this.getSize(item.type);

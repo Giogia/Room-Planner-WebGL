@@ -1,7 +1,7 @@
 'use strict';
 
 import {app, camera} from "./app2.js";
-import {utils} from "./maths/Utils.js";
+import utils from "./maths/Utils.js";
 
 let controlZone = document.getElementById( 'app');
 

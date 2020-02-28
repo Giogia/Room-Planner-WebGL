@@ -31,6 +31,8 @@ class VAO{
 		gl.bindBuffer(gl.ARRAY_BUFFER,null);
 		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,null);
 		webGL.env.vaos.set(name, vao);
+
+		return vao;
 	}
 
 	floatArrayBuffer(name, vertices, attrLoc, size, stride = 0, offset = 0, isStatic, isInstance = false){

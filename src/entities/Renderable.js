@@ -18,6 +18,7 @@ class Renderable extends Transform{
 	}
 
 	draw(){
+
 		if(this.vao.count === 0) return;
 
 		gl.bindVertexArray(this.vao.id);

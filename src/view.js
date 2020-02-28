@@ -22,7 +22,7 @@ import {
 
 import {directional} from "./lights";
 import Vector from "./maths/Vector";
-import {utils} from "./maths/Utils";
+import utils from "./maths/Utils";
 
 let floorPlanView = false;
 

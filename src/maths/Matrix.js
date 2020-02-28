@@ -1,4 +1,4 @@
-import {utils} from "./Utils.js";
+import utils from "./Utils.js";
 
 export var matrix={
 

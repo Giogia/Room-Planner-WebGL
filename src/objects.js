@@ -5,7 +5,7 @@ import {hideButton, removeButton, showButton} from "./buttons";
 import {selectedMaterial, setTexture} from "./materials";
 import {floorPlan} from "./walls";
 import {floorMaterials, wallMaterials} from "./materialsList";
-import {utils} from "./maths/Utils";
+import utils from "./maths/Utils";
 
 export let currentObjects;
 export let selectedObject = null;
