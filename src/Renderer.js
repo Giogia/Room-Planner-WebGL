@@ -58,11 +58,12 @@ function prepareNext(item){
 		material.applyUniforms();
 	}
 
-	//Prepare Buffers and Uniforms.
-	if(material.useModelMatrix) material.shader.setUniforms(UNI_MODEL_MAT_NAME,item.worldMatrix);
+	material.shader.setUniform(['uModelMatrix',item.worldMatrix]);
 
-	if(item.useCulling !== CULLING_STATE)		gl.ctx[ ( (CULLING_STATE	= (!CULLING_STATE))  )?"enable":"disable"	](gl.ctx.CULL_FACE);
-	if(item.useDepthTest !== DEPTHTEST_STATE)	gl.ctx[ ( (DEPTHTEST_STATE	= (!DEPTHTEST_STATE)) )?"enable":"disable"	](gl.ctx.DEPTH_TEST);
+	console.log(shader);
+
+	if(item.useCulling !== CULLING_STATE)		gl[ ( (CULLING_STATE	= (!CULLING_STATE))  )?"enable":"disable"	](gl.CULL_FACE);
+	if(item.useDepthTest !== DEPTHTEST_STATE)	gl[ ( (DEPTHTEST_STATE	= (!DEPTHTEST_STATE)) )?"enable":"disable"	](gl.DEPTH_TEST);
 
 	return item;
 }

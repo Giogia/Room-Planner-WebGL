@@ -13,7 +13,7 @@ class Transform{
 		this.worldMatrix	= matrix.identity();
 
 		this.children	= [];
-		this._parent	= null;
+		this.parent	= null;
 
 		this.name		= "";
 		this.visible	= true;
@@ -32,10 +32,10 @@ class Transform{
 	}
 
 
-	set parent(parent){
+	setParent(parent){
 
-        if(this._parent != null){
-            this._parent.removeChild(this); }
+        if(this.parent != null){
+            this.parent.removeChild(this); }
 
         if(parent != null) parent.addChild(this); //addChild also sets parent
 
@@ -64,13 +64,12 @@ class Transform{
         return this;
     }
 
-    updateMatrix(forceWorldUpdate){
+    updateMatrix(){
 
         this.localMatrix = matrix.fromQuaternionTranslationScale(this.localMatrix, this.rotation, this.position, this.scale);
 
-        //Figure out the world matrix.
-        if(this._parent != null){
-            this.worldMatrix = matrix.multiply(this._parent.worldMatrix, this.localMatrix);
+        if(this.parent != null){
+            this.worldMatrix = matrix.multiply(this.parent.worldMatrix, this.localMatrix);
         }
         else this.worldMatrix = this.copyMatrix(this.worldMatrix, this.localMatrix); //if not parent, localMatrix is worldMatrix
 
@@ -79,7 +78,7 @@ class Transform{
 
     copyMatrix(matrix1, matrix2){
         for(let i=0; i < 16; i++)
-            matrix1[i] = matrix[i];
+            matrix1[i] = matrix2[i];
             return matrix1;
     }
 }

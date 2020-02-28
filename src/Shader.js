@@ -39,6 +39,8 @@ class Shader{
 
 		webGL.env.shaders.set(source.name, shader);
 
+		source.uniforms.push({'name':'uModelMatrix', 'type':"mat4"});
+
 		if( source.uniforms && source.uniforms.length > 0 ){
 			shader.prepareUniforms( source.uniforms );
 		}

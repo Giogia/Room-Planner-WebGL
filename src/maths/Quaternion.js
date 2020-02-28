@@ -35,10 +35,8 @@ class Quaternion
 
 	rotateX(rad){
 
-		rad *= 0.5;
-
-		let x = Math.sin(rad);
-		let w = Math.cos(rad);
+		let x = Math.sin(rad/2);
+		let w = Math.cos(rad/2);
 
 		this.x = this.x * w + this.w * x;
 		this.y = this.y * w + this.z * x;
@@ -50,10 +48,8 @@ class Quaternion
 
 	rotateY(rad) {
 
-		rad *= 0.5;
-
-		let y = Math.sin(rad);
-		let w = Math.cos(rad);
+		let y = Math.sin(rad/2);
+		let w = Math.cos(rad/2);
 
 		this.x = this.x * w + this.z * y;
 		this.y = this.y * w + this.w * y;
@@ -65,10 +61,8 @@ class Quaternion
 
 	rotateZ(rad) {
 
-		rad *= 0.5;
-
-		let z = Math.sin(rad);
-		let w = Math.cos(rad);
+		let z = Math.sin(rad/2);
+		let w = Math.cos(rad/2);
 
 		this.x = this.x * w + this.y * z;
 		this.y = this.y * w + this.x * z;

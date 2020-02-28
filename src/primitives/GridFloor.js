@@ -10,7 +10,6 @@ class GridFloor{
 		this.model = new Renderable(this.vao, "MatGridFloor");
 
 		this.model.drawMode = gl.LINES;
-
 	}
 }
 

@@ -309,12 +309,13 @@ export var matrix={
 		];
 	  },
 
-	  fromQuaternionTranslationScale: function(q, v, s){
-
-		let out = [];
+	  fromQuaternionTranslationScale: function(matrix, quaternion, position, scale){
 
 		// Quaternion math
-		var x = q[0], y = q[1], z = q[2], w = q[3],
+		let x = quaternion.x,
+			y = quaternion.y,
+			z = quaternion.z,
+			w = quaternion.w,
 
 		x2 = x + x,
 		y2 = y + y,
@@ -329,27 +330,27 @@ export var matrix={
 		wx = w * x2,
 		wy = w * y2,
 		wz = w * z2,
-		sx = s[0],
-		sy = s[1],
-		sz = s[2];
+		sx = scale.x,
+		sy = scale.y,
+		sz = scale.z;
 
-		out[0] = (1 - (yy + zz)) * sx;
-		out[1] = (xy + wz) * sx;
-		out[2] = (xz - wy) * sx;
-		out[3] = 0;
-		out[4] = (xy - wz) * sy;
-		out[5] = (1 - (xx + zz)) * sy;
-		out[6] = (yz + wx) * sy;
-		out[7] = 0;
-		out[8] = (xz + wy) * sz;
-		out[9] = (yz - wx) * sz;
-		out[10] = (1 - (xx + yy)) * sz;
-		out[11] = 0;
-		out[12] = v[0];
-		out[13] = v[1];
-		out[14] = v[2];
-		out[15] = 1;
+		matrix[0] = (1 - (yy + zz)) * sx;
+		matrix[1] = (xy + wz) * sx;
+		matrix[2] = (xz - wy) * sx;
+		matrix[3] = 0;
+		matrix[4] = (xy - wz) * sy;
+		matrix[5] = (1 - (xx + zz)) * sy;
+		matrix[6] = (yz + wx) * sy;
+		matrix[7] = 0;
+		matrix[8] = (xz + wy) * sz;
+		matrix[9] = (yz - wx) * sz;
+		matrix[10] = (1 - (xx + yy)) * sz;
+		matrix[11] = 0;
+		matrix[12] = position.x;
+		matrix[13] = position.y;
+		matrix[14] = position.z;
+		matrix[15] = 1;
 
-		return out;
+		return matrix;
 	}
 };
