@@ -53,14 +53,15 @@ function prepareNext(item){
 		material = item.material;
 
 		//Multiple materials can share the same shader, if new shader, turn it on.
-		if(material.shader !== shader) shader = material.shader.bind();
+		if(material.shader !== shader){
+			shader = material.shader;
+			shader.bind();
+		}
 
 		material.applyUniforms();
 	}
 
-	material.shader.setUniform(['uModelMatrix',item.worldMatrix]);
-
-	console.log(shader);
+	material.shader.setUniform('modelMatrix', item.worldMatrix);
 
 	if(item.useCulling !== CULLING_STATE)		gl[ ( (CULLING_STATE	= (!CULLING_STATE))  )?"enable":"disable"	](gl.CULL_FACE);
 	if(item.useDepthTest !== DEPTHTEST_STATE)	gl[ ( (DEPTHTEST_STATE	= (!DEPTHTEST_STATE)) )?"enable":"disable"	](gl.DEPTH_TEST);

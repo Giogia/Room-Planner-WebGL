@@ -14,17 +14,29 @@ let utils = {
 		return(angle/Math.PI*180);
 	},
 
-	hexToRgbArray: function(hex){
+	hexToRgb: function(hex){
+		let position = (hex[0] === "#")?1:0;	//Determine starting position in char array to start pulling from
+
+		return([
+			parseInt(hex[position  ] + hex[position+1],16)	/ 255.0,
+			parseInt(hex[position+2] + hex[position+3],16)	/ 255.0,
+			parseInt(hex[position+4] + hex[position+5],16)	/ 255.0]
+		);
+	},
+
+	hexToRgbArray: function(array){
 
 		let rgb = [];
 
-		let position = (hex[0] === "#")?1:0;	//Determine starting position in char array to start pulling from
+		for(let hex of array){
+			let position = (hex[0] === "#")?1:0;	//Determine starting position in char array to start pulling from
 
-		rgb.push(
-				parseInt(hex[position+0] + hex[position+1],16)	/ 255.0,
+			rgb.push(
+				parseInt(hex[position  ] + hex[position+1],16)	/ 255.0,
 				parseInt(hex[position+2] + hex[position+3],16)	/ 255.0,
 				parseInt(hex[position+4] + hex[position+5],16)	/ 255.0
-		);
+			);
+		}
 
 		return rgb;
 	},

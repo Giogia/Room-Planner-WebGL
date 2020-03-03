@@ -1,4 +1,4 @@
-let name = "VecWColor";
+let name = "Room Planner";
 
 let ubos = [ "UBOGlobal" ];
 
@@ -7,7 +7,7 @@ let uniforms = [
 ];
 
 let materials = [
-	{ "name":"MatVecWColor", "uniforms":[{ "name":"uColor", "type":"hex", "data":["ff0000","00ff00","0000ff","555555","999999","dddddd"]}] },
+	{ "name":"MatVecWColor", "uniforms":[{ "name":"uColor", "type":"hex", "data":["444444","444444","444444","444444","444444","444444"]}] },
 	{ "name":"MatGridFloor", "uniforms":[{ "name":"uColor", "type":"hex", "data":["e6e6e6","ff9999","66ff66"]}] }
 ];
 
@@ -19,18 +19,16 @@ let vertexShader =
     
     uniform UBOGlobal{
         mat4 matProjection;
-        mat4 matCameraView;
-        vec3 posCamera;
     };
     
-    uniform mat4 uModelMatrix;
+    uniform mat4 modelMatrix;
     uniform vec3 uColor[10];
     
     out vec3 oColor;
     
     void main(void){
         oColor = uColor[ int(a_position.w) ];
-        gl_Position = matProjection * matCameraView * uModelMatrix * vec4(a_position.xyz,1.0);
+        gl_Position = matProjection * modelMatrix * vec4(a_position.xyz,1.0);
     }`;
 
 

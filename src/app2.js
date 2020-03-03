@@ -1,5 +1,4 @@
 import * as webGL from "./webGL.js"
-import gl from "./webGL.js"
 import RenderLoop from "./RenderLoop.js";
 import Camera from "./entities/Camera.js";
 import {enableOrbitControls} from "./controls2.js";
@@ -7,15 +6,14 @@ import createShader from "./Shader.js";
 import buildUBO from "./entities/UniformBuffer.js"
 import test from "./shaders/test.js"
 import GridFloor from "./primitives/GridFloor.js";
+import Wall from "./primitives/Wall.js"
+import Column from "./primitives/Column.js"
 import render from "./Renderer.js";
+import {importGlb} from "./loader.js";
 
-let aPositionLoc,
-    uAngle,
-    uPointSizeLoc,
-    verticesCount,
-    camera,
+let camera,
     app,
-    gridFloor,
+    uboGlobal,
     scene = [],
     renderLoop;
 
@@ -26,11 +24,7 @@ function run(){
     webGL.setColor("#ffffff");				//Set clear color
     webGL.clearFrame();
 
-    let uboGlobal = buildUBO( "UBOGlobal", 0, [
-        {name:"matProjection",type:"mat4"},
-        {name:"matCameraView",type:"mat4"},
-        {name:"posCamera",type:"vec3"}
-        ]);
+    uboGlobal = buildUBO( "UBOGlobal", 0, [{name:"matProjection",type:"mat4"}]);
 
     let shader = createShader(test);
     shader.bind();
@@ -39,39 +33,41 @@ function run(){
     document.body.appendChild(app);
 
     createCamera();
-    camera.position.set(0,1,3);
 
     enableOrbitControls();
 
     renderLoop = new RenderLoop(onRender, 60).start();
 
-    let gridFloor = new GridFloor().model;
+    let gridFloor = new GridFloor();
+    scene.push(gridFloor.model);
 
-    scene.push(gridFloor);
+    let wall = new Wall();
+    wall.model.position.set(5,0.5,0);
+    scene.push(wall.model);
+
+    let column = new Column();
+    column.model.position.set(0.3,0,3);
+    scene.push(column.model);
 
     autoResize();
 }
 
-let gPointSize	= 0,
-    gPSizeStep	= 3,
-    gAngle		= 0,
-    gAngleStep	= (Math.PI / 180.0) * 90;	//90 degrees in Radians
 
 function onRender(){
-    camera.updateProjectionMatrix();
+    camera.update();
     webGL.clearFrame();
     render(scene);
 }
 
 function createCamera(){
 
-    const fov = 25;
+    const fov = 45;
     const aspect = app.clientWidth / app.clientHeight;
     const near = 0.1;
     const far = 100;
     camera = new Camera(fov, aspect, near, far);
 
-    camera.position.set(-4, 100, 12);
+    camera.position.set(0, 0.5, 4);
     camera.lookAt(0,0,0);
 }
 
@@ -81,6 +77,7 @@ function autoResize(){
     window.onresize = () => {
 
         camera.aspect = app.clientWidth / app.clientHeight;
+        camera.updatePerspectiveMatrix();
         camera.updateProjectionMatrix();
 
         webGL.setSize();
@@ -89,4 +86,4 @@ function autoResize(){
 
 run();
 
-export { app, camera };
+export { app, camera, uboGlobal };

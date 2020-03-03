@@ -1,13 +1,13 @@
 'use strict';
 
-import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
-import {GLTFExporter} from "three/examples/jsm/exporters/GLTFExporter";
+//import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
+//import {GLTFExporter} from "three/examples/jsm/exporters/GLTFExporter";
 
-import {camera, scene} from './app';
+//import {camera, scene} from './app';
 
-import * as THREE from 'three';
-import {draggableObjects} from "./controls";
-import {GlbParser} from "./glb/glbParser"
+//import * as THREE from 'three';
+//import {draggableObjects} from "./controls";
+import {GlbParser} from "./glb/glbParser.js"
 
 
 let jsonUrl = 'http://localhost:3000/';

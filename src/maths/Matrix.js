@@ -258,21 +258,20 @@ export var matrix={
 		return out;
 	},
 
-	MakePerspective:function(fov, a, n, f) {
+	MakePerspective:function(fov, aspect, near, far) {
 	// Creates the perspective projection matrix. The matrix is returned.
-	// {fov} contains the vertical field-of-view in degrees. {a} is the aspect ratio.
-	// {n} is the distance of the near plane, and {f} is the far plane.
+	// {fov} contains the vertical field-of-view in degrees. {aspect} is the aspect ratio.
+	// {near} is the distance of the near plane, and {far} is the far plane.
 
 		let perspective = this.identity();
 
-		let halfFovyRad = utils.degToRad(fov/2);	// stores {fov/2} in radians
-		let ct = 1.0 / Math.tan(halfFovyRad);			// cotangent of {fov/2}
+		let focalLength = 1.0 / Math.tan(utils.degToRad(fov)/2);
 
-		perspective[0] = ct / a;
-		perspective[5] = ct;
-		perspective[10] = (f + n) / (n - f);
-		perspective[11] = 2.0 * f * n / (n - f);
-		perspective[14] = -1.0;
+		perspective[0] = focalLength / aspect;
+		perspective[5] = focalLength;
+		perspective[10] = (far + near) / (near - far);
+		perspective[11] = -1.0;
+		perspective[14] = 2.0 * far * near / (near - far);
 		perspective[15] = 0.0;
 
 		return perspective;
@@ -293,8 +292,8 @@ export var matrix={
 		return parallel;
 	},
 
-	MakeLookAt: function(cameraPosition, target, up) {
-		let zAxis = utils.subtract(cameraPosition, target).normalize();
+	MakeLookAt: function(position, target, up) {
+		let zAxis = utils.subtract(position, target).normalize();
 		let xAxis = utils.crossProduct(up, zAxis).normalize();
 		let yAxis = utils.crossProduct(zAxis, xAxis).normalize();
 
@@ -302,9 +301,9 @@ export var matrix={
 		   xAxis.x, xAxis.y, xAxis.z, 0,
 		   yAxis.x, yAxis.y, yAxis.z, 0,
 		   zAxis.x, zAxis.y, zAxis.z, 0,
-		   cameraPosition.x,
-		   cameraPosition.y,
-		   cameraPosition.z,
+		   position.x,
+		   position.y,
+		   position.z,
 		   1,
 		];
 	  },

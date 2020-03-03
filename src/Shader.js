@@ -39,7 +39,7 @@ class Shader{
 
 		webGL.env.shaders.set(source.name, shader);
 
-		source.uniforms.push({'name':'uModelMatrix', 'type':"mat4"});
+		source.uniforms.push({'name':'modelMatrix', 'type':"mat4"});
 
 		if( source.uniforms && source.uniforms.length > 0 ){
 			shader.prepareUniforms( source.uniforms );
@@ -99,7 +99,7 @@ class Shader{
 		}
 	}
 
-	setUniform( [name, value] ){
+	setUniform( name, value ){
 
     	let uniform	= this.uniforms.get( name );
 
@@ -110,10 +110,10 @@ class Shader{
 			case "afloat":	gl.uniform1fv(	uniform.loc, value); break;
 			case "vec2":	gl.uniform2fv(	uniform.loc, value); break;
 
-			case "rgb":
+			case "rgb":		gl.uniform3fv(	uniform.loc, value); break;
 			case "vec3":	gl.uniform3fv(	uniform.loc, value); break;
 
-			case "rgba":
+			case "rgba":	gl.uniform4fv(	uniform.loc, value); break;
 			case "vec4":	gl.uniform4fv(	uniform.loc, value); break;
 
 			case "int":		gl.uniform1i(	uniform.loc, value); break;

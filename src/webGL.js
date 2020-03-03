@@ -37,7 +37,7 @@ function clearFrame(){
 
 function setColor(hex){
 
-	let rgb = utils.hexToRgbArray(hex);
+	let rgb = utils.hexToRgb(hex);
 	gl.clearColor(rgb[0],rgb[1],rgb[2],1.0);
 	return this;
 }

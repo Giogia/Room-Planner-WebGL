@@ -162,19 +162,6 @@ export function enableOrbitControls(){
 }
 
 
-//TODO use this for gl renderer
-export function updateOrbitControls(){
-
-    let viewMatrix = matrix.MakeView(cx, cy, cz, -elevation, angle);
-    let perspProjectionMatrix = matrix.MakePerspective(camera.fov, camera.aspect, camera.near, camera.far);
-
-    let worldViewPerspMatrix = matrix.transpose(matrix.multiply(perspProjectionMatrix, viewMatrix));
-    camera.position.set(cx, cy, cz);
-    camera.updateProjectionMatrix();
-
-}
-
-
 function mapMove(event){
     if(enable.map && moveControls) {
 

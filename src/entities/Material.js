@@ -32,8 +32,9 @@ class Material{
 
 	applyUniforms(){
 
-		for(let uniform of this.uniforms)
-			this.shader.setUniform(uniform);
+		for(let uniformName of this.uniforms.keys()){
+			this.shader.setUniform(uniformName, this.uniforms.get(uniformName));
+		}
 
 		return this;
 	}

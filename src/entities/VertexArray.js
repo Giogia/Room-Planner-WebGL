@@ -25,7 +25,7 @@ class VAO{
 
 		if(normals)	vao.floatArrayBuffer("norm", normals, ATTR_NORM_LOC,3,0,0,true);
 		if(uv)	vao.floatArrayBuffer("uv", uv, ATTR_UV_LOC,2,0,0,true);
-		if(indices)	vao.indexBuffer("index", indices,true);
+		if(indices) vao.indexBuffer("index", indices,true);
 
 		gl.bindVertexArray(null);
 		gl.bindBuffer(gl.ARRAY_BUFFER,null);
