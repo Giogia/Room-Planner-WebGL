@@ -3,7 +3,7 @@ import RenderLoop from "./RenderLoop.js";
 import Camera from "./entities/Camera.js";
 import {enableOrbitControls} from "./controls2.js";
 import createShader from "./Shader.js";
-import buildUBO from "./entities/UniformBuffer.js"
+import UBO from "./entities/UniformBuffer.js"
 import test from "./shaders/test.js"
 import GridFloor from "./primitives/GridFloor.js";
 import Wall from "./primitives/Wall.js"
@@ -17,14 +17,14 @@ let camera,
     scene = [],
     renderLoop;
 
-function run(){
+async function run(){
 
     webGL.init();
     webGL.setSize();
     webGL.setColor("#ffffff");				//Set clear color
     webGL.clearFrame();
 
-    uboGlobal = buildUBO( "UBOGlobal", 0, [{name:"matProjection",type:"mat4"}]);
+    uboGlobal = new UBO( "UBOGlobal", 0, [{name:"matProjection",type:"mat4"}]);
 
     let shader = createShader(test);
     shader.bind();
@@ -41,14 +41,17 @@ function run(){
     let gridFloor = new GridFloor();
     scene.push(gridFloor.model);
 
+    /*
     let wall = new Wall(5,1,0.2);
     wall.model.position.set(2.5,0.5,0);
     scene.push(wall.model);
 
-
     let column = new Column();
     column.model.position.set(0,0,0);
     scene.push(column.model);
+    */
+
+    let model = await importGlb('books');
 
     autoResize();
 }

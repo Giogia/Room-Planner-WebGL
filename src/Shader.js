@@ -1,6 +1,6 @@
 import * as webGL from "./webGL.js"
 import gl from './webGL.js';
-import createMaterial from "./entities/Material.js";
+import Material from "./entities/Material.js";
 
 class Shader{
 
@@ -86,15 +86,15 @@ class Shader{
 		}
 	}
 
-	prepareMaterials(materials, shader){
+	prepareMaterials(sourceMaterials, shader){
 
-		for(let material of materials){
+		for(let sourceMaterial of sourceMaterials){
 
-			let mat = createMaterial(material.name, shader);
+			let material = new Material(sourceMaterial.name, shader);
 
-			if(material.uniforms){
+			if(sourceMaterial.uniforms){
 
-				mat.setUniforms(material.uniforms);
+				material.setUniforms(sourceMaterial.uniforms);
 			}
 		}
 	}

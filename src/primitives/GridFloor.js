@@ -1,12 +1,12 @@
 import gl from "../webGL.js";
 import Renderable from "../entities/Renderable.js";
-import createVAO from "../entities/VertexArray.js"
+import VAO from "../entities/VertexArray.js"
 
 class GridFloor{
 
 	constructor(gridSize = 0.2, lines = 70, position = 0) {
 
-		this.vao = createVAO("GridFloor", 4, gridVertices(gridSize, lines));
+		this.vao = new VAO("GridFloor", 4, gridVertices(gridSize, lines));
 		this.model = new Renderable(this.vao, "MatGridFloor");
 
 		this.model.drawMode = gl.LINES;

@@ -1,4 +1,4 @@
-import createVAO from "../entities/VertexArray.js";
+import VAO from "../entities/VertexArray.js";
 import Renderable from "../entities/renderable.js";
 
 class Column{
@@ -18,7 +18,7 @@ class Column{
 		this.setUV();
 		this.setIndices();
 
-		this.vao = createVAO("Column", 4, this.vertices, this.normals, this.uv, this.indices);
+		this.vao = new VAO("Column", 4, this.vertices, this.normals, this.uv, this.indices);
 		this.model = new Renderable(this.vao, "MatVecWColor")
 
 	}

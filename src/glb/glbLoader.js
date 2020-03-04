@@ -1,289 +1,168 @@
+import Mesh from '../primitives/Mesh.js'
+
 class GlbLoader{
 	constructor(){
 		this.json = null;
-		this.skeletons = [];	//
-		this.meshes = [];	// VAOs
-		this.nodes = [];	// Renderable, references back to mesh
+		this.buffers = null;
+		this.skeletons = [];
+		this.meshes = [];
+		this.nodes = [];
 	}
 
-	get version(){ return this.json.asset.version; }
+	load(glb){
 
-	loadFromDom(elmID,processNow){
-		//TODO: Validation of element, text and json parsing.
-		var txt = document.getElementById(elmID).text;
-		this.json = JSON.parse(txt);
+		this.json = glb.json;
+		this.buffers = glb.buffers;
+		this.processScene();
 
-		if(processNow == true) this.processScene();
+		let models = [];
 
-		return this;
-	}
+		for(let node of this.nodes){
 
-	load(jsObj,processNow){
-		this.json = jsObj;
+			let meshes = [];
+			for(let mesh of node.meshes) meshes.push(this.meshes[mesh]);
 
-		//.....................................
-		//Go through Skins and make all nodes as joints for later processing.
-		//Joint data never exports well, there is usually garbage. Documentation
-		//Suggests that developer pre process nodes to make them as joints and
-		//it does help weed out bad data
-		if(this.json.skins){
-			var j,									//loop index
-				s 			= this.json.skins,		//alias for skins
-				complete 	= [];					//list of skeleton root nodes, prevent prcessing duplicate data that can exist in file
-			for(var i=0; i < s.length; i++){
-				if( complete.indexOf(s[i].skeleton) != -1) continue; //If already processed, go to next skin
-
-				//Loop through all specified joints and mark the nodes as joints.
-				for(j in s[i].joints) this.json.nodes[ s[i].joints[j] ].isJoint = true;
-
-				complete.push(s[i].skeleton); //push root node index to complete list.
-			}
+			models.push( new Mesh(name, meshes) );
 		}
 
-		//.....................................
-		if(processNow == true) this.processScene();
-		return this;
+		return models;
+
 	}
 
 
-	processScene(sceneNum){
-		//TODO process skin first to mark nodes as joints since spec does not
-		//https://github.com/KhronosGroup/glTF/tree/master/specification/2.0#skins
+	processScene(index = 0){
 
-		if(sceneNum == undefined) sceneNum = 0; //If not specify, get first scene
-		if(this.json.scenes[sceneNum].nodes.length == 0) return;
+		if(this.json.scenes[index].nodes.length === 0) return;
 
-		var sceneNodes = this.json.scenes[sceneNum].nodes,
-			nStack = [],
-			node,
-			idx,
-			i;
+		let stack = [];
+
+		let scene = this.json.scenes[index];
 
 		//Setup Initial Stack
-		for(i=0; i < sceneNodes.length; i++) nStack.push( sceneNodes[i] );
+		for(let node of scene.nodes) stack.push(node);
 
 		//Process Stack of nodes, check for children to add to stack
-		while(nStack.length > 0){
-			idx = nStack.pop();
-			node = this.json.nodes[idx];
+		while(stack.length > 0){
+
+			let index = stack.pop();
+			let node = this.json.nodes[index];
 
 			//Add More Nodes to the stack
-			if(node.children != undefined)
-				for(i=0; i < node.children.length; i++) nStack.push(node.children[i]);
+			if(node.children !== undefined)
+				for(let children of node.children) stack.push(children);
 
-			this.processNode( idx );
+			this.processNode( node );
 		}
 	}
 
-
-	//
-	processNode(idx){
-		var n = this.json.nodes[idx];
-		//n.children = [nodeIndex,nodeIndex,etc]
-		//n.skin = Defines skeleton
-		//n.weights
-
-		//TODO - Need to handle Node Heirarchy
-		//if there is n.camera, its a camera.
-		//if there is no camera or mesh, then its an empty that may get a mesh node as a child.
+	processNode(node){
 
 		//Handle Mesh
-		if(n.mesh != undefined){
-			var m = {
-				name: 		(n.name)? n.name : "untitled",
-				rotate:		n.rotation || null,
-				scale:		n.scale || null,
-				position:	n.translation || null,
-				matrix:		n.matrix || null,
-				meshes:		this.processMesh(n.mesh)
+		if(node.mesh !== undefined){
+
+			let mesh = {
+				name: 		(node.name)? node.name : "untitled",
+				rotation:	node.rotation || null,
+				scale:		node.scale || null,
+				position:	node.translation || null,
+				matrix:		node.matrix || null,
+				meshes:		this.processMesh(node.mesh)
 			};
 
-			if(n.skin != undefined) m.skeleton = this.processSkin(n.skin);
-
-			this.nodes.push(m);
+			this.nodes.push(mesh);
 		}
 	}
 
+	processMesh(index){
 
-	//TODO Make sure not to process the same mesh twice incase different nodes reference same mesh data.
-	processMesh(idx){
-		var m = this.json.meshes[idx];
-		var meshName = m.name || "unnamed"
-		//m.weights = for morph targets
-		//m.name
+		let mesh = this.json.meshes[index];
 
-		//p.attributes.TANGENT = vec4
-		//p.attributes.TEXCOORD_1 = vec2
-		//p.attributes.COLOR_0 = vec3 or vec4
-		//p.material
-		//p.targets = Morph Targets
+		let name = mesh.name || "unnamed";
 
-		//.....................................
-		var p,			//Alias for primative element
-			a,			//Alias for primative's attributes
-			itm,
-			mesh = [];
+		let final = [];
 
-		for(var i=0; i < m.primitives.length; i++){
-			p = m.primitives[i];
-			a = p.attributes;
+		for(let primitive of mesh.primitives){
 
-			itm = {
-				name: 		meshName + "_p" + i,
-				mode:		(p.mode != undefined)? p.mode : GlbLoader.MODE_TRIANGLES,
-				indices:	null,	//p.indices
-				vertices:	null,	//p.attributes.POSITION = vec3
-				normals:	null,	//p.attributes.NORMAL = vec3
-				texcoord:	null,	//p.attributes.TEXCOORD_0 = vec2
-				joints: 	null,	//p.attributes.JOINTS_0 = vec4
-				weights: 	null	//p.attributes.WEIGHTS_0 = vec4
+			let attributes = primitive.attributes;
+
+			let item = {
+				name: 		name + "_p" + mesh.primitives.indexOf(primitive),
+				mode:		(primitive.mode !== undefined)? primitive.mode : GlbLoader.MODE_TRIANGLES,
+				indices:	null,	//primitive.indices
+				vertices:	null,	//primitive.attributes.POSITION = vec3
+				normals:	null,	//primitive.attributes.NORMAL = vec3
+				material:  this.json.materials[primitive.material]
 			};
 
 			//Get Raw Data
-			itm.vertices = this.processAccessor(a.POSITION);
-			if(p.indices != undefined) 		itm.indices	= this.processAccessor(p.indices);
-			if(a.NORMAL != undefined)		itm.normals	= this.processAccessor(a.NORMAL);
-			if(a.WEIGHTS_0 != undefined)	itm.weights	= this.processAccessor(a.WEIGHTS_0);
-			if(a.JOINTS_0 != undefined)		itm.joints	= this.processAccessor(a.JOINTS_0);
+			item.vertices = this.processAccessor(attributes.POSITION);
+			if(primitive.indices !== undefined) 	item.indices	= this.processAccessor(primitive.indices);
+			if(attributes.NORMAL !== undefined)		item.normals	= this.processAccessor(attributes.NORMAL);
+			if(attributes.WEIGHTS_0 !== undefined)	item.weights	= this.processAccessor(attributes.WEIGHTS_0);
+			if(attributes.JOINTS_0 !== undefined)	item.joints	= this.processAccessor(attributes.JOINTS_0);
 
 			//Save Data
-			this.meshes.push(itm);				//Each Primitive is its own draw call, so its really just a mesh
-			mesh.push(this.meshes.length-1);	//Save index to new mesh so nodes can reference the mesh
+			this.meshes.push(item);				//Each Primitive is its own draw call, so its really just attributes final
+			final.push(this.meshes.length-1);	//Save index to new final so nodes can reference the final
 		}
 
-		return mesh;
+		return final;
 	}
 
 
 	//Decodes the binary buffer data into a Type Array that is webgl friendly.
-	processAccessor(idx){
-		var	a = this.json.accessors[idx],								//Accessor Alias Ref
-			bView = this.json.bufferViews[ a.bufferView ],				//bufferView Ref
+	processAccessor(index){
 
-			buf		= this.prepareBuffer(bView.buffer),					//Buffer Data decodes into a ArrayBuffer/DataView
-			bOffset	= (a.byteOffset || 0) + (bView.byteOffset || 0),	//Starting point for reading.
-			bLen 	= 0,//a.count,//bView.byteLength,									//Byte Length for this Accessor
+		let	accessor = this.json.accessors[index];
 
-			TAry = null,												//Type Array Ref
-			DFunc = null;												//DateView Function name
+		let bufferView = this.json.bufferViews[ accessor.bufferView ];
 
-		//Figure out which Type Array we need to save the data in
-		switch(a.componentType){
-			case GlbLoader.TYPE_FLOAT:				TAry = Float32Array;	DFunc = "getFloat32"; break;
-			case GlbLoader.TYPE_SHORT:				TAry = Int16Array;		DFunc = "getInt16"; break;
-			case GlbLoader.TYPE_UNSIGNED_SHORT:	TAry = Uint16Array;		DFunc = "getUint16"; break;
-			case GlbLoader.TYPE_UNSIGNED_INT:		TAry = Uint32Array;		DFunc = "getUint32"; break;
-			case GlbLoader.TYPE_UNSIGNED_BYTE: 	TAry = Uint8Array; 		DFunc = "getUint8"; break;
+		let	buffer = this.prepareBuffer(bufferView.buffer),
+			offset = (accessor.byteOffset || 0) + (bufferView.byteOffset || 0);
 
-			default: console.log("ERROR processAccessor","componentType unknown",a.componentType); return null; break;
+		let type = null,
+			dateViewFunction = null;
+
+		switch(accessor.componentType){
+			case GlbLoader.TYPE_FLOAT:				type = Float32Array;	dateViewFunction = "getFloat32"; break;
+			case GlbLoader.TYPE_SHORT:				type = Int16Array;		dateViewFunction = "getInt16"; break;
+			case GlbLoader.TYPE_UNSIGNED_SHORT:		type = Uint16Array;		dateViewFunction = "getUint16"; break;
+			case GlbLoader.TYPE_UNSIGNED_INT:		type = Uint32Array;		dateViewFunction = "getUint32"; break;
+			case GlbLoader.TYPE_UNSIGNED_BYTE: 		type = Uint8Array; 		dateViewFunction = "getUint8"; break;
+
+			default: console.log("ERROR processAccessor","componentType unknown",accessor.componentType); return null; break;
 		}
 
-		//When more then one accessor shares a buffer, The BufferView length is the whole section
-		//but that won't work, so you need to calc the partition size of that whole chunk of data
-		//The math in the spec about stride doesn't seem to work, it goes over bounds, what Im using works.
-		//https://github.com/KhronosGroup/glTF/tree/master/specification/2.0#data-alignment
-		if(bView.byteStride != undefined)	bLen = bView.byteStride * a.count;
-		else 								bLen = a.count * GlbLoader["COMP_"+a.type] * TAry.BYTES_PER_ELEMENT; //elmCnt * compCnt * compByteSize)
+		let length = accessor.count * GlbLoader["COMP_"+accessor.type] * type.BYTES_PER_ELEMENT;
 
 		//Pull the data out of the dataView based on the Type.
-		var bPer	= TAry.BYTES_PER_ELEMENT,	//How many Bytes needed to make a single element
-			aLen	= bLen / bPer,				//Final Array Length
-			ary		= new TAry(aLen),			//Final Array
-			p		= 0;						//Starting position in DataView
+		let bytesPerElement = type.BYTES_PER_ELEMENT,	//How many Bytes needed to make accessor single element
+			arrayLength	= length / bytesPerElement,	//Final Array Length
+			array = new type(arrayLength),				//Final Array
+			position = 0;								//Starting position in DataView
 
-		for(var i=0; i < aLen; i++){
-			p = bOffset + i * bPer;
-			ary[i] = buf.dView[DFunc](p,true);
+		for(let i=0; i < arrayLength; i++){
+			position = offset + i * bytesPerElement;
+			array[i] = buffer.dView[dateViewFunction](position,true);
 		}
 
-		//console.log(a.type,GLTFLoader["COMP_"+a.type],"offset",bOffset, "bLen",bLen, "aLen", aLen, ary);
-		return { data:ary, max:a.max, min:a.min, count:a.count, compLen:GlbLoader["COMP_"+a.type] };
+		return {data:array,
+				max:accessor.max,
+				min:accessor.min,
+				count:accessor.count,
+				compLen:GlbLoader["COMP_"+accessor.type]
+		};
 	}
 
-	//Get the buffer data ready to be parsed threw by the Accessor
-	prepareBuffer(idx){
-		var buf = this.json.buffers[idx];
 
-		if(buf.dView != undefined) return buf;
+	prepareBuffer(index){
 
-		if(buf.uri.substr(0,5) != "data:"){
-			//TODO Get Bin File
-			return buf;
-		}
+		let buffer = this.json.buffers[index];
+		let bufferData = this.buffers[index];
 
-		//Create and Fill DataView with buffer data
-		var pos		= buf.uri.indexOf("base64,") + 7,
-			blob	= window.atob(buf.uri.substr(pos)),
-			dv		= new DataView( new ArrayBuffer(blob.length) );
-		for(var i=0; i < blob.length; i++) dv.setUint8(i,blob.charCodeAt(i));
-		buf.dView = dv;
+		buffer.dView = new DataView( bufferData);
 
-		//console.log("buffer len",buf.byteLength,dv.byteLength);
-		//var fAry = new Float32Array(blob.length/4);
-		//for(var j=0; j < fAry.length; j++) fAry[j] = dv.getFloat32(j*4,true);
-		//console.log(fAry);
-		return buf;
-	}
-
-	processSkin(idx){
-		//Check if the skin has already processed skeleton info
-		var i,s = this.json.skins[idx]; //skin reference
-
-
-		for(i=0; i < this.skeletons.length; i++){
-			if(this.skeletons[i].nodeIdx == s.skeleton) return i; //Find a root bone that matches the skin's.
-		}
-		console.log("ProcessSkin",idx, s.skeleton, this.skeletons.length);
-
-		//skeleton not processed, do it now.
-		var stack = [],	//Queue
-			final = [],	//Flat array of joints for skeleton
-			n,		//Node reference
-			itm,	//popped queue tiem
-			pIdx;	//parent index
-
-		if(s.joints.indexOf(s.skeleton) != -1){
-			stack.push([s.skeleton,null]); //Add Root bone Node Index, final index ofParent
-		}else{
-			var cAry = this.json.nodes[s.skeleton].children;
-			for(var c=0; c < cAry.length; c++){
-				stack.push([cAry[c],null]);
-			}
-		}
-
-
-		while(stack.length > 0){
-			itm	= stack.pop();				//Pop off the list
-			n 	= this.json.nodes[itm[0]];	//Get node info for joint
-
-			if(n.isJoint != true) continue; //Check preprocessing to make sure its actually a used node.
-
-			//Save copy of data : Ques? Are bones's joint number always in a linear fashion where parents have
-			//a lower index then the children;
-			final.push({
-				jointNum 	: s.joints.indexOf(itm[0]),
-				name 		: n.name || null,
-				position	: n.translation || null,
-				scale		: n.scale || null,
-				rotation	: n.rotation || null,
-				matrix		: n.matrix || null,
-				parent		: itm[1],
-				nodeIdx 	: itm[0]
-			});
-
-
-			//Save the the final index for this joint for children reference
-			pIdx = final.length - 1;
-
-			//Add children to stack
-			if(n.children != undefined){
-				for(i=0; i < n.children.length; i++) stack.push([n.children[i],pIdx]);
-			}
-		}
-
-		final.nodeIdx = s.skeleton; //Save root node index to make sure we dont process the same skeleton twice.
-		this.skeletons.push(final);
-		return this.skeletons.length - 1;
+		return buffer;
 	}
 }
 
@@ -309,4 +188,6 @@ GlbLoader.COMP_VEC3			= 3;
 GlbLoader.COMP_VEC4			= 4;
 GlbLoader.COMP_MAT2			= 4;
 GlbLoader.COMP_MAT3			= 9;
-GLTFLoader.COMP_MAT4			= 16;
+GlbLoader.COMP_MAT4			= 16;
+
+export default GlbLoader

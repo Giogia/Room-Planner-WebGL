@@ -3,40 +3,30 @@ import * as webGL from "../webGL.js";
 import ByteBuffer from "./ByteBuffer.js";
 
 class UBO {
-	constructor(name, blockPoint = 0) {
+	constructor(name, bindPoint, items) {
 
 		this.name = name;
 		this.items = new Map();
-		this.bindPoint = null; 		// Need this to bind UBO to shaders later on.
-		this.bufferID = null;
+		this.bindPoint	= bindPoint;
+		this.bufferID = gl.createBuffer();
 		this.bufferSize = 0;
 		this.byteBuffer = null;
-	}
-
-
-	static create(name, bindPoint, items) {
-
-		let ubo = new UBO(name);
 
 		for( let item of items){
-			ubo.addItem( item.name, item.type );
+			this.addItem( item.name, item.type );
 		}
 
-		// Finish Setting up UBO
-		ubo.bufferSize	= ubo.calculate( ubo.items );			// Calc all the Offsets and Lengths
-		ubo.bufferID 	= gl.createBuffer();				// Create Standard Buffer
-		ubo.byteBuffer	= new ByteBuffer( ubo.bufferSize );
-		ubo.bindPoint	= bindPoint;
+		this.bufferSize	= this.calculate( this.items );
+		this.byteBuffer	= new ByteBuffer( this.bufferSize );
 
-		// GPU Buffer
-		gl.bindBuffer(gl.UNIFORM_BUFFER, ubo.bufferID);							// Bind it for work
-		gl.bufferData(gl.UNIFORM_BUFFER, ubo.bufferSize, gl.DYNAMIC_DRAW);	// Allocate Space in empty buf
-		gl.bindBuffer(gl.UNIFORM_BUFFER, null);									// Unbind
-		gl.bindBufferBase(gl.UNIFORM_BUFFER, bindPoint, ubo.bufferID);			// Save Buffer to Uniform Buffer Bind point
+		gl.bindBuffer(gl.UNIFORM_BUFFER, this.bufferID);						// Bind it for work
+		gl.bufferData(gl.UNIFORM_BUFFER, this.bufferSize, gl.DYNAMIC_DRAW);		// Allocate Space in empty buf
+		gl.bindBuffer(gl.UNIFORM_BUFFER, null);							// Unbind
+		gl.bindBufferBase(gl.UNIFORM_BUFFER, bindPoint, this.bufferID);			// Save Buffer to Uniform Buffer Bind point
 
-		webGL.env.ubos.set(name, ubo);
+		webGL.env.ubos.set(name, this);
 
-		return ubo;
+		return this;
 	}
 
 
@@ -141,4 +131,4 @@ class UBO {
 	}
 }
 
-export default UBO.create
+export default UBO

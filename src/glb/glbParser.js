@@ -1,8 +1,8 @@
 class GlbParser
 {
-    constructor(data)
+    constructor()
     {
-        this.data = data;
+        this.data = null;
         this.glbHeaderInts = 3;
         this.glbChunkHeaderInts = 2;
         this.glbMagic = 0x46546C67;
@@ -11,8 +11,10 @@ class GlbParser
         this.binaryChunkType = 0x004E4942;
     }
 
-    extractGlbData()
-    {
+    extractGlbData(data){
+
+        this.data = data;
+
         const glbInfo = this.getCheckedGlbInfo();
         if (glbInfo === undefined)
         {
@@ -37,8 +39,8 @@ class GlbParser
         return { json: json, buffers: buffers };
     }
 
-    getCheckedGlbInfo()
-    {
+    getCheckedGlbInfo(){
+
         const header = new Uint32Array(this.data, 0, this.glbHeaderInts);
         const magic = header[0];
         const version = header[1];
@@ -54,8 +56,8 @@ class GlbParser
         return { "magic": magic, "version": version, "length": length };
     }
 
-    getAllChunkInfos()
-    {
+    getAllChunkInfos(){
+
         let infos = [];
         let chunkStart = this.glbHeaderInts * 4;
         while (chunkStart < this.data.byteLength)
@@ -67,8 +69,8 @@ class GlbParser
         return infos;
     }
 
-    getChunkInfo(headerStart)
-    {
+    getChunkInfo(headerStart){
+
         const header = new Uint32Array(this.data, headerStart, this.glbChunkHeaderInts);
         const chunkStart = headerStart + this.glbChunkHeaderInts * 4;
         const chunkLength = header[0];
@@ -76,21 +78,21 @@ class GlbParser
         return { "start": chunkStart, "length": chunkLength, "type": chunkType };
     }
 
-    getJsonFromChunk(chunkInfo)
-    {
+    getJsonFromChunk(chunkInfo){
+
         const chunkLength = chunkInfo.length;
         const jsonStart = (this.glbHeaderInts + this.glbChunkHeaderInts) * 4;
         const jsonSlice = new Uint8Array(this.data, jsonStart, chunkLength);
         return JSON.parse(String.fromCharCode.apply(null, jsonSlice));
     }
 
-    getBufferFromChunk(chunkInfo)
-    {
+    getBufferFromChunk(chunkInfo){
+
         return this.data.slice(chunkInfo.start, chunkInfo.start + chunkInfo.length);
     }
 
-    checkEquality(actual, expected, name)
-    {
+    checkEquality(actual, expected, name){
+
         if (actual === expected)
         {
             return true;
@@ -101,4 +103,4 @@ class GlbParser
     }
 }
 
-export { GlbParser };
+export default GlbParser ;

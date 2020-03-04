@@ -4,17 +4,13 @@ import * as webGL from "../webGL.js";
 
 class Renderable extends Transform{
 
-	constructor(vao, material){
+	constructor(vao, material, drawMode = gl.TRIANGLES){
 		super();
 		this.vao			= vao;
 		this.useCulling		= true;
 		this.useDepthTest	= true;
-		this.drawMode		= gl.TRIANGLES;
-		this.material		= (material !== null && material !== undefined)? webGL.env.materials.get(material) : null;
-	}
-
-	setMaterial(matName){
-		this.material = webGL.env.materials.get(matName);
+		this.drawMode		= drawMode;
+		this.material		= (webGL.env.materials.get(material))? webGL.env.materials.get(material) : new Material;
 	}
 
 	draw(){

@@ -7,8 +7,8 @@
 
 //import * as THREE from 'three';
 //import {draggableObjects} from "./controls";
-import {GlbParser} from "./glb/glbParser.js"
-
+import GlbParser from "./glb/glbParser.js"
+import GlbLoader from "./glb/glbLoader.js";
 
 let jsonUrl = 'http://localhost:3000/';
 
@@ -34,15 +34,14 @@ export async function saveJson(name, data){
 export async function importGlb(name){
 
     let path  = './models/furniture/' + name + '.glb';
+    let parser = new GlbParser();
+    let loader = new GlbLoader();
 
-    fetch(path)
-        .then( response => response.arrayBuffer())
-        .then( data => {
+    let data = await fetch(path).then( response => response.arrayBuffer());
 
-            let glbParser = new GlbParser(data);
-            let glb = glbParser.extractGlbData();
-            //console.log(glb);
-        });
+    let glb = parser.extractGlbData(data);
+
+    return loader.load(glb);
 }
 
 

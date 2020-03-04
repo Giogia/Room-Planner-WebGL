@@ -3,19 +3,14 @@ import utils from "../maths/Utils.js";
 
 class Material{
 
-	constructor(){
+	constructor(name, shaderName){
 
-		this.shader = null;
 		this.uniforms = new Map();
-	}
+		this.shader = webGL.env.shaders.get(shaderName);
 
-	static create(name, shaderName){
+		webGL.env.materials.set(name, this);
 
-		let material = new Material();
-		material.shader = webGL.env.shaders.get(shaderName);
-
-		webGL.env.materials.set(name, material);
-		return material;
+		return this
 	}
 
 	setUniforms(uniforms){
@@ -40,4 +35,4 @@ class Material{
 	}
 }
 
-export default Material.create;
+export default Material;

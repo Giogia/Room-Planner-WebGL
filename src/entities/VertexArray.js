@@ -6,7 +6,7 @@ const ATTR_NORM_LOC = 1;
 const ATTR_UV_LOC = 2;
 
 class VAO{
-	constructor(){
+	constructor(name, vertSize, vertices, normals = null, uv = null, indices = null){
 
 		this.buffers = new Map();
 		this.id = gl.createVertexArray();
@@ -14,26 +14,22 @@ class VAO{
 		this.count = 0;
 
 		gl.bindVertexArray(this.id);
-	}
 
-	static create(name, vertSize, vertices, normals = null, uv = null, indices = null){
+		this.floatArrayBuffer("vert", vertices, ATTR_POSITION_LOC, vertSize,0,0,true);
+		this.count = this.buffers.get("vert").count;
 
-		let vao = new VAO();
-
-		vao.floatArrayBuffer("vert", vertices, ATTR_POSITION_LOC, vertSize,0,0,true);
-		vao.count = vao.buffers.get("vert").count;
-
-		if(normals)	vao.floatArrayBuffer("norm", normals, ATTR_NORM_LOC,3,0,0,true);
-		if(uv)	vao.floatArrayBuffer("uv", uv, ATTR_UV_LOC,2,0,0,true);
-		if(indices) vao.indexBuffer("index", indices,true);
+		if(normals)	this.floatArrayBuffer("norm", normals, ATTR_NORM_LOC,3,0,0,true);
+		if(uv)	this.floatArrayBuffer("uv", uv, ATTR_UV_LOC,2,0,0,true);
+		if(indices) this.indexBuffer("index", indices,true);
 
 		gl.bindVertexArray(null);
 		gl.bindBuffer(gl.ARRAY_BUFFER,null);
 		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,null);
-		webGL.env.vaos.set(name, vao);
+		webGL.env.vaos.set(name, this);
 
-		return vao;
+		return this;
 	}
+
 
 	floatArrayBuffer(name, vertices, attrLoc, size, stride = 0, offset = 0, isStatic, isInstance = false){
 
@@ -74,4 +70,4 @@ class VAO{
 
 }
 
-export default VAO.create
+export default VAO

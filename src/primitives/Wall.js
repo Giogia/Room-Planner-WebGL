@@ -1,5 +1,5 @@
 import * as webGL from "../webGL.js";
-import createVAO from "../entities/VertexArray.js";
+import VAO from "../entities/VertexArray.js";
 import Renderable from "../entities/renderable.js";
 
 class Wall{
@@ -19,7 +19,7 @@ class Wall{
 		this.setUV();
 		this.setIndices();
 
-		this.vao = createVAO("Wall", 4, this.vertices, this.normals, this.uv, this.indices);
+		this.vao = new VAO("Wall", 4, this.vertices, this.normals, this.uv, this.indices);
 		this.model = new Renderable(this.vao, "MatVecWColor")
 
 	}
