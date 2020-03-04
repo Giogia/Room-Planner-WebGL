@@ -41,12 +41,13 @@ function run(){
     let gridFloor = new GridFloor();
     scene.push(gridFloor.model);
 
-    let wall = new Wall();
-    wall.model.position.set(5,0.5,0);
+    let wall = new Wall(5,1,0.2);
+    wall.model.position.set(2.5,0.5,0);
     scene.push(wall.model);
 
+
     let column = new Column();
-    column.model.position.set(0.3,0,3);
+    column.model.position.set(0,0,0);
     scene.push(column.model);
 
     autoResize();

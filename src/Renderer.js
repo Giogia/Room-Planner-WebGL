@@ -27,27 +27,25 @@ let material				= null;
 let shader					= null;
 
 
-//process an array of transforms in a recursive fashion. Also forces world matrix update on items if needed
 function processList(array){
 
-	for(let i=0; i < array.length; i++){
-		if(array[i].visible === false) continue;
-		array[i].updateMatrix();
+	for(let mesh of array){
 
-		//if this transform is a renderable, start drawing
-		if(array[i].draw !== undefined){
-			prepareNext(array[i]).draw();
-			if(render.onItemRendered != null) render.onItemRendered(array[i]);
+		if(mesh.visible === false) continue;
+
+		mesh.updateMatrix();
+
+		if(mesh.draw !== undefined){
+			prepareNext(mesh).draw();
+			if(render.onItemRendered != null) render.onItemRendered(mesh);
 		}
 
-		//If transform has any children, then process that list next.
-		if(array[i].children.length > 0) processList(array[i].children);
+		if(mesh.children.length > 0) processList(mesh.children);
 	}
 }
 
-
-//Prepares the shader for the next item for rendering by dealing with the shader and gl features
 function prepareNext(item){
+
 	//Check if the next material to use is different from the last
 	if(material !== item.material){
 		material = item.material;

@@ -25,9 +25,11 @@ class Renderable extends Transform{
 
 		if(this.vao.isIndexed)
 			gl.drawElements(this.drawMode, this.vao.count, gl.UNSIGNED_SHORT, 0);
+
 			/* wireframe
 			gl.drawElements(gl.LINE_LOOP, this.vao.count, gl.UNSIGNED_SHORT, 0);
 			 */
+
 		else
 			gl.drawArrays(this.drawMode, 0, this.vao.count);
 	}

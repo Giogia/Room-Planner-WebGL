@@ -20,7 +20,7 @@ class VAO{
 
 		let vao = new VAO();
 
-		vao.floatArrayBuffer("vert", vertices, ATTR_POSITION_LOC,vertSize,0,0,true);
+		vao.floatArrayBuffer("vert", vertices, ATTR_POSITION_LOC, vertSize,0,0,true);
 		vao.count = vao.buffers.get("vert").count;
 
 		if(normals)	vao.floatArrayBuffer("norm", normals, ATTR_NORM_LOC,3,0,0,true);
