@@ -3,7 +3,7 @@ import utils from "../maths/Utils.js";
 
 class Material{
 
-	constructor(name, shaderName, color = "000000"){
+	constructor(name, shaderName, color = [0,0,0]){
 
 		this.name = name;
 		this.color = color;
@@ -16,12 +16,13 @@ class Material{
 		return this
 	}
 
+	setColor(color){
+		this.color = (color.length === 3)? color : utils.hexToRgb(color);
+	}
+
 	applyUniforms(){
 
-		if(this.color.length === 3) this.shader.setUniform('color', this.color);
-
-		else this.shader.setUniform('color', utils.hexToRgb(this.color));
-
+		this.shader.setUniform('color', this.color);
 	}
 }
 

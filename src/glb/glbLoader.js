@@ -14,6 +14,8 @@ class GlbLoader{
 		this.buffers = glb.buffers;
 		this.processScene();
 
+		console.log(this);
+
 		let models = [];
 
 		for(let node of this.nodes){
@@ -23,6 +25,8 @@ class GlbLoader{
 
 			models.push( new Mesh(name, meshes) );
 		}
+
+		console.log(models);
 
 		if(models.length === 1) return models[0];
 		else return models;

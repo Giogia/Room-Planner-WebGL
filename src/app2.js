@@ -51,7 +51,7 @@ async function run(){
     scene.push(column);
 
 
-    let models = await importGlb('books');
+    let models = await importGlb('bedSingle');
     for(let model of models){
         model.position.set(1,1,1);
         scene.push(model);

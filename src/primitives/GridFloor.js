@@ -4,12 +4,12 @@ import VAO from "../entities/VertexArray.js"
 
 class GridFloor{
 
-	constructor(gridSize = 0.2, lines = 70, position = 0) {
+	constructor(gridSize = 1, lines = 70, position = 0) {
 
 		this.vao = new VAO("GridFloor", gridVertices(gridSize, lines));
 		this.model = new Renderable(this.vao, "GridFloorMaterial", "wallShader");
 
-		this.model.material.color = "aaaaaa";
+		this.model.material.setColor("aaaaaa");
 		this.model.drawMode = gl.LINES;
 
 		return this.model;
