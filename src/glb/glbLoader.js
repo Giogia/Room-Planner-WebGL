@@ -4,9 +4,8 @@ class GlbLoader{
 	constructor(){
 		this.json = null;
 		this.buffers = null;
-		this.skeletons = [];
-		this.meshes = [];
 		this.nodes = [];
+		this.meshes = [];
 	}
 
 	load(glb){
@@ -25,7 +24,8 @@ class GlbLoader{
 			models.push( new Mesh(name, meshes) );
 		}
 
-		return models;
+		if(models.length === 1) return models[0];
+		else return models;
 
 	}
 
@@ -47,7 +47,7 @@ class GlbLoader{
 			let index = stack.pop();
 			let node = this.json.nodes[index];
 
-			//Add More Nodes to the stack
+			//Add Children Nodes to the stack
 			if(node.children !== undefined)
 				for(let children of node.children) stack.push(children);
 
@@ -57,7 +57,6 @@ class GlbLoader{
 
 	processNode(node){
 
-		//Handle Mesh
 		if(node.mesh !== undefined){
 
 			let mesh = {
@@ -146,12 +145,7 @@ class GlbLoader{
 			array[i] = buffer.dView[dateViewFunction](position,true);
 		}
 
-		return {data:array,
-				max:accessor.max,
-				min:accessor.min,
-				count:accessor.count,
-				compLen:GlbLoader["COMP_"+accessor.type]
-		};
+		return array
 	}
 
 
@@ -167,27 +161,27 @@ class GlbLoader{
 }
 
 //CONSTANTS
-GlbLoader.MODE_POINTS 			= 0;	//Mode Constants for GLTF and WebGL are identical
-GlbLoader.MODE_LINES			= 1;	//https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Constants
+GlbLoader.MODE_POINTS 			= 0;
+GlbLoader.MODE_LINES			= 1;
 GlbLoader.MODE_LINE_LOOP		= 2;
 GlbLoader.MODE_LINE_STRIP		= 3;
 GlbLoader.MODE_TRIANGLES		= 4;
 GlbLoader.MODE_TRIANGLE_STRIP	= 5;
-GlbLoader.MODE_TRIANGLE_FAN	= 6;
+GlbLoader.MODE_TRIANGLE_FAN		= 6;
 
-GlbLoader.TYPE_BYTE			= 5120;
+GlbLoader.TYPE_BYTE				= 5120;
 GlbLoader.TYPE_UNSIGNED_BYTE	= 5121;
 GlbLoader.TYPE_SHORT			= 5122;
 GlbLoader.TYPE_UNSIGNED_SHORT	= 5123;
-GlbLoader.TYPE_UNSIGNED_INT	= 5125;
+GlbLoader.TYPE_UNSIGNED_INT		= 5125;
 GlbLoader.TYPE_FLOAT			= 5126;
 
 GlbLoader.COMP_SCALAR			= 1;
-GlbLoader.COMP_VEC2			= 2;
-GlbLoader.COMP_VEC3			= 3;
-GlbLoader.COMP_VEC4			= 4;
-GlbLoader.COMP_MAT2			= 4;
-GlbLoader.COMP_MAT3			= 9;
-GlbLoader.COMP_MAT4			= 16;
+GlbLoader.COMP_VEC2				= 2;
+GlbLoader.COMP_VEC3				= 3;
+GlbLoader.COMP_VEC4				= 4;
+GlbLoader.COMP_MAT2				= 4;
+GlbLoader.COMP_MAT3				= 9;
+GlbLoader.COMP_MAT4				= 16;
 
 export default GlbLoader

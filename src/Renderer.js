@@ -16,9 +16,7 @@ render.onPreRender		= null;	//Before Rendering starts
 render.onPostRender		= null;	//After Rendering is complete
 
 
-//------------------------------------------------------
-//Private
-//------------------------------------------------------
+
 let CULLING_STATE			= true;		//Global state if the feature is enabled
 let BLENDING_STATE			= false;	//Same---
 let DEPTHTEST_STATE			= true;

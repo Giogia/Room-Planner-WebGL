@@ -6,10 +6,13 @@ class GridFloor{
 
 	constructor(gridSize = 0.2, lines = 70, position = 0) {
 
-		this.vao = new VAO("GridFloor", 4, gridVertices(gridSize, lines));
-		this.model = new Renderable(this.vao, "MatGridFloor");
+		this.vao = new VAO("GridFloor", gridVertices(gridSize, lines));
+		this.model = new Renderable(this.vao, "GridFloorMaterial", "wallShader");
 
+		this.model.material.color = "aaaaaa";
 		this.model.drawMode = gl.LINES;
+
+		return this.model;
 	}
 }
 
@@ -22,13 +25,13 @@ function gridVertices(gridSize, lines){
 
 			let position = i * gridSize;
 
-			vertices.push(	position,0,size,0, position,0,-size,0,
-								-position,0,size,0, -position,0,-size,0,
-								-size,0,position,0, size,0,position,0,
-								-size,0,-position,0, size,0,-position,0
+			vertices.push(	position,0,size,  position,0,-size,
+							-position,0,size, -position,0,-size,
+							-size,0,position, size,0,position,
+							-size,0,-position, size,0,-position
 			);
 		}
-		vertices.push(-size,0,0,1, size,0,0,1, 0,0,size,2, 0,0,-size,2);
+		vertices.push(-size,0,0, size,0,0, 0,0,size, 0,0,-size);
 
 		return vertices;
 	}

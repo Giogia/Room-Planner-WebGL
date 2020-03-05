@@ -1,6 +1,5 @@
 import * as webGL from "./webGL.js"
 import gl from './webGL.js';
-import Material from "./entities/Material.js";
 
 class Shader{
 
@@ -12,23 +11,8 @@ class Shader{
 		this.textureSlot = 0;
 	}
 
-
-	// Clean up resources when the shader is no longer needed.
-	dispose(){
-
-		// Unbind the program if its currently active
-		if(gl.getParameter(gl.CURRENT_PROGRAM) === this.program) gl.useProgram(null);
-		gl.deleteProgram(this.program);
-	}
-
-
 	bind(){
     	gl.useProgram( this.program );
-    	return this;
-    }
-
-    unbind(){
-    	gl.useProgram( null );
     	return this;
     }
 
@@ -39,8 +23,6 @@ class Shader{
 
 		webGL.env.shaders.set(source.name, shader);
 
-		source.uniforms.push({'name':'modelMatrix', 'type':"mat4"});
-
 		if( source.uniforms && source.uniforms.length > 0 ){
 			shader.prepareUniforms( source.uniforms );
 		}
@@ -49,9 +31,11 @@ class Shader{
 			shader.prepareUniformBlocks( source.ubos );
 		}
 
+		/*
 		if( source.materials && source.materials.length > 0 ){
 			shader.prepareMaterials( source.materials, source.name );
 		}
+		 */
 
 		return shader;
 	}
@@ -86,6 +70,7 @@ class Shader{
 		}
 	}
 
+	/*
 	prepareMaterials(sourceMaterials, shader){
 
 		for(let sourceMaterial of sourceMaterials){
@@ -98,6 +83,7 @@ class Shader{
 			}
 		}
 	}
+	 */
 
 	setUniform( name, value ){
 

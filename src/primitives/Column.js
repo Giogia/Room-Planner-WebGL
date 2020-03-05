@@ -18,26 +18,24 @@ class Column{
 		this.setUV();
 		this.setIndices();
 
-		this.vao = new VAO("Column", 4, this.vertices, this.normals, this.uv, this.indices);
-		this.model = new Renderable(this.vao, "MatVecWColor")
+		this.vao = new VAO("Column", this.vertices, this.indices, this.normals, this.uv);
 
+		return new Renderable(this.vao, "WallMaterial", "wallShader");
 	}
 
 	setVertices(){
 
-	    let vertices = [0.0, 0.0, 0.0, 1, 0.0, 1.0, 0.0, 1];
+	    let vertices = [0.0, 0.0, 0.0, 0.0, 1.0, 0.0];
 
 		for(let i = 0; i < this.slices; i++) {
 
             vertices.push(Math.cos(2 * Math.PI / this.slices * i) * this.radius);
             vertices.push(0.0);
 			vertices.push(Math.sin(2 * Math.PI / this.slices * i) * this.radius);
-			vertices.push(0);
 
             vertices.push(Math.cos(2 * Math.PI / this.slices * i) * this.radius);
             vertices.push(this.height);
 			vertices.push(Math.sin(2 * Math.PI / this.slices * i) * this.radius);
-			vertices.push(0);
         }
 
 		this.vertices = vertices
@@ -86,12 +84,12 @@ class Column{
         for(let i = 0; i < this.slices; i++) {
 
             normals.push(Math.cos(2*Math.PI / this.slices * i));
-            normals.push(Math.sin(2*Math.PI / this.slices * i));
             normals.push(0.0);
+            normals.push(Math.sin(2*Math.PI / this.slices * i));
 
 		    normals.push(Math.cos(2*Math.PI / this.slices * i));
+		    normals.push(this.height);
 		    normals.push(Math.sin(2*Math.PI / this.slices * i));
-		    normals.push(1.0);
         }
 
         this.normals = normals;

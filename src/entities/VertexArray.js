@@ -6,7 +6,7 @@ const ATTR_NORM_LOC = 1;
 const ATTR_UV_LOC = 2;
 
 class VAO{
-	constructor(name, vertSize, vertices, normals = null, uv = null, indices = null){
+	constructor(name, vertices, indices = null, normals = null, uv = null){
 
 		this.buffers = new Map();
 		this.id = gl.createVertexArray();
@@ -15,12 +15,12 @@ class VAO{
 
 		gl.bindVertexArray(this.id);
 
-		this.floatArrayBuffer("vert", vertices, ATTR_POSITION_LOC, vertSize,0,0,true);
+		this.floatArrayBuffer("vert", vertices, ATTR_POSITION_LOC, 3,0,0,true);
 		this.count = this.buffers.get("vert").count;
 
+		if(indices) this.indexBuffer("index", indices,true);
 		if(normals)	this.floatArrayBuffer("norm", normals, ATTR_NORM_LOC,3,0,0,true);
 		if(uv)	this.floatArrayBuffer("uv", uv, ATTR_UV_LOC,2,0,0,true);
-		if(indices) this.indexBuffer("index", indices,true);
 
 		gl.bindVertexArray(null);
 		gl.bindBuffer(gl.ARRAY_BUFFER,null);
@@ -31,10 +31,10 @@ class VAO{
 	}
 
 
-	floatArrayBuffer(name, vertices, attrLoc, size, stride = 0, offset = 0, isStatic, isInstance = false){
+	floatArrayBuffer(name, array, attrLoc, size, stride = 0, offset = 0, isStatic, isInstance = false){
 
 		let buffer = gl.createBuffer();
-		let array = (vertices instanceof Float32Array)? vertices : new Float32Array(vertices);
+		array = (array instanceof Float32Array)? array : new Float32Array(array);
 
 		gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
 		gl.bufferData(gl.ARRAY_BUFFER, array, (isStatic !== false)? gl.STATIC_DRAW : gl.DYNAMIC_DRAW );
@@ -48,9 +48,10 @@ class VAO{
 			size:size,
 			stride:stride,
 			offset:offset,
-			count:vertices.length / size
+			count:array.length / size
 		});
 	}
+
 
 	indexBuffer(name, indices, isStatic){
 
@@ -67,7 +68,6 @@ class VAO{
 		this.isIndexed = true;
 		this.count = indices.length;
 	}
-
 }
 
 export default VAO
