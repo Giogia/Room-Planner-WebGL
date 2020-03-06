@@ -2,22 +2,52 @@ import VAO from "../entities/VertexArray.js";
 import Renderable from "../entities/renderable.js";
 
 class Mesh{
-    constructor(name, models) {
+    constructor(nodes, meshes) {
 
-        let shader =  "wallShader";
+        this.shader =  "wallShader";
+        this.renderables = new Map();
 
-        let mesh = new Renderable(null, null, shader);
+        for(let node of nodes){
 
-        for(let model of models){
-            let vao = new VAO(model.name, model.vertices, model.indices, model.normals);
+			let parts = [];
+			for(let index of node.meshes) parts.push(meshes[index]);
 
-            mesh.addItem(vao, model.material, shader);
+			this.renderables.set(node.name, this.createRenderable(node, parts));
+		}
 
-            mesh.items.get(model.name).material.setColor(model.material.pbrMetallicRoughness.baseColorFactor.slice(0,3));
-        }
+        let parent = this.renderables.get(nodes[0].name);
 
-        return mesh;
+        this.linkRenderables(parent);
+
+        return parent;
     }
 
+    linkRenderables(parent){
+
+       for(let child of this.renderables.values()){
+           if(child !== parent){
+               child.setParent(parent);
+           }
+       }
+    }
+
+    createRenderable(node, parts) {
+
+        let renderable = new Renderable(null, null, this.shader);
+        
+        renderable.position.set(node.position[0], node.position[1], node.position[2]);
+        renderable.scale.set(node.scale[0], node.scale[1], node.scale[2]);
+        renderable.rotation.set(node.rotation[0], node.rotation[1], node.rotation[2], node.rotation[3]);
+
+        for (let part of parts) {
+            let vao = new VAO(part.name, part.vertices, part.indices, part.normals);
+
+            renderable.addItem(vao, part.material, this.shader);
+            renderable.items.get(part.name).material.setColor(part.material.pbrMetallicRoughness.baseColorFactor.slice(0, 3));
+        }
+
+        return renderable;
+    }
 }
+
 export default Mesh;

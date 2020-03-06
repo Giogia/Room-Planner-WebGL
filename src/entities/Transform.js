@@ -22,7 +22,10 @@ class Transform{
 	setParent(parent){
 
         if(this.parent != null){
-            this.parent.removeChild(this); }
+            this.parent.removeChild(this);
+        }
+
+        this.parent = parent;
 
         if(parent != null) parent.addChild(this); //addChild also sets parent
 

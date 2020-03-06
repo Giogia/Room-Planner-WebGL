@@ -16,21 +16,7 @@ class GlbLoader{
 
 		console.log(this);
 
-		let models = [];
-
-		for(let node of this.nodes){
-
-			let meshes = [];
-			for(let mesh of node.meshes) meshes.push(this.meshes[mesh]);
-
-			models.push( new Mesh(name, meshes) );
-		}
-
-		console.log(models);
-
-		if(models.length === 1) return models[0];
-		else return models;
-
+		return new Mesh(this.nodes, this.meshes);
 	}
 
 

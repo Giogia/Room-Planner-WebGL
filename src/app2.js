@@ -51,8 +51,10 @@ async function run(){
     scene.push(column);
 
 
-    let model = await importGlb('books');
-    model.position.set(1,1,1);
+    let model = await importGlb('bedBunk');
+
+    console.log(model);
+    model.position.set(0,0,0);
     scene.push(model);
 
     autoResize();
