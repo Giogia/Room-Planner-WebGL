@@ -54,12 +54,13 @@ class Transform{
         return this;
     }
 
+
     updateMatrix(){
 
         this.localMatrix = matrix.fromQuaternionTranslationScale(this.localMatrix, this.rotation, this.position, this.scale);
 
         if(this.parent != null){
-            this.worldMatrix = matrix.multiply(this.parent.worldMatrix, this.localMatrix);
+            this.worldMatrix = matrix.multiply(this.localMatrix, this.parent.worldMatrix);
         }
         else this.worldMatrix = this.copyMatrix(this.worldMatrix, this.localMatrix);
 

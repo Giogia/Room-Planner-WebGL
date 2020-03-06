@@ -52,9 +52,8 @@ async function run(){
 
 
     let model = await importGlb('bedBunk');
-
+    model.position.set(12,0,0);
     console.log(model);
-    model.position.set(0,0,0);
     scene.push(model);
 
     autoResize();

@@ -14,8 +14,6 @@ class GlbLoader{
 		this.buffers = glb.buffers;
 		this.processScene();
 
-		console.log(this);
-
 		return new Mesh(this.nodes, this.meshes);
 	}
 
