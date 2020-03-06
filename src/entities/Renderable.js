@@ -5,26 +5,42 @@ import Material from "./Material.js";
 
 class Renderable extends Transform{
 
-	constructor(vao, material, shader, drawMode = gl.TRIANGLES){
+	constructor(vao= null, material = null, shader, drawMode = gl.TRIANGLES){
+
 		super();
-		this.vao			= vao;
 		this.useCulling		= true;
 		this.useDepthTest	= true;
 		this.drawMode		= drawMode;
-		this.material		= (webGL.env.materials.get(material))? webGL.env.materials.get(material) : new Material(material, shader);
+		this.items			= new Map();
+
+		if(vao) this.addItem(vao, material, shader);
 	}
 
-	draw(wireframe = false){
+	addItem(vao, material, shader){
 
-		if(this.vao.count === 0) return;
+		material = (webGL.env.materials.get(material))? webGL.env.materials.get(material) : new Material(material, shader);
 
-		gl.bindVertexArray(this.vao.id);
+		this.items.set(vao.name, {'vao':vao, 'material': material});
+	}
 
-		if(this.vao.isIndexed)
-			gl.drawElements((wireframe? gl.LINE_LOOP : this.drawMode), this.vao.count, gl.UNSIGNED_SHORT, 0);
+	setColor(color){
+		for(let item of this.items.values()){
+			item.material.setColor(color);
+		}
+	}
+
+	draw(vao, wireframe = false) {
+
+		if (vao.count === 0) return;
+
+		gl.bindVertexArray(vao.id);
+
+		if (vao.isIndexed)
+			gl.drawElements((wireframe ? gl.LINE_LOOP : this.drawMode), vao.count, gl.UNSIGNED_SHORT, 0);
 
 		else
-			gl.drawArrays((wireframe? gl.LINE_LOOP : this.drawMode), 0, this.vao.count);
+			gl.drawArrays((wireframe ? gl.LINE_LOOP : this.drawMode), 0, vao.count);
+
 	}
 }
 

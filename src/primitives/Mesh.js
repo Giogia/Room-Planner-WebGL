@@ -1,21 +1,22 @@
 import VAO from "../entities/VertexArray.js";
 import Renderable from "../entities/renderable.js";
-import Transform from "../entities/Transform.js";
 
 class Mesh{
-    constructor(name, meshes) {
+    constructor(name, models) {
 
-        this.models = [];
+        let shader =  "wallShader";
 
-        for(let mesh of meshes){
-            let vao = new VAO(mesh.name, mesh.vertices, mesh.indices, mesh.normals);
-            let model = new Renderable(vao, mesh.material.name, "wallShader");
+        let mesh = new Renderable(null, null, shader);
 
-            model.material.setColor(mesh.material.pbrMetallicRoughness.baseColorFactor.slice(0,3));
-            this.models.push(model);
+        for(let model of models){
+            let vao = new VAO(model.name, model.vertices, model.indices, model.normals);
+
+            mesh.addItem(vao, model.material, shader);
+
+            mesh.items.get(model.name).material.setColor(model.material.pbrMetallicRoughness.baseColorFactor.slice(0,3));
         }
 
-        return this.models;
+        return mesh;
     }
 
 }

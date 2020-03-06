@@ -33,36 +33,38 @@ function processList(array){
 
 		mesh.updateMatrix();
 
-		if(mesh.draw !== undefined){
-			prepareNext(mesh).draw();
-			if(render.onItemRendered != null) render.onItemRendered(mesh);
-		}
+		processMesh(mesh);
+
+		if(render.onItemRendered != null) render.onItemRendered(mesh);
 
 		if(mesh.children.length > 0) processList(mesh.children);
 	}
 }
 
-function prepareNext(item){
+function processMesh(renderable){
 
-	//Check if the next material to use is different from the last
-	if(material !== item.material){
-		material = item.material;
+	for(let item of renderable.items.values()){
 
-		//Multiple materials can share the same shader, if new shader, turn it on.
-		if(material.shader !== shader){
-			shader = material.shader;
-			shader.bind();
+		//Check if the next material to use is different from the last
+		if(material !== item.material){
+			material = item.material;
+
+			//Multiple materials can share the same shader, if new shader, turn it on.
+			if(material.shader !== shader){
+				shader = material.shader;
+				shader.bind();
+			}
+
+			material.applyUniforms();
 		}
 
-		material.applyUniforms();
+		material.shader.setUniform('modelMatrix', renderable.worldMatrix);
+
+		if(renderable.useCulling !== CULLING_STATE)		gl[ ( (CULLING_STATE	= (!CULLING_STATE))  )?"enable":"disable"	](gl.CULL_FACE);
+		if(renderable.useDepthTest !== DEPTHTEST_STATE)	gl[ ( (DEPTHTEST_STATE	= (!DEPTHTEST_STATE)) )?"enable":"disable"	](gl.DEPTH_TEST);
+
+		renderable.draw(item.vao)
 	}
-
-	material.shader.setUniform('modelMatrix', item.worldMatrix);
-
-	if(item.useCulling !== CULLING_STATE)		gl[ ( (CULLING_STATE	= (!CULLING_STATE))  )?"enable":"disable"	](gl.CULL_FACE);
-	if(item.useDepthTest !== DEPTHTEST_STATE)	gl[ ( (DEPTHTEST_STATE	= (!DEPTHTEST_STATE)) )?"enable":"disable"	](gl.DEPTH_TEST);
-
-	return item;
 }
 
 export default render;

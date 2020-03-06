@@ -8,6 +8,7 @@ const ATTR_UV_LOC = 2;
 class VAO{
 	constructor(name, vertices, indices = null, normals = null, uv = null){
 
+		this.name = name;
 		this.buffers = new Map();
 		this.id = gl.createVertexArray();
 		this.isIndexed = false;

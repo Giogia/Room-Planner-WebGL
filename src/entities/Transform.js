@@ -19,19 +19,6 @@ class Transform{
 		this.visible	= true;
 	}
 
-
-	setPosition(x,y,z){
-	    this.position.set(x,y,z);
-	    return this;
-	}
-
-
-	setScale(x,y,z){
-	    this.scale.set(x,y,z);
-	    return this;
-	}
-
-
 	setParent(parent){
 
         if(this.parent != null){
@@ -71,7 +58,7 @@ class Transform{
         if(this.parent != null){
             this.worldMatrix = matrix.multiply(this.parent.worldMatrix, this.localMatrix);
         }
-        else this.worldMatrix = this.copyMatrix(this.worldMatrix, this.localMatrix); //if not parent, localMatrix is worldMatrix
+        else this.worldMatrix = this.copyMatrix(this.worldMatrix, this.localMatrix);
 
         return true;
     }
