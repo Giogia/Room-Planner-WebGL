@@ -3,9 +3,10 @@ import {ubo} from "../app2.js";
 import utils from "../maths/Utils.js";
 
 class Light extends Transform{
-    constructor(color = [1,1,1]){
+    constructor(color = [1,1,1], ambientColor = [0.3,0.3,0.3]){
         super();
         this.color = color;
+        this.ambientColor = ambientColor;
 
         this.ubo = ubo;
         this.update();
@@ -21,10 +22,16 @@ class Light extends Transform{
 		this.update();
 	}
 
+	setAmbientColor(color){
+		this.ambientColor = (color.length === 3)? color : utils.hexToRgb(color);
+		this.update();
+	}
+
     update(){
 
         this.ubo.setItem( "light_position", this.position.array());
         this.ubo.setItem( "light_color", this.color );
+        this.ubo.setItem( "ambient_light_color", this.ambientColor );
         this.ubo.update();
     }
 }

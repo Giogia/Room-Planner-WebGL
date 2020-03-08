@@ -17,6 +17,9 @@ class UBO {
 			{name:"projection_matrix",type:"mat4"},
 			{name:"light_position", type:"vec3"},
 			{name:"light_color", type:"vec3"},
+			{name:"ambient_light_color", type:"vec3"},
+			{name:"specular_color", type:"vec3"},
+			{name:"specular_shine", type:"float"},
 			]);
 
 		this.bufferSize	= this.calculate( this.items );

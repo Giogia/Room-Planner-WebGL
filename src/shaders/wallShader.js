@@ -17,18 +17,23 @@ let vertexShader =
         mat4 projection_matrix;
         vec3 light_position;
         vec3 light_color;
+        vec3 ambient_light_color;
+        vec3 specular_color;
+        float specular_shine;
     };
     
     uniform mat4 world_matrix;
     uniform vec3 color;
     
     out vec3 fs_color;
+    out vec3 fs_ambient_color;
     out vec3 fs_position;
     out vec3 fs_normal;
     
     void main(void){
     
         fs_color = color;
+        fs_ambient_color = color;
         fs_position = (world_matrix * vec4(position, 1.0)).xyz;
 	    fs_normal = normal;
 	
@@ -42,6 +47,7 @@ let fragmentShader =
 	precision highp float;
 	
 	in vec3 fs_color;
+	in vec3 fs_ambient_color;
 	in vec3 fs_position;
     in vec3 fs_normal;
     
@@ -50,6 +56,9 @@ let fragmentShader =
         mat4 projection_matrix;
         vec3 light_position;
         vec3 light_color;
+        vec3 ambient_light_color;
+        vec3 specular_color;
+        float specular_shine;
 	};
 	
 	out vec4 color;
@@ -62,8 +71,11 @@ let fragmentShader =
 	    
 	    vec3 r = 2.0 * (normal * dot(light_direction, normal)) - light_direction;
 	    vec3 eye_direction = normalize(camera_position - fs_position);
+	    vec3 specular = specular_color * light_color * pow(clamp(dot(eye_direction, r), 0.0, 1.0), specular_shine);
 	    
-		color = vec4(diffuse,1.0);
+	    vec3 ambient = ambient_light_color * fs_ambient_color;
+	    
+		color = vec4(clamp(diffuse + specular + ambient, 0.0, 1.0),1.0);
 	}`;
 
 let fragmentShader2 =
@@ -74,9 +86,6 @@ let fragmentShader2 =
 	in vec3 fs_color;
 	in vec3 fs_position;
     in vec3 fs_normal;
-    
-    in vec3 specular_color
-    in float specular_shine
 	
 	out vec4 color;
 

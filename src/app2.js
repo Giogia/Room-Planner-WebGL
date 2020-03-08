@@ -13,6 +13,7 @@ import {importGlb} from "./loader.js";
 import {furniture} from "./furnitureList.js";
 import Scene from "./entities/Scene.js"
 import Light from "./entities/Light.js";
+import utils from "./maths/Utils.js";
 
 let camera,
     app,
@@ -29,6 +30,9 @@ async function run(){
     webGL.clearFrame();
 
     ubo = new UBO();
+    ubo.setItem('specular_color', utils.hexToRgb('ffffff'));
+    ubo.setItem('specular_shine', 100 );
+
     scene = new Scene();
 
     let shader = createShader(wallShader);
