@@ -1,4 +1,3 @@
-import * as webGL from "../webGL.js";
 import VAO from "../entities/VertexArray.js";
 import Renderable from "../entities/renderable.js";
 

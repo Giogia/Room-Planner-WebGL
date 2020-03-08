@@ -3,7 +3,7 @@ import utils from "../maths/Utils.js";
 
 class Material{
 
-	constructor(name, shaderName, color = [0,0,0]){
+	constructor(name, shaderName, color = [0.75,0.75,0.75]){
 
 		this.name = name;
 		this.color = color;

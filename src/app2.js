@@ -29,9 +29,7 @@ async function run(){
     webGL.setColor("#ffffff");				//Set clear color
     webGL.clearFrame();
 
-    ubo = new UBO();
-    ubo.setItem('specular_color', utils.hexToRgb('ffffff'));
-    ubo.setItem('specular_shine', 100 );
+    createUbo();
 
     scene = new Scene();
 
@@ -91,6 +89,12 @@ function createCamera(){
 
     camera.position.set(0, 0.5, 4);
     camera.lookAt(0,0,0);
+}
+
+function createUbo(){
+    ubo = new UBO();
+    ubo.setItem('specular_color', utils.hexToRgb('ffffff'));
+    ubo.setItem('specular_shine', 100 );
 }
 
 
