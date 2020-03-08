@@ -1,22 +1,24 @@
 import * as webGL from "./webGL.js"
-import RenderLoop from "./RenderLoop.js";
+import RenderLoop from "./entities/RenderLoop.js";
 import Camera from "./entities/Camera.js";
 import {enableOrbitControls} from "./controls2.js";
-import createShader from "./Shader.js";
+import createShader from "./entities/Shader.js";
 import UBO from "./entities/UniformBuffer.js"
 import wallShader from "./shaders/wallShader.js"
 import GridFloor from "./primitives/GridFloor.js";
 import Wall from "./primitives/Wall.js"
 import Column from "./primitives/Column.js"
-import render from "./Renderer.js";
+import render from "./entities/Renderer.js";
 import {importGlb} from "./loader.js";
 import {furniture} from "./furnitureList.js";
-import Scene from "./Scene.js"
+import Scene from "./entities/Scene.js"
+import Light from "./entities/Light.js";
 
 let camera,
     app,
     ubo,
     scene,
+    light,
     renderLoop;
 
 async function run(){
@@ -27,7 +29,7 @@ async function run(){
     webGL.clearFrame();
 
     ubo = new UBO();
-    scene = new Scene()
+    scene = new Scene();
 
     let shader = createShader(wallShader);
     shader.bind();
@@ -38,6 +40,11 @@ async function run(){
     createCamera();
 
     enableOrbitControls();
+
+    light = new Light();
+    light.setPosition(5,20,5);
+
+    light.setColor('ffffff');
 
     renderLoop = new RenderLoop(onRender, 60).start();
 
@@ -52,32 +59,13 @@ async function run(){
     column.position.set(0,0,0);
     scene.add(column);
 
-    console.log(scene);
-
    // Every model in row
     for(let i=0; i< furniture.length; i++){
 
         let model = await importGlb(furniture[i]);
         model.position.set(-0.2*i,0,0);
-        console.log(model);
         scene.add(model);
     }
-
-/*
-    for(let i=0; i< furniture.length; i++){
-
-        let model = await importGlb(furniture[i]);
-
-        model.position.set(0,0,0);
-        //console.log(model);
-        scene.add(model);
-
-        setTimeout( () =>{
-            scene.remove(model);
-        }, 5000);
-
-    }
- */
 
     autoResize();
 }

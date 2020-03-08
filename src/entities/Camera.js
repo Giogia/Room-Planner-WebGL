@@ -46,7 +46,7 @@ class Camera extends Transform{
     update(){
 
         this.updateProjectionMatrix();
-        this.ubo.setItem( "camera_position", this.position );
+        this.ubo.setItem( "camera_position", this.position.array() );
         this.ubo.setItem( "projection_matrix", this.projectionMatrix );
         this.ubo.update();
     }

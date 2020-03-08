@@ -1,4 +1,4 @@
-import gl from "./webGL.js";
+import gl from "../webGL.js";
 
 
 let render = function(scene){

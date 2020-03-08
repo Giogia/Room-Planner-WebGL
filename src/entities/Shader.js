@@ -1,5 +1,5 @@
-import * as webGL from "./webGL.js"
-import gl from './webGL.js';
+import * as webGL from "../webGL.js"
+import gl from '../webGL.js';
 
 class Shader{
 

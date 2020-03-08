@@ -48,6 +48,10 @@ class Vector extends Float32Array{
 
         return this;
     };
+
+    array(){
+        return [this.x,this.y,this.z]
+    }
 }
 
 export default Vector;
