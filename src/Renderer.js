@@ -1,10 +1,10 @@
 import gl from "./webGL.js";
 
 
-let render = function(array){
+let render = function(scene){
 	if(render.onPreRender != null) render.onPreRender(render);
 
-	processList(array);
+	processList(scene.objects.values());
 
 	if(render.onPostRender != null) render.onPostRender(render);
 
@@ -58,7 +58,7 @@ function processMesh(renderable){
 			material.applyUniforms();
 		}
 
-		material.shader.setUniform('modelMatrix', renderable.worldMatrix);
+		material.shader.setUniform('world_matrix', renderable.worldMatrix);
 
 		if(renderable.useCulling !== CULLING_STATE)		gl[ ( (CULLING_STATE	= (!CULLING_STATE))  )?"enable":"disable"	](gl.CULL_FACE);
 		if(renderable.useDepthTest !== DEPTHTEST_STATE)	gl[ ( (DEPTHTEST_STATE	= (!DEPTHTEST_STATE)) )?"enable":"disable"	](gl.DEPTH_TEST);

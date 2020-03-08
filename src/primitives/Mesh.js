@@ -33,8 +33,8 @@ class Mesh{
 
     createRenderable(node, parts) {
 
-        let renderable = new Renderable(null, null, this.shader);
-        
+        let renderable = new Renderable(node.name, null, null, this.shader);
+
         renderable.position.set(node.position[0], node.position[1], node.position[2]);
         renderable.scale.set(node.scale[0], node.scale[1], node.scale[2]);
         renderable.rotation.set(node.rotation[0], node.rotation[1], node.rotation[2], node.rotation[3]);

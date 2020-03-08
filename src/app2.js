@@ -10,11 +10,13 @@ import Wall from "./primitives/Wall.js"
 import Column from "./primitives/Column.js"
 import render from "./Renderer.js";
 import {importGlb} from "./loader.js";
+import {furniture} from "./furnitureList.js";
+import Scene from "./Scene.js"
 
 let camera,
     app,
-    uboGlobal,
-    scene = [],
+    ubo,
+    scene,
     renderLoop;
 
 async function run(){
@@ -24,7 +26,8 @@ async function run(){
     webGL.setColor("#ffffff");				//Set clear color
     webGL.clearFrame();
 
-    uboGlobal = new UBO( "UBOGlobal", 0, [{name:"matProjection",type:"mat4"}]);
+    ubo = new UBO();
+    scene = new Scene()
 
     let shader = createShader(wallShader);
     shader.bind();
@@ -39,22 +42,42 @@ async function run(){
     renderLoop = new RenderLoop(onRender, 60).start();
 
     let gridFloor = new GridFloor();
-    scene.push(gridFloor);
+    scene.add(gridFloor);
 
-    /**/
     let wall = new Wall(5,1,0.2);
     wall.position.set(2.5,0.5,0);
-    scene.push(wall);
+    scene.add(wall);
 
     let column = new Column();
     column.position.set(0,0,0);
-    scene.push(column);
+    scene.add(column);
 
+    console.log(scene);
 
-    let model = await importGlb('bedBunk');
-    model.position.set(12,0,0);
-    console.log(model);
-    scene.push(model);
+   // Every model in row
+    for(let i=0; i< furniture.length; i++){
+
+        let model = await importGlb(furniture[i]);
+        model.position.set(-0.2*i,0,0);
+        console.log(model);
+        scene.add(model);
+    }
+
+/*
+    for(let i=0; i< furniture.length; i++){
+
+        let model = await importGlb(furniture[i]);
+
+        model.position.set(0,0,0);
+        //console.log(model);
+        scene.add(model);
+
+        setTimeout( () =>{
+            scene.remove(model);
+        }, 5000);
+
+    }
+ */
 
     autoResize();
 }
@@ -93,4 +116,4 @@ function autoResize(){
 
 run();
 
-export { app, camera, uboGlobal };
+export { app, camera, ubo };

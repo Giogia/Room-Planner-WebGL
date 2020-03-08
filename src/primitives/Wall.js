@@ -21,7 +21,7 @@ class Wall{
 
 		this.vao = new VAO("Wall", this.vertices, this.indices, this.normals, this.uv);
 
-		return new Renderable(this.vao, "WallMaterial", "wallShader");
+		return new Renderable("Wall", this.vao, "WallMaterial", "wallShader");
 	}
 
 	setVertices(){

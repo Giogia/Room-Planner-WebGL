@@ -7,7 +7,7 @@ class GridFloor{
 	constructor(gridSize = 1, lines = 70, position = 0) {
 
 		this.vao = new VAO("GridFloor", gridVertices(gridSize, lines));
-		this.model = new Renderable(this.vao, "GridFloorMaterial", "wallShader");
+		this.model = new Renderable("GridFloor", this.vao, "GridFloorMaterial", "wallShader");
 
 		this.model.setColor("aaaaaa");
 		this.model.drawMode = gl.LINES;

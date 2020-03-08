@@ -5,9 +5,10 @@ import Material from "./Material.js";
 
 class Renderable extends Transform{
 
-	constructor(vao= null, material = null, shader, drawMode = gl.TRIANGLES){
+	constructor(name =  "unidentified", vao= null, material = null, shader, drawMode = gl.TRIANGLES){
 
 		super();
+		this.name			= name;
 		this.useCulling		= true;
 		this.useDepthTest	= true;
 		this.drawMode		= drawMode;
@@ -15,6 +16,14 @@ class Renderable extends Transform{
 
 		if(vao) this.addItem(vao, material, shader);
 	}
+
+	uuidv4() {
+	  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+		var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+		return v.toString(16);
+	  });
+	}
+
 
 	addItem(vao, material, shader){
 

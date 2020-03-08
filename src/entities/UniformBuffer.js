@@ -3,7 +3,7 @@ import * as webGL from "../webGL.js";
 import ByteBuffer from "./ByteBuffer.js";
 
 class UBO {
-	constructor(name, bindPoint, items) {
+	constructor(name = "UBO", bindPoint = 0) {
 
 		this.name = name;
 		this.items = new Map();
@@ -12,9 +12,14 @@ class UBO {
 		this.bufferSize = 0;
 		this.byteBuffer = null;
 
-		for( let item of items){
-			this.addItem( item.name, item.type );
-		}
+		this.initializeItems([
+			{name:"camera_position",type:"vec3"},
+			{name:"projection_matrix",type:"mat4"},
+			{name:"light_position", type:"vec3"},
+			{name:"light_color", type:"vec3"},
+			{name:"specular_color", type:"vec3"},
+			{name:"specular_shine", type:"float"}
+			]);
 
 		this.bufferSize	= this.calculate( this.items );
 		this.byteBuffer	= new ByteBuffer( this.bufferSize );
@@ -27,6 +32,12 @@ class UBO {
 		webGL.env.ubos.set(name, this);
 
 		return this;
+	}
+
+	initializeItems(items){
+		for( let item of items){
+			this.addItem( item.name, item.type );
+		}
 	}
 
 

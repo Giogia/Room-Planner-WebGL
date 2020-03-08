@@ -20,7 +20,7 @@ class Column{
 
 		this.vao = new VAO("Column", this.vertices, this.indices, this.normals, this.uv);
 
-		return new Renderable(this.vao, "WallMaterial", "wallShader");
+		return new Renderable("Column", this.vao, "WallMaterial", "wallShader");
 	}
 
 	setVertices(){
