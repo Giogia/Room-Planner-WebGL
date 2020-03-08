@@ -14,6 +14,7 @@ import {furniture} from "./furnitureList.js";
 import Scene from "./entities/Scene.js"
 import Light from "./entities/Light.js";
 import utils from "./maths/Utils.js";
+import Ground from "./primitives/Ground.js";
 
 let camera,
     app,
@@ -52,6 +53,10 @@ async function run(){
 
     let gridFloor = new GridFloor();
     scene.add(gridFloor);
+
+    let ground = new Ground();
+    scene.add(ground);
+
 
     let wall = new Wall(5,1,0.2);
     wall.position.set(2.5,0.5,0);
