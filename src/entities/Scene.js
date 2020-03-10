@@ -4,11 +4,14 @@ class Scene{
     }
 
     add(mesh){
-        this.objects.set(mesh.name, mesh);
+        if(mesh.length>0)
+            for(let object of mesh) this.objects.set(object.uuid, object);
+        else
+            this.objects.set(mesh.uuid, mesh);
     }
 
     remove(mesh){
-        this.objects.delete(mesh.name, mesh);
+        this.objects.delete(mesh.uuid, mesh);
     }
 }
 

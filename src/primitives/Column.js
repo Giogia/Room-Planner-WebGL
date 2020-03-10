@@ -1,5 +1,5 @@
 import VAO from "../entities/VertexArray.js";
-import Renderable from "../entities/renderable.js";
+import Renderable from "../entities/Renderable.js";
 
 class Column{
 	constructor(height=1, radius=0.1, slices = 32){
@@ -15,27 +15,28 @@ class Column{
 
 		this.setVertices();
 		this.setNormals();
-		this.setUV();
+		//this.setUV();
 		this.setIndices();
 
 		this.vao = new VAO("Column", this.vertices, this.indices, this.normals, this.uv);
 
-		return new Renderable("Column", this.vao, "WallMaterial", "wallShader");
+		return new Renderable("Column", this.vao, "WallMaterial", "roomPlanner");
 	}
 
 	setVertices(){
 
-	    let vertices = [0.0, 0.0, 0.0, 0.0, 1.0, 0.0];
+	    let vertices = [0.0, -this.height/2, 0.0, 0.0, this.height/2, 0.0];
 
 		for(let i = 0; i < this.slices; i++) {
 
-            vertices.push(Math.cos(2 * Math.PI / this.slices * i) * this.radius);
-            vertices.push(0.0);
+			vertices.push(Math.cos(2 * Math.PI / this.slices * i) * this.radius);
+            vertices.push(-this.height/2);
 			vertices.push(Math.sin(2 * Math.PI / this.slices * i) * this.radius);
 
             vertices.push(Math.cos(2 * Math.PI / this.slices * i) * this.radius);
-            vertices.push(this.height);
+            vertices.push(this.height/2);
 			vertices.push(Math.sin(2 * Math.PI / this.slices * i) * this.radius);
+
         }
 
 		this.vertices = vertices
@@ -47,22 +48,22 @@ class Column{
 
 		for(let i = 0; i < this.slices; i++) {
 
-            indices.push(0);
-            indices.push((i < this.slices - 1) ? 2 * i + 4 : 2);
-            indices.push(2 * i + 2);
+			indices.push(0);
+			indices.push((i < this.slices - 1) ? 2 * i + 4 : 2);
+			indices.push(2 * i + 2);
 
-            indices.push(1);
-            indices.push(2 * i + 3);
-            indices.push((i < this.slices - 1) ? 2 * i + 5 : 3);
+			indices.push(1);
+			indices.push(2 * i + 3);
+			indices.push((i < this.slices - 1) ? 2 * i + 5 : 3);
 
-            indices.push(2 * i + 2);
-            indices.push((i < this.slices - 1) ? 2 * i + 4 : 2);
-            indices.push(2 * i + 3);
+			indices.push(2 * i + 2);
+			indices.push((i < this.slices - 1) ? 2 * i + 4 : 2);
+			indices.push(2 * i + 3);
 
-            indices.push((i < this.slices - 1) ? 2 * i + 4 : 2);
-            indices.push((i < this.slices - 1) ? 2 * i + 5 : 3);
-            indices.push(2 * i + 3);
-        }
+			indices.push((i < this.slices - 1) ? 2 * i + 4 : 2);
+			indices.push((i < this.slices - 1) ? 2 * i + 5 : 3);
+			indices.push(2 * i + 3);
+		}
 
 		this.indices = indices;
 	}
@@ -83,13 +84,13 @@ class Column{
 
         for(let i = 0; i < this.slices; i++) {
 
-            normals.push(Math.cos(2*Math.PI / this.slices * i));
+			normals.push(Math.cos(2 * Math.PI / this.slices * i) * this.radius);
             normals.push(0.0);
-            normals.push(Math.sin(2*Math.PI / this.slices * i));
+			normals.push(Math.sin(2 * Math.PI / this.slices * i) * this.radius);
 
-		    normals.push(Math.cos(2*Math.PI / this.slices * i));
-		    normals.push(this.height);
-		    normals.push(Math.sin(2*Math.PI / this.slices * i));
+            normals.push(Math.cos(2 * Math.PI / this.slices * i) * this.radius);
+            normals.push(this.height);
+			normals.push(Math.sin(2 * Math.PI / this.slices * i) * this.radius);
         }
 
         this.normals = normals;

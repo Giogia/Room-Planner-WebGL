@@ -57,7 +57,7 @@ class Transform{
 
     updateMatrix(){
 
-        this.localMatrix = matrix.fromQuaternionTranslationScale(this.localMatrix, this.rotation, this.position, this.scale);
+        this.localMatrix = matrix.MakeWorld(this.position, this.scale, this.rotation);
 
         if(this.parent != null){
             this.worldMatrix = matrix.multiply(this.localMatrix, this.parent.worldMatrix);

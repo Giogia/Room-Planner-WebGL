@@ -3,9 +3,8 @@ import {MDCRipple} from "@material/ripple/component";
 import {toggleView} from "./view";
 import {deleteDrawing, editDrawing} from "./draw";
 import {app} from "./app";
-import {exportScene} from "./loader";
 import {removeDraggableObject} from "./objects";
-
+import {exportScene} from "./loader";
 
 export let drawButtons, modelButtons, viewButton, firstIcon, secondIcon, downloadButton, editButton, deleteButton, removeButton;
 export let currentMode;

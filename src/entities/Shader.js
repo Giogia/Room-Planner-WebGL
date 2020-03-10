@@ -3,42 +3,25 @@ import gl from '../webGL.js';
 
 class Shader{
 
-    constructor(name, vertShader,fragShader){
+    constructor(name, vertShader,fragShader, uniforms, ubos){
 
     	this.name = name;
 		this.program = webGL.shaderProgram(vertShader,fragShader);
 		this.uniforms = new Map();
 		this.textureSlot = 0;
+
+		if( uniforms && uniforms.length > 0 ) this.prepareUniforms( uniforms );
+		if( ubos && ubos.length > 0 ) this.prepareUniformBlocks( ubos );
+
+		webGL.env.shaders.set(this.name, this);
+
+		return this
 	}
 
 	bind(){
     	gl.useProgram( this.program );
     	return this;
     }
-
-
-	static create(source){
-
-		let shader = new Shader(source.name, source.vertexShader, source.fragmentShader);
-
-		webGL.env.shaders.set(source.name, shader);
-
-		if( source.uniforms && source.uniforms.length > 0 ){
-			shader.prepareUniforms( source.uniforms );
-		}
-
-		if( source.ubos && source.ubos.length > 0 ){
-			shader.prepareUniformBlocks( source.ubos );
-		}
-
-		/*
-		if( source.materials && source.materials.length > 0 ){
-			shader.prepareMaterials( source.materials, source.name );
-		}
-		 */
-
-		return shader;
-	}
 
 
 	prepareUniforms( uniforms ){
@@ -69,21 +52,6 @@ class Shader{
 			gl.uniformBlockBinding( this.program, index, ubo.bindPoint );
 		}
 	}
-
-	/*
-	prepareMaterials(sourceMaterials, shader){
-
-		for(let sourceMaterial of sourceMaterials){
-
-			let material = new Material(sourceMaterial.name, shader);
-
-			if(sourceMaterial.uniforms){
-
-				material.setUniforms(sourceMaterial.uniforms);
-			}
-		}
-	}
-	 */
 
 	setUniform( name, value ){
 
@@ -129,4 +97,4 @@ class Shader{
 
 }
 
-export default Shader.create
+export default Shader

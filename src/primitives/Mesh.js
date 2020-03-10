@@ -1,10 +1,10 @@
 import VAO from "../entities/VertexArray.js";
-import Renderable from "../entities/renderable.js";
+import Renderable from "../entities/Renderable.js";
 
 class Mesh{
     constructor(nodes, meshes) {
 
-        this.shader =  "wallShader";
+        this.shader =  "roomPlanner";
         this.renderables = new Map();
 
         for(let node of nodes){

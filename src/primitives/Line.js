@@ -1,5 +1,5 @@
 import VAO from "../entities/VertexArray.js";
-import Renderable from "../entities/renderable.js";
+import Renderable from "../entities/Renderable.js";
 
 class Line {
     constructor(start, end, size = 1) {
@@ -10,7 +10,7 @@ class Line {
 
         this.vao = new VAO("Line", [start.x, start.y, start.z, end.x, end.y, end.z]);
 
-        return new Renderable("Line", this.vao, "WallMaterial", "wallShader");
+        return new Renderable("Line", this.vao, "WallMaterial", "roomPlanner");
     }
 }
 

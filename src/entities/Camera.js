@@ -1,7 +1,7 @@
 import {matrix} from "../maths/Matrix.js";
 import Transform from "./Transform.js";
 import Vector from "../maths/Vector.js";
-import {ubo} from '../app2.js'
+import {ubo} from '../app.js'
 
 
 class Camera extends Transform{

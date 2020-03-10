@@ -1,58 +1,189 @@
-'use strict';
+import * as webGL from "./webGL.js";
 
-import * as THREE from 'three';
-import * as TWEEN from 'tween.js';
+import UBO from "./entities/UniformBuffer.js";
+import Shader from "./entities/Shader.js";
+import roomPlanner from "./shaders/RoomPlanner.js";
 
-import {enableDragControls, enableMapControls, enableOrbitControls} from "./controls"
-import {addLights} from "./lights";
-import {addObject, initObjects, selectDraggableObject, selectedObject, selectObject} from "./objects";
-import {createModel} from "./walls";
-import {hideCloseWalls, showRoomCenters, tweenCamera} from "./view";
-import {createButtons, downloadButton, showButton, viewButton} from "./buttons";
-import {MDCDrawer} from "@material/drawer/component";
+//import {MDCDrawer} from "@material/drawer/component";
+//import {createButtons, downloadButton, showButton, viewButton} from "./buttons";
+
+import Scene from "./entities/Scene.js";
+import Camera from "./entities/Camera.js";
+
+import {enableOrbitControls} from "./controls2.js";
+
+import Light from "./entities/Light.js";
+import Ground from "./primitives/Ground.js";
+import GridFloor from "./primitives/GridFloor.js";
+
+import render from "./entities/Renderer.js";
+import RenderLoop from "./entities/RenderLoop.js";
+
+import utils from "./maths/Utils.js";
+import Vector from "./maths/Vector.js";
+import {createModel} from "./walls.js";
+import Wall from "./primitives/Wall";
+import {furniture} from "./furnitureList"
 import {importGlb} from "./loader";
-import Vector from "./maths/Vector";
-import Camera from "./entities/Camera";
 
-export let scene, camera, renderer, app, raycaster;
-export let ground;
-export let list, drawer;
-export let canvas, gl;
+let camera,
+    app,
+    ubo,
+    scene,
+    drawer,
+    list,
+    renderLoop;
 
-async function init(){
+async function run(){
+
+    init();
+
+    createUbo();
+    createShader(roomPlanner);
 
     app = document.getElementById( 'app');
     document.body.appendChild(app);
 
     list = document.getElementById('list');
 
-    createDrawer();
-    createButtons();
+    //createDrawer();
+    //createButtons();
 
-    createRenderer();
     createScene();
     createCamera();
-    createRayCaster();
+
+    //createRayCaster();
 
     enableOrbitControls();
-    enableMapControls();
-    enableDragControls();
+    //enableMapControls();
+    //enableDragControls();
 
-    addLights();
+    addLight();
     addGround();
 
-    list.addEventListener('click', addObject);
+    /*list.addEventListener('click', addObject);
     app.addEventListener('mousedown', selectDraggableObject);
     app.addEventListener('click', selectDraggableObject);
     app.addEventListener('dblclick', selectObject);
 
     await createModel();
     await initObjects();
+     */
+
+    await createModel();
+
+    /*
+    let wall = new Wall(2,2,2);
+    wall.position.set(0,1,0);
+    scene.add(wall);
+
+    let column = new Column();
+    column.position.set(0,0,0);
+    scene.add(column);
+    */
+
+   /* Every model in row
+    for(let i=0; i< furniture.length; i++){
+
+        let model = await importGlb(furniture[i]);
+        model.position.set(-0.2*i,0,0);
+        scene.add(model);
+    }
+    */
 
     autoResize();
     animate();
 
-    loadingAnimation();
+    //loadingAnimation();
+}
+
+
+function init(){
+
+    webGL.init();
+    webGL.setSize();
+    webGL.setColor("#3d4043");				//Set clear color
+    webGL.clearFrame();
+}
+
+
+function createUbo(){
+
+    ubo = new UBO();
+    ubo.setItem('specular_color', utils.hexToRgb('#626262'));
+    ubo.setItem('specular_shine', 100 );
+}
+
+
+function createShader(source){
+
+    let shader = new Shader(source.name, source.vertexShader, source.fragmentShader, source.uniforms, source.ubos);
+    shader.bind();
+}
+
+
+function createDrawer() {
+    drawer = new MDCDrawer.attachTo(document.getElementsByClassName("mdc-drawer")[0]);
+    drawer.open = true;
+}
+
+
+function createScene(){
+    scene = new Scene();
+}
+
+
+function createCamera(){
+
+    const fov = 45;
+    const aspect = app.clientWidth / app.clientHeight;
+    const near = 0.1;
+    const far = 100;
+    camera = new Camera(fov, aspect, near, far);
+
+    camera.position.set(-4, 10, 12);
+    camera.lookAt(0,0,0);
+}
+
+function addLight(){
+
+    let light = new Light();
+    light.setPosition(5,20,5);
+    light.setColor('#ffffff');
+}
+
+function addGround(){
+
+    let gridFloor = new GridFloor();
+    scene.add(gridFloor);
+
+    let ground = new Ground();
+    scene.add(ground);
+}
+
+
+function autoResize(){
+
+    window.onresize = () => {
+
+        camera.aspect = app.clientWidth / app.clientHeight;
+        camera.updatePerspectiveMatrix();
+        camera.updateProjectionMatrix();
+
+        webGL.setSize();
+    };
+}
+
+function animate(){
+    renderLoop = new RenderLoop(onRender, 60);
+    renderLoop.start();
+}
+
+
+function onRender(){
+    camera.update();
+    webGL.clearFrame();
+    render(scene);
 }
 
 
@@ -89,110 +220,6 @@ function loadingAnimation(){
      }, 1000);
 }
 
+run();
 
-function createDrawer() {
-    drawer = new MDCDrawer.attachTo(document.getElementsByClassName("mdc-drawer")[0]);
-    drawer.open = false;
-}
-
-
-function createRenderer(){
-
-    canvas = document.createElement('canvas');
-    gl = canvas.getContext( 'webgl2', { alpha: false } );
-
-    renderer = new THREE.WebGLRenderer( { canvas: canvas, context: gl } );
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize( app.clientWidth, app.clientHeight );
-    renderer.gammaOutput = true;
-    app.appendChild(renderer.domElement);
-
-}
-
-
-function createScene(){
-    scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x3d4043);
-    scene.fog = new THREE.Fog(0x3d4043, 15, 60);
-}
-
-
-function createCamera(){
-    const fov = 25;
-    const aspect = app.clientWidth / app.clientHeight;
-    const near = 0.1;
-    const far = 100;
-    camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-
-    camera.position.set(-4, 100, 12);
-    camera.lookAt(0,0,0);
-}
-
-
-function createRayCaster() {
-    raycaster = new THREE.Raycaster();
-}
-
-
-function addGround() {
-
-    ground = new THREE.Mesh(
-        new THREE.PlaneBufferGeometry(100, 100),
-        new THREE.MeshLambertMaterial( {color: 0x030405, depthWrite: false})
-    );
-
-    ground.rotation.x = -Math.PI / 2;
-    ground.position.y = -0.05;
-    ground.receiveShadow = true;
-
-    scene.add(ground);
-
-    let gridHelper = new THREE.GridHelper( 100, 50, 0x000000, 0x000000);
-    scene.add( gridHelper );
-}
-
-
-function autoResize(){
-
-    window.onresize = () => {
-
-        camera.aspect = app.clientWidth / app.clientHeight;
-        camera.updateProjectionMatrix();
-
-        canvas.width = app.clientWidth;
-        canvas.height = app.clientHeight;
-
-        canvas.style.width = app.clientWidth + 'px';
-        canvas.style.height = app.clientHeight + 'px';
-
-        gl.clearColor(0.0, 0.0, 0.0, 1.0);
-		gl.viewport(0.0, 0.0, app.clientWidth, app.clientHeight);
-
-		animate();
-    };
-}
-
-
-export function animate() {
-
-    window.requestAnimationFrame( animate );
-
-    TWEEN.update();
-
-    hideCloseWalls();
-    showRoomCenters();
-
-    renderer.autoClear = true;
-    renderer.render( scene, camera );
-
-    if(selectedObject !== null){
-
-        renderer.autoClear = false;
-        renderer.render(selectedObject, camera);
-    }
-}
-
-init();
-
-
-
+export { app, camera, ubo, scene, drawer, list };

@@ -1,4 +1,4 @@
-import * as THREE from "three";
+
 
 export let textureLoader = new THREE.TextureLoader();
 export let fontLoader = new THREE.FontLoader();

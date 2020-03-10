@@ -1,12 +1,12 @@
 import Transform from "./Transform.js";
-import {ubo} from "../app2.js";
+import {ubo} from "../app.js";
 import utils from "../maths/Utils.js";
 
 class Light extends Transform{
-    constructor(color = [1,1,1], ambientColor = [0.3,0.3,0.3]){
+    constructor(color = '#b1ae94', ambientColor = '#545454'){
         super();
-        this.color = color;
-        this.ambientColor = ambientColor;
+        this.color = utils.hexToRgb(color);
+        this.ambientColor = utils.hexToRgb(ambientColor);
 
         this.ubo = ubo;
         this.update();

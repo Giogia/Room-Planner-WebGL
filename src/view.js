@@ -1,7 +1,7 @@
-import * as TWEEN from "tween.js";
+import * as TWEEN from 'tween.js'
 
-import {draggableObjects, enable} from "./controls";
-import {app, camera, drawer, list, scene} from "./app";
+//import {draggableObjects, enable} from "./controls";
+import {app, camera, drawer, list} from "./app";
 import {addObject, selectDraggableObject, selectObject} from "./objects";
 import {drawModel, floorModel, roomCenters, skirtingModel, wallsModel} from "./walls";
 
@@ -20,7 +20,6 @@ import {
     showModelIcon
 } from "./buttons";
 
-import {directional} from "./lights";
 import Vector from "./maths/Vector";
 import utils from "./maths/Utils";
 
@@ -51,8 +50,6 @@ function drawView(){
     app.removeEventListener('mousedown', selectDraggableObject);
     app.removeEventListener('mouseup', selectDraggableObject);
     app.removeEventListener('dblclick', selectObject);
-
-    scene.remove( directional );
 
     hide(draggableObjects);
     hide(floorModel.children);
@@ -88,8 +85,6 @@ function modelView(){
         app.addEventListener('mousedown', selectDraggableObject);
         app.addEventListener('mouseup', selectDraggableObject);
         app.addEventListener('dblclick', selectObject);
-
-        scene.add( directional );
 
         hide(drawModel.children);
         show(floorModel.children);

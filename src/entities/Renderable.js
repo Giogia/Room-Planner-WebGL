@@ -9,6 +9,7 @@ class Renderable extends Transform{
 
 		super();
 		this.name			= name;
+		this.uuid 			= this.uuid();
 		this.useCulling		= true;
 		this.useDepthTest	= true;
 		this.drawMode		= drawMode;

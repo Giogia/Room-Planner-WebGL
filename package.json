@@ -21,32 +21,15 @@
     "webpack-cli": "^3.3.10"
   },
   "dependencies": {
-    "@google/model-viewer": "^0.7.2",
-    "@loaders.gl/core": "^2.0.3",
-    "@loaders.gl/gltf": "^2.0.3",
-    "@material/drawer": "^4.0.0",
-    "@material/ripple": "^4.0.0",
-    "@windfish-studio/three-map-controls": "^1.1.6",
-    "gl-matrix": "^3.1.0",
+    "@google/model-viewer": "^0.9.0",
+    "@material/drawer": "^5.1.0",
+    "@material/ripple": "^5.1.0",
     "graph.js": "^1.21.1",
-    "handlebars": "^4.5.3",
-    "http-server": "^0.11.1",
-    "json-server": "^0.15.1",
-    "line-intersect": "^2.2.3",
+    "json-server": "^0.16.1",
     "lodash": "^4.17.15",
-    "material-components-web": "^4.0.0",
+    "material-components-web": "^5.1.0",
     "material-design-icons": "^3.0.1",
-    "math": "0.0.3",
-    "path": "^0.12.7",
     "point-in-polygon": "^1.0.1",
-    "random-int": "^2.0.1",
-    "serialize-javascript": "^2.1.2",
-    "serve": "^11.2.0",
-    "three": "^0.110.0",
-    "three-controls": "^1.0.1",
-    "three-dragger": "^1.0.1",
-    "three-orbitcontrols": "^2.110.1",
-    "tween.js": "^16.6.0",
-    "webpack-dev-server": "^3.9.0"
+    "tween.js": "^16.6.0"
   }
 }

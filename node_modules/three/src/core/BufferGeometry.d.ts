@@ -12,7 +12,7 @@ import { InterleavedBufferAttribute } from './InterleavedBufferAttribute';
 
 /**
  * This is a superefficent class for geometries because it saves all data in buffers.
- * It reduces memory costs and cpu cycles. But it is not as easy to work with because of all the nessecary buffer calculations.
+ * It reduces memory costs and cpu cycles. But it is not as easy to work with because of all the necessary buffer calculations.
  * It is mainly interesting when working with static objects.
  *
  * @see <a href="https://github.com/mrdoob/three.js/blob/master/src/core/BufferGeometry.js">src/core/BufferGeometry.js</a>
@@ -33,22 +33,23 @@ export class BufferGeometry extends EventDispatcher {
 	uuid: string;
 	name: string;
 	type: string;
-	index: BufferAttribute;
+	index: BufferAttribute | null;
 	attributes: {
 		[name: string]: BufferAttribute | InterleavedBufferAttribute;
 	};
 	morphAttributes: {
 		[name: string]: ( BufferAttribute | InterleavedBufferAttribute )[];
 	};
+	morphTargetsRelative: boolean;
 	groups: { start: number; count: number; materialIndex?: number }[];
 	boundingBox: Box3;
 	boundingSphere: Sphere;
 	drawRange: { start: number; count: number };
 	userData: {[key: string]: any};
-	isBufferGeometry: boolean;
+	readonly isBufferGeometry: true;
 
-	getIndex(): BufferAttribute;
-	setIndex( index: BufferAttribute | number[] ): void;
+	getIndex(): BufferAttribute | null;
+	setIndex( index: BufferAttribute | number[] | null ): void;
 
 	setAttribute( name: string, attribute: BufferAttribute | InterleavedBufferAttribute ): BufferGeometry;
 	getAttribute( name: string ): BufferAttribute | InterleavedBufferAttribute;
@@ -62,7 +63,7 @@ export class BufferGeometry extends EventDispatcher {
 	/**
 	 * Bakes matrix transform directly into vertex coordinates.
 	 */
-	applyMatrix( matrix: Matrix4 ): BufferGeometry;
+	applyMatrix4( matrix: Matrix4 ): BufferGeometry;
 
 	rotateX( angle: number ): BufferGeometry;
 	rotateY( angle: number ): BufferGeometry;

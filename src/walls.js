@@ -1,16 +1,16 @@
 'use strict';
 
 import _ from 'lodash';
-import * as THREE from 'three';
-import {LineGeometry} from "three/examples/jsm/lines/LineGeometry";
-import {LineMaterial} from "three/examples/jsm/lines/LineMaterial";
-import {Line2} from "three/examples/jsm/lines/Line2";
+
 import Graph from "graph.js/dist/graph.es6";
-import {setTexture, skirtingMaterial} from "./materials";
-import {hide} from "./view";
+//import {setTexture, skirtingMaterial} from "./materials";
+//import {hide} from "./view";
 import {scene} from "./app";
 import {loadJson, saveJson} from "./loader";
-import {addText} from "./draw";
+import Column from "./primitives/Column";
+import Wall from "./primitives/Wall";
+import utils from "./maths/Utils";
+//import {addText} from "./draw";
 
 let inside = require("point-in-polygon");
 
@@ -24,7 +24,7 @@ export async function createModel (){
 
     floorPlan = await loadJson('floorPlan');
 
-    drawModel = createDrawModel();
+    /*drawModel = createDrawModel();
     scene.add(drawModel);
     hide(drawModel.children);
 
@@ -34,25 +34,26 @@ export async function createModel (){
 
     skirtingModel = createWallsModel(true);
     scene.add(skirtingModel);
+     */
 
     wallsModel = createWallsModel();
     scene.add(wallsModel);
 
-    await saveJson('floorPlan', floorPlan);
+    //await saveJson('floorPlan', floorPlan);
 }
 
 
 export function createDrawModel () {
 
-  let points = getPointModels(floorPlan.points);
-  let walls = getLineModels(floorPlan);
+    let points = getPointModels(floorPlan.points);
+    let walls = getLineModels(floorPlan);
 
-  let group = new THREE.Group();
+    let group = [];
 
-  _.each(points, point => group.add(point));
-  _.each(walls, wall => group.add(wall));
+    _.each(points, point => group.push(point));
+    _.each(walls, wall => group.push(wall));
 
-  _.each(floorPlan.walls, wall => {
+    /*_.each(floorPlan.walls, wall => {
 
       let distanceX = wall.to.x - wall.from.x;
       let distanceZ = wall.to.z - wall.from.z;
@@ -73,23 +74,24 @@ export function createDrawModel () {
       let message = (Math.floor(Math.hypot(distanceX, distanceZ)*10)/10).toString() + 'm';
 
       let text = addText(message, x, 0, z);
-      group.add(text);
-  });
+      group.push(text);
+    });
+    */
 
   return group;
 }
 
 export function createWallsModel (skirting=false) {
 
-  let columns = getColumnsModels(floorPlan.points, skirting);
-  let walls = getWallsModels(floorPlan, skirting);
+    let columns = getColumnsModels(floorPlan.points, skirting);
+    let walls = getWallsModels(floorPlan, skirting);
 
-  let group = new THREE.Group();
+    let group = [];
 
-  _.each(walls, (wall) => group.add(wall));
-  _.each(columns, (column) => group.add(column));
+    _.each(walls, (wall) => group.push(wall));
+    _.each(columns, (column) => group.push(column));
 
-  return group;
+    return group;
 }
 
 
@@ -112,87 +114,67 @@ function getPointModels (points) {
 }
 
 function getLineModels ({walls, points}) {
-  return _.map(walls, ({from, to}) => {
+    return _.map(walls, ({from, to}) => {
 
-      let geometry = new LineGeometry();
-      let material = new LineMaterial({color: 0xffffff, linewidth: 0.0075, transparent: true, opacity: 0.9});
+        let geometry = new LineGeometry();
+        let material = new LineMaterial({color: 0xffffff, linewidth: 0.0075, transparent: true, opacity: 0.9});
 
-      geometry.setPositions([from.x, 0, from.z, to.x, 0, to.z]);
+        geometry.setPositions([from.x, 0, from.z, to.x, 0, to.z]);
 
-      return new Line2(geometry, material);
-  });
+        return new Line2(geometry, material);
+    });
 }
 
 function getColumnsModels (points, skirting=false){
-  return _.map(points, ({x, z})=> {
+    return _.map(points, ({x, z})=> {
 
-      let height = skirting? HEIGHT/20 : HEIGHT;
-      let depth = skirting? 1.2 * DEPTH : DEPTH;
+        let height = skirting? HEIGHT/20 : HEIGHT;
+        let depth = skirting? 1.2 * DEPTH : DEPTH;
 
-      let geometry = new THREE.CylinderGeometry(depth/2, depth/2, height, 32);
-      let material = skirting? skirtingMaterial : new THREE.MeshPhongMaterial({color: 0xffffff, transparent: true, opacity: 1});
+        let mesh = new Column(height, depth/2);
 
-      let mesh = new THREE.Mesh(geometry, material);
+        mesh.position.set(x, height/2, z);
 
-      mesh.position.set(x, height/2, z);
-      mesh.castShadow = true;
-      mesh.receiveShadow = true;
-
-      return mesh;
-  });
+        return mesh;
+    });
 }
 
 function getWallsModels ({walls, points}, skirting=false) {
-  return _.map(walls, ({from, to}) => {
+    return _.map(walls, ({from, to}) => {
 
-    let startPoint = _.find(points, {x:from.x, z:from.z});
-    let endPoint = _.find(points, {x:to.x, z:to.z});
-    let width = Math.hypot(from.x - to.x, from.z - to.z);
+        let startPoint = _.find(points, {x:from.x, z:from.z});
+        let endPoint = _.find(points, {x:to.x, z:to.z});
+        let width = Math.hypot(from.x - to.x, from.z - to.z);
 
-    let height = skirting? HEIGHT/20 : HEIGHT;
-    let depth = skirting? 1.2 * DEPTH : DEPTH;
+        let height = skirting? HEIGHT/20 : HEIGHT;
+        let depth = skirting? 1.2 * DEPTH : DEPTH;
 
-    let geometry = new THREE.BoxBufferGeometry(width, height, depth);
-    let material = skirting? skirtingMaterial : new THREE.MeshStandardMaterial({
-        roughness: 0.8,
-        color: 0xffffff,
-        bumpScale: 0.0005,
-        metalness: 0.2,
-        polygonOffset: true,
-        polygonOffsetFactor: -1,
-        transparent: true,
-        opacity: 1,
+        let mesh = new Wall(width, height, depth);
+
+        /*if(!skirting){
+            let wall = _.find(floorPlan.walls, {from: {x:from.x, z:from.z}, to: {x:to.x, z:to.z}});
+
+            if(wall.texture !== undefined){
+                setTexture( wall.texture, material, [width,1]);
+                wall.mesh = mesh.uuid;
+            }
+            if(wall.texture === undefined){
+                setTexture( 'plaster', material, [width,1]);
+                wall.mesh = mesh.uuid;
+                wall.texture = 'plaster';
+            }
+        }
+         */
+
+        let offsetX = startPoint.x - endPoint.x;
+        let offsetZ = startPoint.z - endPoint.z;
+        let angle = -Math.atan(offsetZ / offsetX);
+
+        mesh.position.set(endPoint.x + offsetX / 2, height / 2, endPoint.z + offsetZ / 2);
+        mesh.rotation.rotateY(angle);
+
+        return mesh;
     });
-
-    let mesh = new THREE.Mesh(geometry, material);
-
-    if(!skirting){
-        let wall = _.find(floorPlan.walls, {from: {x:from.x, z:from.z}, to: {x:to.x, z:to.z}});
-
-        if(wall.texture !== undefined){
-            setTexture( wall.texture, material, [width,1]);
-            wall.mesh = mesh.uuid;
-        }
-        if(wall.texture === undefined){
-            setTexture( 'plaster', material, [width,1]);
-            wall.mesh = mesh.uuid;
-            wall.texture = 'plaster';
-        }
-    }
-
-    let offsetX = startPoint.x - endPoint.x;
-    let offsetZ = startPoint.z - endPoint.z;
-    let angle = -Math.atan(offsetZ / offsetX);
-
-    mesh.name = 'wall';
-
-    mesh.position.set(endPoint.x + offsetX / 2, height / 2, endPoint.z + offsetZ / 2);
-    mesh.castShadow = true;
-    mesh.receiveShadow = true;
-    mesh.rotateY(angle);
-
-    return mesh;
-  });
 }
 
 export function createFloorModel() {

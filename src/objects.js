@@ -1,8 +1,8 @@
 import {importModel, loadJson, saveJson} from "./loader";
 import {scene} from "./app";
-import {draggableObjects} from "./controls";
+//import {draggableObjects} from "./controls";
 import {hideButton, removeButton, showButton} from "./buttons";
-import {selectedMaterial, setTexture} from "./materials";
+//import {selectedMaterial, setTexture} from "./materials";
 import {floorPlan} from "./walls";
 import {floorMaterials, wallMaterials} from "./materialsList";
 import utils from "./maths/Utils";

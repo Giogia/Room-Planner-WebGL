@@ -1,5 +1,5 @@
 import VAO from "../entities/VertexArray.js";
-import Renderable from "../entities/renderable.js";
+import Renderable from "../entities/Renderable.js";
 
 class Wall{
 	constructor(width=1, height=1, depth=1){
@@ -20,7 +20,7 @@ class Wall{
 
 		this.vao = new VAO("Wall", this.vertices, this.indices, this.normals, this.uv);
 
-		return new Renderable("Wall", this.vao, "WallMaterial", "wallShader");
+		return new Renderable("Wall", this.vao, "WallMaterial", "roomPlanner");
 	}
 
 	setVertices(){

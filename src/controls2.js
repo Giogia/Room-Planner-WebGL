@@ -1,9 +1,9 @@
 'use strict';
 
-import {app, camera} from "./app2.js";
+import {camera} from "./app.js";
 import utils from "./maths/Utils.js";
 
-let controlZone = document.getElementById( 'app');
+let controlZone = document.getElementById( 'controls');
 
 let delta;
 let object = null;
@@ -39,6 +39,7 @@ async function doMouseUp(event) {
 
 
 function orbitMove(event) {
+	event.preventDefault();
 	if(enable.orbit && moveControls) {
 
 		let dx = lastMouseX - event.pageX;

@@ -33,13 +33,13 @@ npm install @material/notched-outline
 ### HTML Structure
 
 ```html
-<div class="mdc-notched-outline">
-  <div class="mdc-notched-outline__leading"></div>
-  <div class="mdc-notched-outline__notch">
-    <label class="mdc-floating-label">Label</label>
-  </div>
-  <div class="mdc-notched-outline__trailing"></div>
-</div>
+<span class="mdc-notched-outline">
+  <span class="mdc-notched-outline__leading"></span>
+  <span class="mdc-notched-outline__notch">
+    <span class="mdc-floating-label">Label</span>
+  </span>
+  <span class="mdc-notched-outline__trailing"></span>
+</span>
 ```
 
 > Note that the [MDC Floating Label](../mdc-floating-label/README.md) component is placed inside the notch element when
@@ -52,7 +52,7 @@ npm install @material/notched-outline
 ### Styles
 
 ```scss
-@import "@material/notched-outline/mdc-notched-outline";
+@use "@material/notched-outline/mdc-notched-outline";
 ```
 
 ### JavaScript Instantiation
@@ -82,10 +82,10 @@ CSS Class | Description
 
 Mixin | Description
 --- | ---
-`mdc-notched-outline-color($color)` | Customizes the border color of the notched outline.
-`mdc-notched-outline-stroke-width($width)` | Changes notched outline width to a specified pixel value.
-`mdc-notched-outline-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to notched outline element with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
-`mdc-notched-outline-floating-label-float-position($positionY, $positionX, $scale)` | Sets the position and scale of the floating label inside the notched outline.
+`color($color)` | Customizes the border color of the notched outline.
+`stroke-width($width)` | Changes notched outline width to a specified pixel value.
+`shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to notched outline element with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
+`floating-label-float-position($positionY, $positionX, $scale)` | Sets the position and scale of the floating label inside the notched outline.
 
 ## `MDCNotchedOutline` Properties and Methods
 
