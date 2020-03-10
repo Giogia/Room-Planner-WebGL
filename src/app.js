@@ -25,6 +25,7 @@ import {createModel} from "./walls.js";
 import Wall from "./primitives/Wall";
 import {furniture} from "./furnitureList"
 import {importGlb} from "./loader";
+import {hideCloseWalls} from "./view";
 
 let camera,
     app,
@@ -183,6 +184,7 @@ function animate(){
 function onRender(){
     camera.update();
     webGL.clearFrame();
+    hideCloseWalls();
     render(scene);
 }
 

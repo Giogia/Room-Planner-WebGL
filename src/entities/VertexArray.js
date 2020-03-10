@@ -16,12 +16,12 @@ class VAO{
 
 		gl.bindVertexArray(this.id);
 
-		this.floatArrayBuffer("vert", vertices, ATTR_POSITION_LOC, 3,0,0,true);
+		this.floatArrayBuffer("vert", vertices, ATTR_POSITION_LOC, 3,0,0);
 		this.count = this.buffers.get("vert").count;
 
-		if(indices) this.indexBuffer("index", indices,true);
-		if(normals)	this.floatArrayBuffer("norm", normals, ATTR_NORM_LOC,3,0,0,true);
-		if(uv)	this.floatArrayBuffer("uv", uv, ATTR_UV_LOC,2,0,0,true);
+		if(indices) this.indexBuffer("index", indices);
+		if(normals)	this.floatArrayBuffer("norm", normals, ATTR_NORM_LOC,3,0,0);
+		if(uv)	this.floatArrayBuffer("uv", uv, ATTR_UV_LOC,2,0,0);
 
 		gl.bindVertexArray(null);
 		gl.bindBuffer(gl.ARRAY_BUFFER,null);
@@ -32,7 +32,7 @@ class VAO{
 	}
 
 
-	floatArrayBuffer(name, array, attrLoc, size, stride = 0, offset = 0, isStatic, isInstance = false){
+	floatArrayBuffer(name, array, attrLoc, size, stride = 0, offset = 0, isStatic = false, isInstance = false){
 
 		let buffer = gl.createBuffer();
 		array = (array instanceof Float32Array)? array : new Float32Array(array);
@@ -54,7 +54,7 @@ class VAO{
 	}
 
 
-	indexBuffer(name, indices, isStatic){
+	indexBuffer(name, indices, isStatic = false){
 
 		let buffer = gl.createBuffer();
 		let array = (indices instanceof Uint16Array)? indices : new Uint16Array(indices);

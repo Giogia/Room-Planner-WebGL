@@ -1,6 +1,5 @@
 import Transform from "./Transform.js";
 import gl from "../webGL.js";
-import * as webGL from "../webGL.js";
 import Material from "./Material.js";
 
 class Renderable extends Transform{
@@ -28,7 +27,7 @@ class Renderable extends Transform{
 
 	addItem(vao, material, shader){
 
-		material = (webGL.env.materials.get(material))? webGL.env.materials.get(material) : new Material(material, shader);
+		material = new Material(material, shader);
 
 		this.items.set(vao.name, {'vao':vao, 'material': material});
 	}

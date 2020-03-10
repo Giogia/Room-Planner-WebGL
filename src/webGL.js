@@ -24,6 +24,7 @@ function init(){
     gl.enable(gl.CULL_FACE);							//Cull back face, so only show triangles that are created clockwise
     gl.depthFunc(gl.LEQUAL);							//Near things obscure far things
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);	//Setup default alpha blending
+    gl.enable(gl.BLEND);
 
 }
 
@@ -54,7 +55,7 @@ function setSize(){
 }
 
 
-function createArrayBuffer (array, staticDraw = true){
+function createArrayBuffer (array, staticDraw = false){
 
     let buffer = gl.createBuffer();
 

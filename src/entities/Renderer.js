@@ -45,18 +45,15 @@ function processMesh(renderable){
 
 	for(let item of renderable.items.values()){
 
-		//Check if the next material to use is different from the last
-		if(material !== item.material){
-			material = item.material;
+		material = item.material;
 
-			//Multiple materials can share the same shader, if new shader, turn it on.
-			if(material.shader !== shader){
-				shader = material.shader;
-				shader.bind();
-			}
-
-			material.applyUniforms();
+		//Multiple materials can share the same shader, if new shader, turn it on.
+		if(material.shader !== shader){
+			shader = material.shader;
+			shader.bind();
 		}
+
+		material.applyUniforms();
 
 		material.shader.setUniform('world_matrix', renderable.worldMatrix);
 

@@ -149,10 +149,12 @@ export function tweenCamera(targetPosition, duration=2500, resetMap=false){
 
 export function hideCloseWalls(){
     if(!floorPlanView){
-        for( let mesh of wallsModel.children){
+        for(let mesh of wallsModel){
             let distance = utils.distance(camera.position, mesh.position);
             mesh.visible = distance >= 5;
-            mesh.material.opacity = 5 * Math.log(distance - 10) - 5;
+            for(let item of mesh.items.values()) {
+                item.material.opacity = Math.min(1.0, 5 * Math.log(distance - 5) - 5);
+            }
         }
     }
 }

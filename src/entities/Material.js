@@ -7,7 +7,7 @@ class Material{
 
 		this.name = name;
 		this.color = color;
-    	this.opacity = null;
+    	this.opacity = 1.0;
 
 		this.shader = webGL.env.shaders.get(shaderName);
 
@@ -22,7 +22,9 @@ class Material{
 
 	applyUniforms(){
 
-		this.shader.setUniform('color', this.color);
+		let rgba = [this.color[0],this.color[1],this.color[2], this.opacity];
+
+		this.shader.setUniform('color', rgba);
 	}
 }
 

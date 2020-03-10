@@ -2,7 +2,7 @@ let name = "roomPlanner";
 
 let ubos = [ "UBO" ];
 
-let uniforms = [{'name':'color', 'type':'vec3'},
+let uniforms = [{'name':'color', 'type':'vec4'},
                 {'name':'world_matrix', 'type':'mat4'}];
 
 
@@ -23,10 +23,10 @@ let vertexShader =
     };
     
     uniform mat4 world_matrix;
-    uniform vec3 color;
+    uniform vec4 color;
     
-    out vec3 fs_color;
-    out vec3 fs_ambient_color;
+    out vec4 fs_color;
+    out vec4 fs_ambient_color;
     out vec3 fs_position;
     out vec3 fs_normal;
     
@@ -46,8 +46,8 @@ let fragmentShader =
     
 	precision highp float;
 	
-	in vec3 fs_color;
-	in vec3 fs_ambient_color;
+	in vec4 fs_color;
+	in vec4 fs_ambient_color;
 	in vec3 fs_position;
     in vec3 fs_normal;
     
@@ -67,15 +67,15 @@ let fragmentShader =
 	
 	    vec3 light_direction = normalize(light_position);
 	    vec3 normal = normalize(fs_normal);
-	    vec3 diffuse = fs_color * light_color * clamp(dot(light_direction, normal), 0.0, 1.0);
+	    vec3 diffuse = fs_color.xyz * light_color * clamp(dot(light_direction, normal), 0.0, 1.0);
 	    
 	    vec3 r = 2.0 * (normal * dot(light_direction, normal)) - light_direction;
 	    vec3 eye_direction = normalize(camera_position - fs_position);
 	    vec3 specular = specular_color * light_color * pow(clamp(dot(eye_direction, r), 0.0, 1.0), specular_shine);
 	    
-	    vec3 ambient = ambient_light_color * fs_ambient_color;
+	    vec3 ambient = ambient_light_color * fs_ambient_color.xyz;
 	    
-		color = vec4(clamp(diffuse + specular + ambient, 0.0, 1.0),1.0);
+		color = vec4(clamp(diffuse + specular + ambient, 0.0, 1.0), fs_color.a);
 	}`;
 
 
