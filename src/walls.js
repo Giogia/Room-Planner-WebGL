@@ -4,12 +4,15 @@ import _ from 'lodash';
 
 import Graph from "graph.js/dist/graph.es6";
 //import {setTexture, skirtingMaterial} from "./materials";
-//import {hide} from "./view";
+import {hide} from "./view";
 import {scene} from "./app";
 import {loadJson, saveJson} from "./loader";
 import Column from "./primitives/Column";
 import Wall from "./primitives/Wall";
 import utils from "./maths/Utils";
+import Point from "./primitives/Point";
+import Line from "./primitives/Line";
+import Vector from "./maths/Vector";
 //import {addText} from "./draw";
 
 let inside = require("point-in-polygon");
@@ -24,17 +27,18 @@ export async function createModel (){
 
     floorPlan = await loadJson('floorPlan');
 
-    /*drawModel = createDrawModel();
+    drawModel = createDrawModel();
     scene.add(drawModel);
-    hide(drawModel.children);
+    hide(drawModel);
 
+    /*
     [floorModel, roomCenters] = createFloorModel();
     scene.add(floorModel);
     scene.add(roomCenters);
 
     skirtingModel = createWallsModel(true);
     scene.add(skirtingModel);
-     */
+    */
 
     wallsModel = createWallsModel();
     scene.add(wallsModel);
@@ -98,30 +102,24 @@ export function createWallsModel (skirting=false) {
 function getPointModels (points) {
   return _.map(points, ({x, z, selected}) => {
 
-      let geometry = new THREE.SphereBufferGeometry(0.06, 32, 32);
-      let material = selected ? new THREE.MeshBasicMaterial({color: 0xe2a149}): new THREE.MeshBasicMaterial({color: 'white'});
+      let mesh = new Point();
 
-      let mesh = new THREE.Mesh(geometry, material);
+      if(selected) mesh.setColor('#4d8dff');
 
-      mesh.castShadow = true;
-      mesh.receiveShadow = true;
-      mesh.position.x = x;
-      mesh.position.y = 0;
-      mesh.position.z = z;
+      mesh.position.set(x, 0, z);
 
       return mesh;
   });
 }
 
 function getLineModels ({walls, points}) {
+    console.log(walls);
     return _.map(walls, ({from, to}) => {
 
-        let geometry = new LineGeometry();
-        let material = new LineMaterial({color: 0xffffff, linewidth: 0.0075, transparent: true, opacity: 0.9});
+        let start = new Vector(from.x, 0, from.z);
+        let end = new Vector(to.x, 0, to.z);
 
-        geometry.setPositions([from.x, 0, from.z, to.x, 0, to.z]);
-
-        return new Line2(geometry, material);
+        return new Line(start, end);
     });
 }
 
@@ -218,7 +216,7 @@ export function createFloorModel() {
         }
     }
 
-    let floor = new THREE.Group();
+    let floor = [];
     let centers = [];
     let extrudeSettings = { depth: 0.03, bevelEnabled: false };
 
@@ -292,7 +290,7 @@ export function createFloorModel() {
         }
     }
 
-    let centersGroup = new THREE.Group();
+    let centersGroup = [];
     _.each(getPointModels(centers), (wall) => centersGroup.add(wall));
 
     return [floor, centersGroup];

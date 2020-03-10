@@ -53,8 +53,9 @@ function processMesh(renderable){
 			shader.bind();
 		}
 
-		material.applyUniforms();
+		let rgba = [material.color[0],material.color[1],material.color[2], material.opacity];
 
+		material.shader.setUniform('color', rgba);
 		material.shader.setUniform('world_matrix', renderable.worldMatrix);
 
 		if(renderable.useCulling !== CULLING_STATE)		gl[ ( (CULLING_STATE	= (!CULLING_STATE))  )?"enable":"disable"	](gl.CULL_FACE);

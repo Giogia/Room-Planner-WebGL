@@ -26,6 +26,8 @@ import Wall from "./primitives/Wall";
 import {furniture} from "./furnitureList"
 import {importGlb} from "./loader";
 import {hideCloseWalls} from "./view";
+import Line from "./primitives/Line";
+import Point from "./primitives/Point";
 
 let camera,
     app,
@@ -70,10 +72,15 @@ async function run(){
     await createModel();
     await initObjects();
      */
-
     await createModel();
 
     /*
+    let point = new Point();
+    scene.add(point);
+
+    let line = new Line(new Vector(-5,0,-2.5), new Vector(-5,0,-5));
+    scene.add(line);
+
     let wall = new Wall(2,2,2);
     wall.position.set(0,1,0);
     scene.add(wall);
@@ -184,7 +191,7 @@ function animate(){
 function onRender(){
     camera.update();
     webGL.clearFrame();
-    hideCloseWalls();
+    //hideCloseWalls();
     render(scene);
 }
 

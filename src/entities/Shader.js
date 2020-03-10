@@ -84,9 +84,9 @@ class Shader{
 				break;
 
 			case "sampler2DArray":
-				gl.ctx.activeTexture(	gl.TEXTURE0 + this.textureSlot);
-				gl.ctx.bindTexture(		gl.TEXTURE_2D_ARRAY, value);
-				gl.ctx.uniform1i(		uniform.loc, this.textureSlot);
+				gl.activeTexture(	gl.TEXTURE0 + this.textureSlot);
+				gl.bindTexture(		gl.TEXTURE_2D_ARRAY, value);
+				gl.uniform1i(		uniform.loc, this.textureSlot);
 				this.textureSlot++;
 				break;
 

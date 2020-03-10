@@ -19,13 +19,6 @@ class Material{
 	setColor(color){
 		this.color = (color.length === 3)? color : utils.hexToRgb(color);
 	}
-
-	applyUniforms(){
-
-		let rgba = [this.color[0],this.color[1],this.color[2], this.opacity];
-
-		this.shader.setUniform('color', rgba);
-	}
 }
 
 export default Material;
