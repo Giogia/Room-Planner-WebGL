@@ -110,7 +110,7 @@ function init(){
 
     webGL.init();
     webGL.setSize();
-    webGL.setColor("#3d4043");				//Set clear color
+    webGL.setColor('#2E3236');				//Set clear color
     webGL.clearFrame();
 }
 
@@ -120,6 +120,8 @@ function createUbo(){
     ubo = new UBO();
     ubo.setItem('specular_color', utils.hexToRgb('#626262'));
     ubo.setItem('specular_shine', 100 );
+    ubo.setItem('fog_color', utils.hexToRgb('#2E3236'));
+    ubo.setItem('fog_density', 0.037 );
 }
 
 

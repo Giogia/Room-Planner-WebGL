@@ -20,6 +20,8 @@ class UBO {
 			{name:"ambient_light_color", type:"vec3"},
 			{name:"specular_color", type:"vec3"},
 			{name:"specular_shine", type:"float"},
+			{name:"fog_color", type:"vec3"},
+			{name:"fog_density", type:"float"}
 			]);
 
 		this.bufferSize	= this.calculate( this.items );

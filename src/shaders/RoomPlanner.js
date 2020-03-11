@@ -20,6 +20,8 @@ let vertexShader =
         vec3 ambient_light_color;
         vec3 specular_color;
         float specular_shine;
+        vec3 fog_color;
+        float fog_density;
     };
     
     uniform mat4 world_matrix;
@@ -51,6 +53,8 @@ let fragmentShader =
 	in vec3 fs_position;
     in vec3 fs_normal;
     
+    in float fog_depth;
+    
     uniform UBO{
         vec3 camera_position;
         mat4 projection_matrix;
@@ -59,6 +63,9 @@ let fragmentShader =
         vec3 ambient_light_color;
         vec3 specular_color;
         float specular_shine;
+        vec3 fog_color;
+        float fog_density;
+        
 	};
 	
 	out vec4 color;
@@ -76,6 +83,12 @@ let fragmentShader =
 	    vec3 ambient = ambient_light_color * fs_ambient_color.xyz;
 	    
 		color = vec4(clamp(diffuse + specular + ambient, 0.0, 1.0), fs_color.a);
+		
+		#define LOG2 1.442695
+		float fog_distance = length(fs_position);
+		float fog_amount = 1.0 - exp2( - fog_density * fog_density * fog_distance * fog_distance * LOG2);
+		
+		color = mix(color, vec4(fog_color,1.0), clamp(fog_amount, 0.0, 1.0));  
 	}`;
 
 

@@ -63,7 +63,7 @@ function orbitMove(event) {
             let y = radius * Math.sin(utils.degToRad(elevation));
             let z = radius * Math.cos(utils.degToRad(angle)) * Math.cos(utils.degToRad(elevation));
 
-		    if(0 < y && y < 0.95*radius){
+		    if(0.2 < y && y < 0.95*radius){
 
 		        camera.position.set(x,y,z);
 		        camera.lookAt(0,0,0);
