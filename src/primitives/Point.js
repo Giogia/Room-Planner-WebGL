@@ -17,7 +17,7 @@ class Point {
 
         this.vao = new VAO("Point", this.vertices, this.indices, this.normals);
 
-        return new Renderable("Point", this.vao, "WallMaterial", "roomPlanner");
+        return new Renderable("Point", this.vao, "WallMaterial", "basicColor");
     }
 
     setVertices(){

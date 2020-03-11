@@ -1,9 +1,12 @@
-let name = "roomPlanner";
+let name = "texture";
 
 let ubos = [ "UBO" ];
 
-let uniforms = [{'name':'color', 'type':'vec4'},
-                {'name':'world_matrix', 'type':'mat4'}];
+let uniforms = [
+    {'name':'world_matrix', 'type':'mat4'},
+    {'name':'fs_color', 'type':'vec4'},
+    {'name':'fs_texture', 'type':'sampler2D'},
+    {'name':'fs_texture_repeat', 'type':'vec2'}];
 
 
 let vertexShader =
@@ -11,6 +14,7 @@ let vertexShader =
     
     layout(location=0) in vec3 position;
     layout(location=1) in vec3 normal;
+    layout(location=2) in vec2 uv;
     
     uniform UBO{
         vec3 camera_position;
@@ -25,19 +29,16 @@ let vertexShader =
     };
     
     uniform mat4 world_matrix;
-    uniform vec4 color;
     
-    out vec4 fs_color;
-    out vec4 fs_ambient_color;
     out vec3 fs_position;
     out vec3 fs_normal;
+    out vec2 fs_uv;
     
     void main(void){
     
-        fs_color = color;
-        fs_ambient_color = color;
         fs_position = (world_matrix * vec4(position, 1.0)).xyz;
 	    fs_normal = normal;
+	    fs_uv = uv;
 	
         gl_Position = projection_matrix * world_matrix * vec4(position.xyz,1.0);
     }`;
@@ -48,10 +49,9 @@ let fragmentShader =
     
 	precision highp float;
 	
-	in vec4 fs_color;
-	in vec4 fs_ambient_color;
 	in vec3 fs_position;
     in vec3 fs_normal;
+    in vec2 fs_uv;
     
     in float fog_depth;
     
@@ -68,9 +68,15 @@ let fragmentShader =
         
 	};
 	
+	uniform vec4 fs_color;
+	uniform sampler2D fs_texture;
+	uniform vec2 fs_texture_repeat;
+	
 	out vec4 color;
 
 	void main(void){
+	
+	    vec3 final_texture = texture(fs_texture, fs_uv * fs_texture_repeat).xyz;
 	
 	    vec3 light_direction = normalize(light_position);
 	    vec3 normal = normalize(fs_normal);
@@ -80,19 +86,21 @@ let fragmentShader =
 	    vec3 eye_direction = normalize(camera_position - fs_position);
 	    vec3 specular = specular_color * light_color * pow(clamp(dot(eye_direction, r), 0.0, 1.0), specular_shine);
 	    
-	    vec3 ambient = ambient_light_color * fs_ambient_color.xyz;
+	    vec3 ambient = ambient_light_color * fs_color.xyz;
 	    
 		color = vec4(clamp(diffuse + specular + ambient, 0.0, 1.0), fs_color.a);
+		color = clamp( 0.4 * color + vec4( 0.6 * final_texture, 1.0), 0.0, 1.0);
 		
 		#define LOG2 1.442695
 		float fog_distance = length(fs_position);
 		float fog_amount = 1.0 - exp2( - fog_density * fog_density * fog_distance * fog_distance * LOG2);
 		
 		color = mix(color, vec4(fog_color,1.0), clamp(fog_amount, 0.0, 1.0));  
+		
 	}`;
 
 
-let roomPlanner = {
+let texture = {
     name            : name,
     ubos            : ubos,
     uniforms        : uniforms,
@@ -100,4 +108,4 @@ let roomPlanner = {
     fragmentShader  : fragmentShader,
 };
 
-export default roomPlanner
+export default texture

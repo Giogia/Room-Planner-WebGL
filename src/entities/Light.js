@@ -3,7 +3,7 @@ import {ubo} from "../app.js";
 import utils from "../maths/Utils.js";
 
 class Light extends Transform{
-    constructor(color = '#b1ae94', ambientColor = '#545454'){
+    constructor(color = '#bdbaa0', ambientColor = '#6b6b6b'){
         super();
         this.color = utils.hexToRgb(color);
         this.ambientColor = utils.hexToRgb(ambientColor);

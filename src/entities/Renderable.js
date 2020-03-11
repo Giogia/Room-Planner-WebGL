@@ -1,10 +1,11 @@
 import Transform from "./Transform.js";
 import gl from "../webGL.js";
 import Material from "./Material.js";
+import * as webGL from '../webGL.js';
 
 class Renderable extends Transform{
 
-	constructor(name =  "unidentified", vao= null, material = null, shader, drawMode = gl.TRIANGLES){
+	constructor(name =  "unidentified", vao= null, material = null, shader = 'basicColor', drawMode = gl.TRIANGLES){
 
 		super();
 		this.name			= name;
@@ -13,8 +14,9 @@ class Renderable extends Transform{
 		this.useDepthTest	= true;
 		this.drawMode		= drawMode;
 		this.items			= new Map();
+		this.shader 		= shader;
 
-		if(vao) this.addItem(vao, material, shader);
+		if(vao) this.addItem(vao, material);
 	}
 
 	uuid() {
@@ -25,9 +27,9 @@ class Renderable extends Transform{
 	}
 
 
-	addItem(vao, material, shader){
+	addItem(vao, material){
 
-		material = new Material(material, shader);
+		material = new Material(material, this.shader);
 
 		this.items.set(vao.name, {'vao':vao, 'material': material});
 	}
@@ -35,6 +37,13 @@ class Renderable extends Transform{
 	setColor(color){
 		for(let item of this.items.values()){
 			item.material.setColor(color);
+		}
+	}
+
+	setTexture(name, repeat){
+		for(let item of this.items.values()){
+			item.material.setTexture(name, repeat);
+			item.material.shader = webGL.env.shaders.get('texture');
 		}
 	}
 

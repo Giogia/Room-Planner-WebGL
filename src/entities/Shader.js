@@ -95,6 +95,11 @@ class Shader{
 		return this;
 	}
 
+	resetTextureSlot(){
+    	this.textureSlot = 0;
+    	return this;
+    }
+
 }
 
 export default Shader

@@ -35,10 +35,10 @@ export async function createModel (){
     [floorModel, roomCenters] = createFloorModel();
     scene.add(floorModel);
     scene.add(roomCenters);
+    */
 
     skirtingModel = createWallsModel(true);
     scene.add(skirtingModel);
-    */
 
     wallsModel = createWallsModel();
     scene.add(wallsModel);
@@ -113,7 +113,6 @@ function getPointModels (points) {
 }
 
 function getLineModels ({walls, points}) {
-    console.log(walls);
     return _.map(walls, ({from, to}) => {
 
         let start = new Vector(from.x, 0, from.z);
@@ -149,20 +148,23 @@ function getWallsModels ({walls, points}, skirting=false) {
 
         let mesh = new Wall(width, height, depth);
 
-        /*if(!skirting){
+        if(!skirting){
             let wall = _.find(floorPlan.walls, {from: {x:from.x, z:from.z}, to: {x:to.x, z:to.z}});
 
             if(wall.texture !== undefined){
-                setTexture( wall.texture, material, [width,1]);
+                mesh.setTexture( wall.texture, [width,1]);
                 wall.mesh = mesh.uuid;
             }
             if(wall.texture === undefined){
-                setTexture( 'plaster', material, [width,1]);
+                mesh.setTexture( 'plaster', [width,1]);
                 wall.mesh = mesh.uuid;
                 wall.texture = 'plaster';
             }
         }
-         */
+
+        if(skirting){
+            mesh.setTexture('wood2', [width,height])
+        }
 
         let offsetX = startPoint.x - endPoint.x;
         let offsetZ = startPoint.z - endPoint.z;

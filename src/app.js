@@ -2,7 +2,8 @@ import * as webGL from "./webGL.js";
 
 import UBO from "./entities/UniformBuffer.js";
 import Shader from "./entities/Shader.js";
-import roomPlanner from "./shaders/RoomPlanner.js";
+import texture from "./shaders/Texture.js";
+import basicColor from "./shaders/BasicColor";
 
 //import {MDCDrawer} from "@material/drawer/component";
 //import {createButtons, downloadButton, showButton, viewButton} from "./buttons";
@@ -23,11 +24,13 @@ import utils from "./maths/Utils.js";
 import Vector from "./maths/Vector.js";
 import {createModel} from "./walls.js";
 import Wall from "./primitives/Wall";
+import Column from "./primitives/Column";
 import {furniture} from "./furnitureList"
 import {importGlb} from "./loader";
 import {hideCloseWalls} from "./view";
 import Line from "./primitives/Line";
 import Point from "./primitives/Point";
+import Texture from "./entities/Texture";
 
 let camera,
     app,
@@ -42,7 +45,8 @@ async function run(){
     init();
 
     createUbo();
-    createShader(roomPlanner);
+    createShader(texture);
+    createShader(basicColor);
 
     app = document.getElementById( 'app');
     document.body.appendChild(app);
@@ -72,6 +76,7 @@ async function run(){
     await createModel();
     await initObjects();
      */
+
     await createModel();
 
     /*
@@ -81,14 +86,16 @@ async function run(){
     let line = new Line(new Vector(-5,0,-2.5), new Vector(-5,0,-5));
     scene.add(line);
 
+
     let wall = new Wall(2,2,2);
     wall.position.set(0,1,0);
+    wall.setTexture('terracotta', [2,1]);
     scene.add(wall);
 
     let column = new Column();
     column.position.set(0,0,0);
     scene.add(column);
-    */
+ */
 
    /* Every model in row
     for(let i=0; i< furniture.length; i++){
@@ -121,7 +128,7 @@ function createUbo(){
     ubo.setItem('specular_color', utils.hexToRgb('#626262'));
     ubo.setItem('specular_shine', 100 );
     ubo.setItem('fog_color', utils.hexToRgb('#2E3236'));
-    ubo.setItem('fog_density', 0.037 );
+    ubo.setItem('fog_density', 0.04 );
 }
 
 

@@ -1,10 +1,11 @@
 import VAO from "../entities/VertexArray.js";
 import Renderable from "../entities/Renderable.js";
+import render from "../entities/Renderer";
 
 class Mesh{
     constructor(nodes, meshes) {
 
-        this.shader =  "roomPlanner";
+        this.shader =  "basicColor";
         this.renderables = new Map();
 
         for(let node of nodes){
@@ -33,7 +34,7 @@ class Mesh{
 
     createRenderable(node, parts) {
 
-        let renderable = new Renderable(node.name, null, null, this.shader);
+        let renderable = new Renderable(node.name, null, null);
 
         renderable.position.set(node.position[0], node.position[1], node.position[2]);
         renderable.scale.set(node.scale[0], node.scale[1], node.scale[2]);
@@ -42,7 +43,7 @@ class Mesh{
         for (let part of parts) {
             let vao = new VAO(part.name, part.vertices, part.indices, part.normals);
 
-            renderable.addItem(vao, part.material, this.shader);
+            renderable.addItem(vao, part.material);
             renderable.items.get(part.name).material.setColor(part.material.pbrMetallicRoughness.baseColorFactor.slice(0, 3));
         }
 

@@ -20,7 +20,7 @@ class Wall{
 
 		this.vao = new VAO("Wall", this.vertices, this.indices, this.normals, this.uv);
 
-		return new Renderable("Wall", this.vao, "WallMaterial", "roomPlanner");
+		return new Renderable("Wall", this.vao, "WallMaterial", "texture");
 	}
 
 	setVertices(){

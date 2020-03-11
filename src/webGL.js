@@ -55,18 +55,6 @@ function setSize(){
 }
 
 
-function createArrayBuffer (array, staticDraw = false){
-
-    let buffer = gl.createBuffer();
-
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-    gl.bufferData(gl.ARRAY_BUFFER, array, (staticDraw)? gl.STATIC_DRAW : gl.DYNAMIC_DRAW );
-    gl.bindBuffer(gl.ARRAY_BUFFER,null);
-
-    return buffer;
-}
-
-
 function createShader(type, source) {
 
     let shader = gl.createShader(type);
@@ -120,7 +108,7 @@ function shaderProgram(vertexShaderSource, fragmentShaderSource){
 }
 
 
-export { gl as default, canvas, env, init, clearFrame, setColor, setSize, createArrayBuffer, shaderProgram };
+export { gl as default, canvas, env, init, clearFrame, setColor, setSize, shaderProgram };
 
 
 

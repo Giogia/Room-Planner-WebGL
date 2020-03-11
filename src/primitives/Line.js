@@ -12,7 +12,7 @@ class Line {
 
         let vao = new VAO("Line", this.vertices, this.indices, this.normals );
 
-        let model = new Renderable("Line", vao, "WallMaterial", "roomPlanner");
+        let model = new Renderable("Line", vao, "WallMaterial");
 
         model.setColor('#ffffff');
 
@@ -31,7 +31,6 @@ class Line {
             end.x + size * Math.sin(angle), end.y, end.z - size * Math.cos(angle)
         ];
 
-        console.log(this.vertices);
     }
 }
 

@@ -15,7 +15,7 @@ class Ground{
 
         this.vao = new VAO("Ground", this.vertices, this.indices, this.normals);
 
-		this.model = new Renderable("Ground", this.vao, "GroundMaterial", "roomPlanner");
+		this.model = new Renderable("Ground", this.vao, "GroundMaterial");
 		this.model.setColor(color);
 
 		return this.model;

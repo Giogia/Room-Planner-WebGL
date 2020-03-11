@@ -15,12 +15,12 @@ class Column{
 
 		this.setVertices();
 		this.setNormals();
-		//this.setUV();
+		this.setUV();
 		this.setIndices();
 
 		this.vao = new VAO("Column", this.vertices, this.indices, this.normals, this.uv);
 
-		return new Renderable("Column", this.vao, "WallMaterial", "roomPlanner");
+		return new Renderable("Column", this.vao, "WallMaterial");
 	}
 
 	setVertices(){
@@ -49,20 +49,20 @@ class Column{
 		for(let i = 0; i < this.slices; i++) {
 
 			indices.push(0);
-			indices.push((i < this.slices - 1) ? 2 * i + 4 : 2);
 			indices.push(2 * i + 2);
+			indices.push((i < this.slices - 1) ? 2 * i + 4 : 2);
 
 			indices.push(1);
-			indices.push(2 * i + 3);
 			indices.push((i < this.slices - 1) ? 2 * i + 5 : 3);
+			indices.push(2 * i + 3);
 
 			indices.push(2 * i + 2);
-			indices.push((i < this.slices - 1) ? 2 * i + 4 : 2);
 			indices.push(2 * i + 3);
+			indices.push((i < this.slices - 1) ? 2 * i + 4 : 2);
 
 			indices.push((i < this.slices - 1) ? 2 * i + 4 : 2);
-			indices.push((i < this.slices - 1) ? 2 * i + 5 : 3);
 			indices.push(2 * i + 3);
+			indices.push((i < this.slices - 1) ? 2 * i + 5 : 3);
 		}
 
 		this.indices = indices;
@@ -71,7 +71,7 @@ class Column{
 	setUV(){
 
 		let uv = [];
-		for(let i=0; i < 6; i++){
+		for(let i=0; i < 1; i++){
 			uv.push(0,0, 0,1, 1,1, 1,0);
 		}
 
