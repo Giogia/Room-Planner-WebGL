@@ -2,7 +2,7 @@ import VAO from "../entities/VertexArray.js";
 import Renderable from "../entities/Renderable.js";
 
 class Point {
-    constructor( size = 0.075, slices = 32) {
+    constructor( size = 0.055, slices = 32) {
 
         this.vertices = [];
         this.normals = [];
@@ -17,7 +17,7 @@ class Point {
 
         this.vao = new VAO("Point", this.vertices, this.indices, this.normals);
 
-        return new Renderable("Point", this.vao, "WallMaterial", "basicColor");
+        return new Renderable("Point", this.vao, "WallMaterial");
     }
 
     setVertices(){

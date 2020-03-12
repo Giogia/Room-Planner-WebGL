@@ -5,7 +5,7 @@ import * as webGL from '../webGL.js';
 
 class Renderable extends Transform{
 
-	constructor(name =  "unidentified", vao= null, material = null, shader = 'basicColor', drawMode = gl.TRIANGLES){
+	constructor(name =  "unidentified", vao= null, material = null, shader = 'basicColorShader', drawMode = gl.TRIANGLES){
 
 		super();
 		this.name			= name;
@@ -40,10 +40,10 @@ class Renderable extends Transform{
 		}
 	}
 
-	setTexture(name, repeat){
+	setTexture(name, repeat =[1,1]){
 		for(let item of this.items.values()){
 			item.material.setTexture(name, repeat);
-			item.material.shader = webGL.env.shaders.get('texture');
+			item.material.shader = webGL.env.shaders.get('textureShader');
 		}
 	}
 

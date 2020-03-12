@@ -58,7 +58,7 @@ function processMesh(renderable){
 		material.shader.setUniform('fs_color', rgba);
 		material.shader.setUniform('world_matrix', renderable.worldMatrix);
 
-		if(shader.name === 'texture'){
+		if(shader.name === 'textureShader'){
 			material.shader.setUniform('fs_texture', material.texture);
 			material.shader.setUniform( 'fs_texture_repeat', material.textureRepeat);
 			shader.resetTextureSlot();

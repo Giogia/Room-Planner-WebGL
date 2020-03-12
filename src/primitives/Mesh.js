@@ -5,7 +5,7 @@ import render from "../entities/Renderer";
 class Mesh{
     constructor(nodes, meshes) {
 
-        this.shader =  "basicColor";
+        this.shader =  "basicColorShader";
         this.renderables = new Map();
 
         for(let node of nodes){

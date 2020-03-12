@@ -25,7 +25,7 @@ class Material{
 		this.color = (color.length === 3)? color : utils.hexToRgb(color);
 	}
 
-	setTexture(name, repeat){
+	setTexture(name, repeat = [1,1]){
 		this.texture = new Texture(name);
 		this.textureRepeat = repeat;
 	}

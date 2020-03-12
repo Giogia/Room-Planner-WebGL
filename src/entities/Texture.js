@@ -8,6 +8,7 @@ class Texture {
 
         let image = new Image();
         image.src = './assets/materials/' + name + '_diffuse.jpg';
+
         image.addEventListener('load', ()=>{
 
             gl.bindTexture(gl.TEXTURE_2D, this.texture);

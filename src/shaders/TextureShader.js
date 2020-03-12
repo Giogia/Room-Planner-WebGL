@@ -1,10 +1,12 @@
-let name = "basicColor";
+let name = "textureShader";
 
 let ubos = [ "UBO" ];
 
 let uniforms = [
     {'name':'world_matrix', 'type':'mat4'},
-    {'name':'fs_color', 'type':'vec4'}];
+    {'name':'fs_color', 'type':'vec4'},
+    {'name':'fs_texture', 'type':'sampler2D'},
+    {'name':'fs_texture_repeat', 'type':'vec2'}];
 
 
 let vertexShader =
@@ -12,6 +14,7 @@ let vertexShader =
     
     layout(location=0) in vec3 position;
     layout(location=1) in vec3 normal;
+    layout(location=2) in vec2 uv;
     
     uniform UBO{
         vec3 camera_position;
@@ -29,11 +32,13 @@ let vertexShader =
     
     out vec3 fs_position;
     out vec3 fs_normal;
+    out vec2 fs_uv;
     
     void main(void){
     
         fs_position = (world_matrix * vec4(position, 1.0)).xyz;
 	    fs_normal = normal;
+	    fs_uv = uv;
 	
         gl_Position = projection_matrix * world_matrix * vec4(position.xyz,1.0);
     }`;
@@ -46,6 +51,7 @@ let fragmentShader =
 	
 	in vec3 fs_position;
     in vec3 fs_normal;
+    in vec2 fs_uv;
     
     in float fog_depth;
     
@@ -63,10 +69,14 @@ let fragmentShader =
 	};
 	
 	uniform vec4 fs_color;
+	uniform sampler2D fs_texture;
+	uniform vec2 fs_texture_repeat;
 	
 	out vec4 color;
 
 	void main(void){
+	
+	    vec3 final_texture = texture(fs_texture, fs_uv * fs_texture_repeat).xyz;
 	
 	    vec3 light_direction = normalize(light_position);
 	    vec3 normal = normalize(fs_normal);
@@ -79,6 +89,7 @@ let fragmentShader =
 	    vec3 ambient = ambient_light_color * fs_color.xyz;
 	    
 		color = vec4(clamp(diffuse + specular + ambient, 0.0, 1.0), fs_color.a);
+		color = clamp( 0.4 * color + vec4( 0.6 * final_texture, 1.0), 0.0, 1.0);
 		
 		#define LOG2 1.442695
 		float fog_distance = length(fs_position);
@@ -89,7 +100,7 @@ let fragmentShader =
 	}`;
 
 
-let basicColor = {
+let textureShader = {
     name            : name,
     ubos            : ubos,
     uniforms        : uniforms,
@@ -97,4 +108,4 @@ let basicColor = {
     fragmentShader  : fragmentShader,
 };
 
-export default basicColor
+export default textureShader

@@ -2,10 +2,10 @@ import * as webGL from "./webGL.js";
 
 import UBO from "./entities/UniformBuffer.js";
 import Shader from "./entities/Shader.js";
-import texture from "./shaders/Texture.js";
-import basicColor from "./shaders/BasicColor";
+import textureShader from "./shaders/TextureShader.js";
+import basicColorShader from "./shaders/BasicColorShader";
 
-//import {MDCDrawer} from "@material/drawer/component";
+import {MDCDrawer} from "@material/drawer/component";
 //import {createButtons, downloadButton, showButton, viewButton} from "./buttons";
 
 import Scene from "./entities/Scene.js";
@@ -45,8 +45,8 @@ async function run(){
     init();
 
     createUbo();
-    createShader(texture);
-    createShader(basicColor);
+    createShader(basicColorShader);
+    createShader(textureShader);
 
     app = document.getElementById( 'app');
     document.body.appendChild(app);
