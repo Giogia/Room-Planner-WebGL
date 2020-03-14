@@ -1,6 +1,7 @@
 import Vector from "../maths/Vector";
 import VAO from "../entities/VertexArray";
 import Renderable from "../entities/Renderable";
+import BoundingBox from "./BoundingBox";
 
 class Shape{
     constructor(height = 0.03){
@@ -41,7 +42,10 @@ class Shape{
 
         let vao = new VAO('room', vertices, indices, normals);
 
-        return new Renderable('room', vao, 'FloorMaterial');
+        let model = new Renderable('room', vao, 'FloorMaterial');
+        model.boundingBox = new BoundingBox(vertices);
+		model.boundingBox.setParent(model);
+		return model;
 
     }
 }

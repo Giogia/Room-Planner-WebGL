@@ -1,5 +1,6 @@
 import VAO from "../entities/VertexArray.js";
 import Renderable from "../entities/Renderable.js";
+import BoundingBox from "./BoundingBox";
 
 class Mesh{
     constructor(nodes, meshes) {
@@ -39,12 +40,19 @@ class Mesh{
         renderable.scale.set(node.scale[0], node.scale[1], node.scale[2]);
         renderable.rotation.set(node.rotation[0], node.rotation[1], node.rotation[2], node.rotation[3]);
 
+        let vertices = [];
+
         for (let part of parts) {
             let vao = new VAO(part.name, part.vertices, part.indices, part.normals);
 
             renderable.addItem(vao, part.material);
             renderable.items.get(part.name).material.setColor(part.material.pbrMetallicRoughness.baseColorFactor.slice(0, 3));
+
+            for(let vertex of part.vertices) vertices.push(vertex);
         }
+
+        renderable.boundingBox = new BoundingBox(vertices);
+        renderable.boundingBox.setParent(renderable);
 
         return renderable;
     }

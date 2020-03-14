@@ -14,6 +14,10 @@ class BoundingBox{
 
 		this.model = new Renderable("BoundingBox", this.vao, "BoundingBoxMaterial");
 		this.model.drawMode = gl.POINTS;
+		this.model.visible = false;
+
+		this.model.min = this.min;
+		this.model.max = this.max;
 
         return this.model
     }
@@ -33,6 +37,9 @@ class BoundingBox{
         let max = new Vector(Math.max(...x), Math.max(...y), Math.max(...z));
         let min = new Vector(Math.min(...x), Math.min(...y), Math.min(...z));
 
+        this.min = min;
+        this.max = max;
+
         this.vertices = [
             min.x, min.y, min.z,
             min.x, min.y, max.z,
@@ -43,8 +50,6 @@ class BoundingBox{
             max.x, max.y, max.z,
             max.x, max.y, min.z,
         ];
-
-        console.log(this.vertices);
     }
 }
 

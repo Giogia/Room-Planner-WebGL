@@ -10,6 +10,7 @@ import {MDCDrawer} from "@material/drawer/component";
 
 import Scene from "./entities/Scene.js";
 import Camera from "./entities/Camera.js";
+import Raycaster from "./entities/Raycaster";
 
 import {enableOrbitControls} from "./controls2.js";
 
@@ -39,7 +40,10 @@ let camera,
     scene,
     drawer,
     list,
+    raycaster,
     renderLoop;
+
+export let objects;
 
 async function run(){
 
@@ -59,8 +63,7 @@ async function run(){
 
     createScene();
     createCamera();
-
-    //createRayCaster();
+    createRaycaster();
 
     enableOrbitControls();
     //enableMapControls();
@@ -86,28 +89,33 @@ async function run(){
 
     let line = new Line(new Vector(-5,0,-2.5), new Vector(-5,0,-5));
     scene.add(line);
+    */
 
- */
+    /*
     let wall = new Wall(2,2,2);
-    wall.position.set(0,4,0);
+    wall.position.set(0,2,0);
     wall.setTexture('terracotta', [2,1]);
-    wall.setOpacity(0.3);
+    wall.setOpacity(0);
+    wall.rotation.rotateY(utils.degToRad(45));
     scene.add(wall);
     scene.add(wall.boundingBox);
 
     let column = new Column();
     column.position.set(0,0,0);
     scene.add(column);
+     */
 
 
-   /* Every model in row
+   /* Every model in row */
+    objects = [];
     for(let i=0; i< furniture.length; i++){
 
         let model = await importGlb(furniture[i]);
-        model.position.set(-0.2*i,0,0);
+        model.position.set(-0.9*i,0,0);
         scene.add(model);
+        objects.push(model);
     }
-    */
+
 
     autoResize();
     animate();
@@ -163,6 +171,10 @@ function createCamera(){
 
     camera.position.set(-4, 10, 12);
     camera.lookAt(0,0,0);
+}
+
+function createRaycaster(){
+    raycaster = new Raycaster();
 }
 
 function addLight(){
@@ -243,4 +255,4 @@ function loadingAnimation(){
 
 run();
 
-export { app, camera, ubo, scene, drawer, list };
+export { app, camera, raycaster, ubo, scene, drawer, list };

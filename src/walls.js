@@ -271,8 +271,6 @@ export function createFloorModel() {
         }
     }
 
-    //console.log(floor, centers);
-
     /*
     let centersGroup = [];
     _.each(getPointModels(centers), (wall) => centersGroup.push(wall));

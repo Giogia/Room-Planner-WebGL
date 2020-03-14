@@ -13,6 +13,8 @@ class Line {
         let vao = new VAO("Line", this.vertices, this.indices, this.normals );
 
         let model = new Renderable("Line", vao, "WallMaterial");
+        model.start = start;
+        model.end = end;
 
         model.setColor('#ffffff');
 

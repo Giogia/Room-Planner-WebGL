@@ -51,6 +51,10 @@ let utils = {
 		return new Vector(vector1.x - vector2.x, vector1.y - vector2.y, vector1.z - vector2.z );
 	},
 
+	dotProduct: function(v1,v2){
+		return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+	},
+
 	crossProduct: function(v1,v2) {
 
 		return new Vector(v1.y * v2.z - v1.z * v2.y,

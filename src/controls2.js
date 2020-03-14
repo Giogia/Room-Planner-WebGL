@@ -1,7 +1,9 @@
 'use strict';
 
-import {camera} from "./app.js";
+import {camera, app, raycaster} from "./app.js";
 import utils from "./maths/Utils.js";
+
+import {objects} from './app'
 
 let controlZone = document.getElementById( 'controls');
 
@@ -27,7 +29,29 @@ function doMouseDown(event) {
 	lastMouseX = event.pageX;
 	lastMouseY = event.pageY;
 
-    moveControls = true;
+	let intersected = raycaster.intersect(event, objects);
+
+	if(intersected != null) {
+
+		console.log(intersected.name);
+
+        let position = utils.getWorldPosition(event);
+
+        delta = {
+            x: position.x - intersected.position.x,
+            y: position.y - intersected.position.y,
+            z: position.z - intersected.position.z
+        };
+
+        //app.removeEventListener('dblclick', selectObject);
+        //app.removeEventListener('click', selectDraggableObject);
+
+        enable.drag = true;
+    }
+
+    if(intersected == null){
+        moveControls = true;
+    }
 }
 
 
