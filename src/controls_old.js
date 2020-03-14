@@ -1,15 +1,14 @@
 'use strict';
 
-import {camera, app, raycaster} from "./app.js";
-import utils from "./maths/Utils.js";
-
+import {app, camera} from "./app";
 import {currentMode, deleteMode, editMode, viewMode} from "./buttons";
 import {currentObjects, selectDraggableObject, selectObject} from "./objects";
 import {saveJson} from "./loader";
+import utils from "./maths/Utils";
 
 let controlZone = document.getElementById( 'controls');
 
-let draggableObjects = [];
+export var draggableObjects = [];
 
 let delta;
 let object = null;
@@ -23,17 +22,23 @@ let enable = {
     drag: false
 };
 
+export { enable };
+
 
 function doMouseDown(event) {
 
 	lastMouseX = event.pageX;
 	lastMouseY = event.pageY;
 
-	object = raycaster.intersect(event, draggableObjects);
+	let intersects = utils.intersect(event, draggableObjects);
 
-	if(object != null) {
+    if(intersects.length > 0) {
 
-		console.log(object.name);
+        object = intersects[0].object;
+
+        while (object.type !== 'Scene') {
+            object = object.parent;
+        }
 
         let position = utils.getWorldPosition(event);
 
@@ -49,7 +54,7 @@ function doMouseDown(event) {
         enable.drag = true;
     }
 
-    if(object == null){
+    if(intersects.length === 0){
         moveControls = true;
     }
 }
@@ -97,9 +102,6 @@ async function doMouseUp(event) {
 
 
 function orbitMove(event) {
-
-	event.preventDefault();
-
 	if(enable.orbit && moveControls) {
 
 		let dx = lastMouseX - event.pageX;
@@ -123,7 +125,7 @@ function orbitMove(event) {
             let y = radius * Math.sin(utils.degToRad(elevation));
             let z = radius * Math.cos(utils.degToRad(angle)) * Math.cos(utils.degToRad(elevation));
 
-		    if(0.2 < y && y < 0.95*radius){
+		    if(0 < y && y < 0.95*radius){
 
 		        camera.position.set(x,y,z);
 		        camera.lookAt(0,0,0);
@@ -134,8 +136,6 @@ function orbitMove(event) {
 
 
 function orbitZoom(event) {
-
-	event.preventDefault();
 
     if(enable.orbit){
         let radius = Math.sqrt(Math.pow(camera.position.x, 2) + Math.pow(camera.position.y, 2) +  Math.pow(camera.position.z, 2));
@@ -220,6 +220,3 @@ export function enableDragControls(){
 }
 
 
-
-
-export { enable, draggableObjects };

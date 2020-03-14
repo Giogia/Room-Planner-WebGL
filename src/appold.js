@@ -3,7 +3,7 @@
 import * as THREE from 'three';
 import * as TWEEN from 'tween.js';
 
-import {enableDragControls, enableMapControls, enableOrbitControls} from "./controls"
+import {enableDragControls, enableMapControls, enableOrbitControls} from "./controls_old"
 import {addLights} from "./lights";
 import {addObject, initObjects, selectDraggableObject, selectedObject, selectObject} from "./objects";
 import {createModel} from "./walls";

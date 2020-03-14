@@ -1,9 +1,11 @@
 import * as TWEEN from 'tween.js'
 
-//import {draggableObjects, enable} from "./controls";
+import {draggableObjects, enable} from "./controls";
 import {app, camera, drawer, list} from "./app";
 import {addObject, selectDraggableObject, selectObject} from "./objects";
 import {drawModel, floorModel, roomCenters, skirtingModel, wallsModel} from "./walls";
+import Vector from "./maths/Vector";
+import utils from "./maths/Utils";
 
 import {
     activateButtons,
@@ -20,11 +22,8 @@ import {
     showModelIcon
 } from "./buttons";
 
-import Vector from "./maths/Vector";
-import utils from "./maths/Utils";
 
 let floorPlanView = false;
-
 
 export function toggleView(event) {
 
@@ -124,6 +123,7 @@ export function tweenCamera(targetPosition, duration=2500, resetMap=false){
             }
             if(resetMap){
                 camera.up.set(0,1,0);
+                camera.updateProjectionMatrix();
             }
 
         })
@@ -159,15 +159,6 @@ export function hideCloseWalls(){
     }
 }
 
-export function showRoomCenters(){
-    if(!floorPlanView){
-        for( let mesh of roomCenters.children){
-            let distance = utils.distance(camera.position, mesh.position);
-            mesh.visible = distance <= 10;
-        }
-    }
-}
-
 
 export function hide(objects) {
 
@@ -175,6 +166,7 @@ export function hide(objects) {
         mesh.visible = false;
     }
 }
+
 
 export function show(objects) {
 

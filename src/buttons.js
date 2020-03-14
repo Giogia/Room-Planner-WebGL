@@ -4,7 +4,6 @@ import {toggleView} from "./view";
 import {deleteDrawing, editDrawing} from "./draw";
 import {app} from "./app";
 import {removeDraggableObject} from "./objects";
-import {exportScene} from "./loader";
 
 export let drawButtons, modelButtons, viewButton, firstIcon, secondIcon, downloadButton, editButton, deleteButton, removeButton;
 export let currentMode;
@@ -94,7 +93,6 @@ export function activateDrawButtons(){
 
 export function activateModelButtons(){
     downloadButton.addEventListener('click', viewMode);
-    downloadButton.addEventListener('click', exportScene);
 }
 
 
@@ -108,7 +106,6 @@ export function deactivateDrawButtons(){
 export function deactivateModelButtons(){
 
     downloadButton.removeEventListener('click', viewMode);
-    downloadButton.removeEventListener('click', exportScene);
 }
 
 

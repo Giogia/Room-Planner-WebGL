@@ -1,11 +1,12 @@
 import {importModel, loadJson, saveJson} from "./loader";
 import {scene} from "./app";
-//import {draggableObjects} from "./controls";
+import {draggableObjects} from "./controls";
 import {hideButton, removeButton, showButton} from "./buttons";
 //import {selectedMaterial, setTexture} from "./materials";
 import {floorPlan} from "./walls";
 import {floorMaterials, wallMaterials} from "./materialsList";
 import utils from "./maths/Utils";
+import {raycaster} from './app';
 
 export let currentObjects;
 export let selectedObject = null;
@@ -37,9 +38,17 @@ export async function addObject(event){
     let name = event.target.id;
     let model = await importModel(name);
 
-    let object = { name: model.name, mesh: model.uuid, x: model.position.x, y: model.position.y, z: model.position.z, angle: model.rotation.y };
+    let object = {
+        name: model.name,
+        mesh: model.uuid,
+        x: model.position.x,
+        y: model.position.y,
+        z: model.position.z,
+        angle: model.rotation.y
+    };
     currentObjects.objects.push(object);
-    await saveJson('currentObjects', currentObjects);
+
+    //await saveJson('currentObjects', currentObjects);
 }
 
 
@@ -88,17 +97,9 @@ async function updateTexture(object, objects, materials, lastTexture){
 
 export function selectDraggableObject(event){
 
-    let intersects = utils.intersect(event, draggableObjects);
+    let object = raycaster.intersect(event, draggableObjects);
 
-    let object = null;
-
-    if(intersects.length > 0) {
-
-        object = intersects[0].object;
-
-        while (object.type !== 'Scene') {
-            object = object.parent;
-        }
+    if(object != null ) {
 
         dragging = true;
         setTimeout(() => { dragging = false; }, 10);
@@ -129,7 +130,9 @@ export function selectDraggableObject(event){
             selectedObject = null;
         }
     }
-    if(intersects.length === 0){
+
+    if(object == null){
+
         hideButton(removeButton);
         removeButton.removeEventListener('click', removeDraggableObject);
         document.removeEventListener('keydown', transformDraggableObject);

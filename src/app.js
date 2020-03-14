@@ -12,7 +12,7 @@ import Scene from "./entities/Scene.js";
 import Camera from "./entities/Camera.js";
 import Raycaster from "./entities/Raycaster";
 
-import {enableOrbitControls} from "./controls2.js";
+import {enableOrbitControls, enableDragControls, enableMapControls} from "./controls";
 
 import Light from "./entities/Light.js";
 import Ground from "./primitives/Ground.js";
@@ -28,11 +28,13 @@ import Wall from "./primitives/Wall";
 import Column from "./primitives/Column";
 import {furniture} from "./furnitureList"
 import {importGlb} from "./loader";
-import {hideCloseWalls} from "./view";
+import {hideCloseWalls, tweenCamera} from "./view";
 import Line from "./primitives/Line";
 import Point from "./primitives/Point";
 import Texture from "./entities/Texture";
-import {createButtons} from "./buttons";
+import {createButtons, downloadButton, showButton, viewButton} from "./buttons";
+import {addObject, initObjects} from "./objects";
+import * as TWEEN from "tween.js";
 
 let camera,
     app,
@@ -42,8 +44,6 @@ let camera,
     list,
     raycaster,
     renderLoop;
-
-export let objects;
 
 async function run(){
 
@@ -66,56 +66,20 @@ async function run(){
     createRaycaster();
 
     enableOrbitControls();
-    //enableMapControls();
-    //enableDragControls();
+    enableMapControls();
+    enableDragControls();
 
     addLight();
     addGround();
 
-    /*list.addEventListener('click', addObject);
-    app.addEventListener('mousedown', selectDraggableObject);
-    app.addEventListener('click', selectDraggableObject);
-    app.addEventListener('dblclick', selectObject);
+    //list.addEventListener('click', addObject);
+    //app.addEventListener('mousedown', selectDraggableObject);
+    //app.addEventListener('click', selectDraggableObject);
+    //app.addEventListener('dblclick', selectObject);
 
-    await createModel();
-    await initObjects();
-     */
 
     //await createModel();
-
-    /*
-    let point = new Point();
-    scene.add(point);
-
-    let line = new Line(new Vector(-5,0,-2.5), new Vector(-5,0,-5));
-    scene.add(line);
-    */
-
-    /*
-    let wall = new Wall(2,2,2);
-    wall.position.set(0,2,0);
-    wall.setTexture('terracotta', [2,1]);
-    wall.setOpacity(0);
-    wall.rotation.rotateY(utils.degToRad(45));
-    scene.add(wall);
-    scene.add(wall.boundingBox);
-
-    let column = new Column();
-    column.position.set(0,0,0);
-    scene.add(column);
-     */
-
-
-   /* Every model in row */
-    objects = [];
-    for(let i=0; i< furniture.length; i++){
-
-        let model = await importGlb(furniture[i]);
-        model.position.set(-0.9*i,0,0);
-        scene.add(model);
-        objects.push(model);
-    }
-
+    await initObjects();
 
     autoResize();
     animate();
@@ -169,8 +133,10 @@ function createCamera(){
     const far = 100;
     camera = new Camera(fov, aspect, near, far);
 
-    camera.position.set(-4, 10, 12);
+    camera.position.set(-4, 100, 12);
     camera.lookAt(0,0,0);
+
+    tweenCamera(new Vector(-7, 9, -16), 3000);
 }
 
 function createRaycaster(){
@@ -213,7 +179,9 @@ function animate(){
 
 
 function onRender(){
+
     camera.update();
+    TWEEN.update();
     webGL.clearFrame();
     //hideCloseWalls();
     render(scene);
