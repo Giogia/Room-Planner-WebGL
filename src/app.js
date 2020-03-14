@@ -31,6 +31,7 @@ import {hideCloseWalls} from "./view";
 import Line from "./primitives/Line";
 import Point from "./primitives/Point";
 import Texture from "./entities/Texture";
+import {createButtons} from "./buttons";
 
 let camera,
     app,
@@ -54,7 +55,7 @@ async function run(){
     list = document.getElementById('list');
 
     //createDrawer();
-    //createButtons();
+    createButtons();
 
     createScene();
     createCamera();
@@ -77,7 +78,7 @@ async function run(){
     await initObjects();
      */
 
-    await createModel();
+    //await createModel();
 
     /*
     let point = new Point();
@@ -86,16 +87,18 @@ async function run(){
     let line = new Line(new Vector(-5,0,-2.5), new Vector(-5,0,-5));
     scene.add(line);
 
-
+ */
     let wall = new Wall(2,2,2);
-    wall.position.set(0,1,0);
+    wall.position.set(0,4,0);
     wall.setTexture('terracotta', [2,1]);
+    wall.setOpacity(0.3);
     scene.add(wall);
+    scene.add(wall.boundingBox);
 
     let column = new Column();
     column.position.set(0,0,0);
     scene.add(column);
- */
+
 
    /* Every model in row
     for(let i=0; i< furniture.length; i++){

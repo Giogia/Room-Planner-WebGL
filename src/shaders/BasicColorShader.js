@@ -36,6 +36,7 @@ let vertexShader =
 	    fs_normal = normal;
 	
         gl_Position = projection_matrix * world_matrix * vec4(position.xyz,1.0);
+        gl_PointSize = 10.0;
     }`;
 
 

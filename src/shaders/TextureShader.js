@@ -89,7 +89,7 @@ let fragmentShader =
 	    vec3 ambient = ambient_light_color * fs_color.xyz;
 	    
 		color = vec4(clamp(diffuse + specular + ambient, 0.0, 1.0), fs_color.a);
-		color = clamp( 0.4 * color + vec4( 0.6 * final_texture, 1.0), 0.0, 1.0);
+		color = clamp( 0.4 * color + vec4( 0.6 * final_texture, fs_color.a), 0.0, 1.0);
 		
 		#define LOG2 1.442695
 		float fog_distance = length(fs_position);

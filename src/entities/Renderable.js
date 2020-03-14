@@ -2,6 +2,7 @@ import Transform from "./Transform.js";
 import gl from "../webGL.js";
 import Material from "./Material.js";
 import * as webGL from '../webGL.js';
+import BoundingBox from "../primitives/BoundingBox";
 
 class Renderable extends Transform{
 
@@ -12,9 +13,12 @@ class Renderable extends Transform{
 		this.uuid 			= this.uuid();
 		this.useCulling		= true;
 		this.useDepthTest	= true;
+		this.useBlending	= true;
+		this.useAlphaCov	= true;
 		this.drawMode		= drawMode;
 		this.items			= new Map();
 		this.shader 		= shader;
+		this.boundingBox    = null;
 
 		if(vao) this.addItem(vao, material);
 	}
@@ -37,6 +41,12 @@ class Renderable extends Transform{
 	setColor(color){
 		for(let item of this.items.values()){
 			item.material.setColor(color);
+		}
+	}
+
+	setOpacity(opacity){
+		for(let item of this.items.values()){
+			item.material.opacity = opacity;
 		}
 	}
 

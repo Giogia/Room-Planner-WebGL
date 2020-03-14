@@ -1,6 +1,5 @@
 import VAO from "../entities/VertexArray.js";
 import Renderable from "../entities/Renderable.js";
-import render from "../entities/Renderer";
 
 class Mesh{
     constructor(nodes, meshes) {

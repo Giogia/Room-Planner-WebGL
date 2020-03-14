@@ -2,7 +2,7 @@ import {matrix} from "../maths/Matrix.js";
 import Transform from "./Transform.js";
 import Vector from "../maths/Vector.js";
 import {ubo} from '../app.js'
-
+import utils from '../maths/Utils';
 
 class Camera extends Transform{
 
@@ -23,14 +23,14 @@ class Camera extends Transform{
 
         this.ubo = ubo;
 		this.update();
-    };
+    }
 
 
     lookAt(x,y,z){
 
         this.target.set(x,y,z);
         this.updateProjectionMatrix();
-    };
+    }
 
     updatePerspectiveMatrix(fov = this.fov, aspect = this.aspect, near = this.near, far = this.far){
 
@@ -41,7 +41,7 @@ class Camera extends Transform{
 
         this.viewMatrix = matrix.invert(matrix.MakeLookAt(this.position, this.target, this.up));
         this.projectionMatrix = matrix.multiply(this.viewMatrix, this.perspectiveMatrix);
-    };
+    }
 
     update(){
 
@@ -50,6 +50,17 @@ class Camera extends Transform{
         this.ubo.setItem( "projection_matrix", this.projectionMatrix );
         this.ubo.update();
     }
+
+    unProject(vector){
+
+		let inversePerspectiveMatrix = matrix.invert(this.perspectiveMatrix);
+		let viewMatrix = matrix.invert(this.viewMatrix);
+
+		vector = utils.multiplyVectorMatrix(vector, inversePerspectiveMatrix);
+		vector = utils.multiplyVectorMatrix(vector, viewMatrix);
+
+		return vector;
+	}
 }
 
 export default Camera

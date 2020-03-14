@@ -5,6 +5,8 @@ import utils from "./maths/Utils.js";
 
 let controlZone = document.getElementById( 'controls');
 
+export var draggableObjects = [];
+
 let delta;
 let object = null;
 
@@ -39,7 +41,9 @@ async function doMouseUp(event) {
 
 
 function orbitMove(event) {
+
 	event.preventDefault();
+
 	if(enable.orbit && moveControls) {
 
 		let dx = lastMouseX - event.pageX;
@@ -74,6 +78,8 @@ function orbitMove(event) {
 
 
 function orbitZoom(event) {
+
+	event.preventDefault();
 
     if(enable.orbit){
         let radius = Math.sqrt(Math.pow(camera.position.x, 2) + Math.pow(camera.position.y, 2) +  Math.pow(camera.position.z, 2));

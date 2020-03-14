@@ -1,5 +1,6 @@
 import VAO from "../entities/VertexArray.js";
 import Renderable from "../entities/Renderable.js";
+import BoundingBox from "./BoundingBox";
 
 class Wall{
 	constructor(width=1, height=1, depth=1){
@@ -19,8 +20,11 @@ class Wall{
 		this.setIndices();
 
 		this.vao = new VAO("Wall", this.vertices, this.indices, this.normals, this.uv);
+		this.model = new Renderable("Wall", this.vao, "WallMaterial");
+		this.model.boundingBox = new BoundingBox(this.vertices);
+		this.model.boundingBox.setParent(this.model);
 
-		return new Renderable("Wall", this.vao, "WallMaterial");
+		return this.model;
 	}
 
 	setVertices(){

@@ -47,15 +47,15 @@ function processMesh(renderable){
 
 		material = item.material;
 
-		//Multiple materials can share the same shader, if new shader, turn it on.
 		if(material.shader !== shader){
 			shader = material.shader;
 			shader.bind();
 		}
 
-		let rgba = [material.color[0],material.color[1],material.color[2], material.opacity];
+		if(renderable.useBlending !== BLENDING_STATE) gl[ ( (BLENDING_STATE = (!BLENDING_STATE)) )?"enable":"disable" ](gl.BLEND);
+		if(renderable.useAlphaCov !== SAMPLE_ALPHA_COV_STATE) gl[ ( (SAMPLE_ALPHA_COV_STATE = (!SAMPLE_ALPHA_COV_STATE)) )?"enable":"disable" ](gl.SAMPLE_ALPHA_TO_COVERAGE);
 
-		material.shader.setUniform('fs_color', rgba);
+		material.shader.setUniform('fs_color', [material.color[0],material.color[1],material.color[2], material.opacity]);
 		material.shader.setUniform('world_matrix', renderable.worldMatrix);
 
 		if(shader.name === 'textureShader'){
