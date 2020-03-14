@@ -90,8 +90,8 @@ canvas{
     position: absolute;
     background-color: transparent;
     zoom: 75%;
-    animation: appear 1s both;
-    animation-delay: 1s;
+    animation: appear 0.5s both;
+    animation-delay: 0.05s;
 }
 
 #logo {

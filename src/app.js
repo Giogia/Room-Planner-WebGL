@@ -58,7 +58,7 @@ async function run(){
 
     list = document.getElementById('list');
 
-    //createDrawer();
+    createDrawer();
     createButtons();
 
     createScene();
@@ -84,7 +84,7 @@ async function run(){
     autoResize();
     animate();
 
-    //loadingAnimation();
+    loadingAnimation();
 }
 
 
@@ -116,7 +116,7 @@ function createShader(source){
 
 function createDrawer() {
     drawer = new MDCDrawer.attachTo(document.getElementsByClassName("mdc-drawer")[0]);
-    drawer.open = true;
+    //drawer.open = true;
 }
 
 
@@ -133,15 +133,17 @@ function createCamera(){
     const far = 100;
     camera = new Camera(fov, aspect, near, far);
 
-    camera.position.set(-4, 100, 12);
+    camera.position.set(-16, 90, 7);
     camera.lookAt(0,0,0);
 
-    tweenCamera(new Vector(-7, 9, -16), 3000);
+    //tweenCamera(new Vector(-7, 9, -16), 3000);
 }
+
 
 function createRaycaster(){
     raycaster = new Raycaster();
 }
+
 
 function addLight(){
 
@@ -150,9 +152,10 @@ function addLight(){
     light.setColor('#ffffff');
 }
 
+
 function addGround(){
 
-    let gridFloor = new GridFloor();
+    let gridFloor = new GridFloor(2.5);
     scene.add(gridFloor);
 
     let ground = new Ground();
@@ -173,6 +176,7 @@ function autoResize(){
 }
 
 function animate(){
+
     renderLoop = new RenderLoop(onRender, 60);
     renderLoop.start();
 }
@@ -193,12 +197,12 @@ function loadingAnimation(){
     setTimeout( () => {
 
         let loadingIcon = document.getElementById('loading-icon');
-        loadingIcon.style["animation"] = 'disappear 1s both';
+        loadingIcon.style["animation"] = 'disappear 0.5s both';
 
         let loadingScreen = document.getElementById('loading-screen');
         loadingScreen.style.opacity = '0';
 
-        tweenCamera(new Vector(-7, 9, -16), 3000);
+        tweenCamera(new Vector(-7, 9, -16), 2000);
 
         setTimeout( () => {
 
@@ -216,7 +220,7 @@ function loadingAnimation(){
 
             }, 100);
 
-        }, 3000);
+        }, 2000);
 
      }, 1000);
 }
