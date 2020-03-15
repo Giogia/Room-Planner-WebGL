@@ -11,6 +11,9 @@ class Scene{
     }
 
     remove(mesh){
+        if(mesh.length>0)
+            for(let object of mesh) this.objects.delete(object.uuid, object);
+        else
         this.objects.delete(mesh.uuid, mesh);
     }
 }
