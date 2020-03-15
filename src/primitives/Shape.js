@@ -4,8 +4,7 @@ import Renderable from "../entities/Renderable";
 import BoundingBox from "./BoundingBox";
 
 class Shape{
-    constructor(height = 0.03){
-        this.height = height;
+    constructor(){
         this.points = [];
         this.center = null;
     }
@@ -40,9 +39,16 @@ class Shape{
             indices.push(0, next, i);
         }
 
-        let vao = new VAO('room', vertices, indices, normals);
+        let uv = [];
 
-        let model = new Renderable('room', vao, 'FloorMaterial');
+        //TODO setup uvs
+        for(let i=0; i < this.points.length/3; i++){
+			uv.push(0,0, 0,0, 1,1, 1,0);
+		}
+
+        let vao = new VAO('Room', vertices, indices, normals, uv);
+
+        let model = new Renderable('Room', vao, 'FloorMaterial');
         model.boundingBox = new BoundingBox(vertices);
 		model.boundingBox.setParent(model);
 		return model;

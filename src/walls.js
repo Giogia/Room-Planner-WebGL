@@ -20,7 +20,7 @@ export const DEPTH = 0.05;
 export const HEIGHT = 1.3;
 
 export let floorPlan;
-export let drawModel, floorModel, wallsModel, skirtingModel, roomCenters;
+export let drawModel, floorModel, wallsModel, skirtingModel;
 
 export async function createModel (){
 
@@ -250,11 +250,11 @@ export function createFloorModel() {
             let existingRoom = _.find(floorPlan.rooms, {center: center});
 
             if(existingRoom){
-                mesh.setTexture( existingRoom.texture);
+                mesh.setTexture(existingRoom.texture, [2,2]);
                 existingRoom.mesh = mesh.uuid;
             }
             if(!existingRoom){
-                mesh.setTexture( 'wood2');
+                mesh.setTexture( 'wood2', [2,2]);
                 floorPlan.rooms.push({center:center, mesh:mesh.uuid, texture:'wood2'});
             }
 
@@ -293,24 +293,20 @@ export async function updateScene(){
 export function updateModel(){
 
     scene.remove(floorModel);
-    scene.remove(roomCenters);
-    [floorModel,roomCenters] = createFloorModel();
+    floorModel = createFloorModel();
 
     scene.add(floorModel);
-    hide(floorModel.children);
-
-    scene.add(roomCenters);
-    hide(roomCenters.children);
+    hide(floorModel);
 
     scene.remove(wallsModel);
     wallsModel = createWallsModel();
     scene.add(wallsModel);
-    hide(wallsModel.children);
+    hide(wallsModel);
 
     scene.remove(skirtingModel);
     skirtingModel = createWallsModel(true);
     scene.add(skirtingModel);
-    hide(skirtingModel.children);
+    hide(skirtingModel);
 }
 
 

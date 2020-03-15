@@ -6,7 +6,7 @@ import textureShader from "./shaders/TextureShader.js";
 import basicColorShader from "./shaders/BasicColorShader";
 
 import {MDCDrawer} from "@material/drawer/component";
-import {createButtons, downloadButton, showButton, viewButton} from "./buttons";
+import {createButtons, showButton, viewButton} from "./buttons";
 
 import Scene from "./entities/Scene.js";
 import Camera from "./entities/Camera.js";
@@ -202,13 +202,7 @@ function loadingAnimation(){
 
             setTimeout( () => {
 
-                showButton(downloadButton);
-
-                setTimeout( () => {
-
                     drawer.open = true;
-
-                }, 100);
 
             }, 100);
 

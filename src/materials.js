@@ -1,10 +1,4 @@
 
-
-export let textureLoader = new THREE.TextureLoader();
-export let fontLoader = new THREE.FontLoader();
-export let font;
-
-
 function setMaps(maps, repeat){
 
    for(let map of maps){

@@ -5,7 +5,7 @@ import {deleteDrawing, editDrawing} from "./draw";
 import {app} from "./app";
 import {removeDraggableObject} from "./objects";
 
-export let drawButtons, modelButtons, viewButton, firstIcon, secondIcon, downloadButton, editButton, deleteButton, removeButton;
+export let drawButtons, modelButtons, viewButton, firstIcon, secondIcon, editButton, deleteButton, removeButton;
 export let currentMode;
 
 export function createButtons(){
@@ -36,10 +36,8 @@ export function createButtons(){
     removeButton = createIconButton('delete_forever', modelButtons);
     removeButton.style.color = 'white';
     removeButton.style.backgroundColor = 'lightcoral';
-    downloadButton = createIconButton( 'save', modelButtons);
 
     hideButton(removeButton);
-    hideButton(downloadButton);
 
     activateModelButtons();
 
@@ -92,7 +90,6 @@ export function activateDrawButtons(){
 
 
 export function activateModelButtons(){
-    downloadButton.addEventListener('click', viewMode);
 }
 
 
@@ -104,8 +101,6 @@ export function deactivateDrawButtons(){
 
 
 export function deactivateModelButtons(){
-
-    downloadButton.removeEventListener('click', viewMode);
 }
 
 
@@ -163,14 +158,12 @@ export function showModelButtons(){
     modelButtons.style.display = 'flex';
 
     setTimeout( () => {
-        showButton(downloadButton);
     }, 100);
 
 }
 
 
 export function hideModelButtons(){
-    hideButton(downloadButton);
 
     setTimeout( () => {
         modelButtons.style.display = 'none';

@@ -55,12 +55,14 @@ export async function selectObject(event){
 
     let floor = raycaster.intersect(event, floorModel);
 
-    if (floor.name === "Floor")
+    console.log(floor);
+
+    if (floor != null && floor.name === "Floor")
         lastFloorTexture = await updateTexture(floor, floorPlan.rooms, floorMaterials, lastFloorTexture);
 
     let wall = raycaster.intersect(event, wallsModel);
 
-    if (wall.name === "Wall") 
+    if (wall != null && wall.name === "Wall")
         lastWallTexture = await updateTexture(wall, floorPlan.walls, wallMaterials, lastWallTexture);
 }
 
@@ -77,7 +79,9 @@ async function updateTexture(object, objects, materials, lastTexture){
         texture = lastTexture;
     }
 
-    object.setTexture(texture, [object.width, 1]);
+    let repeat = (object.width)? [object.width, 1] : [2,2];
+
+    object.setTexture(texture, repeat);
     mesh.texture = texture;
 
     //await saveJson('floorPlan', floorPlan);

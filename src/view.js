@@ -3,7 +3,7 @@ import * as TWEEN from 'tween.js'
 import {draggableObjects, enable} from "./controls";
 import {app, camera, drawer, list} from "./app";
 import {addObject, selectDraggableObject, selectObject} from "./objects";
-import {drawModel, floorModel, roomCenters, skirtingModel, wallsModel} from "./walls";
+import {drawModel, floorModel, skirtingModel, wallsModel} from "./walls";
 import Vector from "./maths/Vector";
 import utils from "./maths/Utils";
 
@@ -19,7 +19,7 @@ import {
     showDrawButtons,
     showDrawIcon,
     showModelButtons,
-    showModelIcon
+    showModelIcon, viewMode
 } from "./buttons";
 
 

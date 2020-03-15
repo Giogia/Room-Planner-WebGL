@@ -9,7 +9,7 @@ import Line from "./primitives/Line";
 import Vector from "./maths/Vector";
 //import {font, textMaterial} from "./materials";
 
-let currentLine;
+let currentLine = null;
 
 export function editDrawing(event){
 
@@ -89,10 +89,9 @@ function showLine(event){
     let start = new Vector(point.x, 0.0, point.z);
     let end = new Vector(position.x, 0.0, position.z);
 
-    scene.remove(currentLine);
+    if(currentLine) scene.remove(currentLine);
     currentLine = new Line(start, end);
-    currentLine.setColor('#e2a149');
-    console.log(currentLine);
+    currentLine.setColor('#5ebee2');
     scene.add(currentLine);
 }
 
@@ -111,7 +110,7 @@ function drawLine(event){
         start = _.findLast(points, {selected: true});
     }
 
-    scene.remove(currentLine);
+    if(currentLine) scene.remove(currentLine);
     let newLine = {from: {x:start.x, z:start.z}, to: {x:end.x, z:end.z}};
     walls.push(newLine);
     for( let point of points){ point.selected = false}

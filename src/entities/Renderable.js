@@ -74,7 +74,8 @@ class Renderable extends Transform{
 		}
 	}
 
-	setTexture(name, repeat =[1,1]){
+	setTexture(name, repeat = [1,1]){
+		this.shader = webGL.env.shaders.get('textureShader');
 		for(let item of this.items.values()){
 			item.material.setTexture(name, repeat);
 			item.material.shader = webGL.env.shaders.get('textureShader');
