@@ -2,7 +2,6 @@ import Transform from "./Transform.js";
 import gl from "../webGL.js";
 import Material from "./Material.js";
 import * as webGL from '../webGL.js';
-import BoundingBox from "../primitives/BoundingBox";
 
 class Renderable extends Transform{
 

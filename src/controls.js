@@ -173,10 +173,10 @@ function mapMove(event){
 		lastMouseY = event.pageY;
 
 		if((dx !== 0) || (dy !== 0)) {
-            camera.position.z = camera.position.z + 0.05 * dx;
             camera.position.x = camera.position.x + 0.05 * dy;
+            camera.position.z = camera.position.z + 0.05 * dx;
             camera.up.set(0,1,0);
-            camera.updateProjectionMatrix();
+            camera.lookAt(camera.target.x + 0.05 * dy, 0.0, camera.target.z + 0.05 * dx);
         }
     }
 }

@@ -18,6 +18,7 @@ class Shader{
 		return this
 	}
 
+
 	bind(){
     	gl.useProgram( this.program );
     	return this;
@@ -52,6 +53,7 @@ class Shader{
 			gl.uniformBlockBinding( this.program, index, ubo.bindPoint );
 		}
 	}
+
 
 	setUniform( name, value ){
 
@@ -95,11 +97,11 @@ class Shader{
 		return this;
 	}
 
+
 	resetTextureSlot(){
     	this.textureSlot = 0;
     	return this;
     }
-
 }
 
 export default Shader

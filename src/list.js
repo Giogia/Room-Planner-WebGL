@@ -16,7 +16,7 @@ function run(){
     createList();
 
     let drawer = new MDCDrawer.attachTo(document.getElementsByClassName("mdc-drawer")[0]);
-    setTimeout(()=>{drawer.open = true;},2100);
+    setTimeout(()=>{drawer.open = true;},3100);
 
     form.onsubmit = updateList;
     search.addEventListener('click', updateList);
@@ -81,10 +81,10 @@ function getList(word = undefined){
                 model.exposure = 0.3;
                 li.appendChild(model);
                 }
-            },  50 * i);
+            },  50 * i );
         }
 
-    },2400);
+    },3400);
 
     return ul
 }

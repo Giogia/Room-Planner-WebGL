@@ -66,59 +66,6 @@ class Quaternion
 
 		return this;
 	}
-
-
-	setFromEuler(x,y,z,order){
-
-		let c1 = Math.cos(x/2),
-			c2 = Math.cos(y/2),
-			c3 = Math.cos(z/2),
-
-			s1 = Math.sin(x/2),
-			s2 = Math.sin(y/2),
-			s3 = Math.sin(z/2);
-
-		switch(order){
-			case 'XYZ':
-				this.x = s1 * c2 * c3 + c1 * s2 * s3;
-				this.y = c1 * s2 * c3 - s1 * c2 * s3;
-				this.z = c1 * c2 * s3 + s1 * s2 * c3;
-				this.w = c1 * c2 * c3 - s1 * s2 * s3;
-				break;
-			case 'YXZ':
-				this.x = s1 * c2 * c3 + c1 * s2 * s3;
-				this.y = c1 * s2 * c3 - s1 * c2 * s3;
-				this.z = c1 * c2 * s3 - s1 * s2 * c3;
-				this.w = c1 * c2 * c3 + s1 * s2 * s3;
-				break;
-			case 'ZXY':
-				this.x = s1 * c2 * c3 - c1 * s2 * s3;
-				this.y = c1 * s2 * c3 + s1 * c2 * s3;
-				this.z = c1 * c2 * s3 + s1 * s2 * c3;
-				this.w = c1 * c2 * c3 - s1 * s2 * s3;
-				break;
-			case 'ZYX':
-				this.x = s1 * c2 * c3 - c1 * s2 * s3;
-				this.y = c1 * s2 * c3 + s1 * c2 * s3;
-				this.z = c1 * c2 * s3 - s1 * s2 * c3;
-				this.w = c1 * c2 * c3 + s1 * s2 * s3;
-				break;
-			case 'YZX':
-				this.x = s1 * c2 * c3 + c1 * s2 * s3;
-				this.y = c1 * s2 * c3 + s1 * c2 * s3;
-				this.z = c1 * c2 * s3 - s1 * s2 * c3;
-				this.w = c1 * c2 * c3 - s1 * s2 * s3;
-				break;
-			case 'XZY':
-				this.x = s1 * c2 * c3 - c1 * s2 * s3;
-				this.y = c1 * s2 * c3 - s1 * c2 * s3;
-				this.z = c1 * c2 * s3 + s1 * s2 * c3;
-				this.w = c1 * c2 * c3 + s1 * s2 * s3;
-				break;
-		}
-
-		return this;
-	}
 }
 
 export default Quaternion

@@ -37,6 +37,7 @@ class UBO {
 		return this;
 	}
 
+
 	initializeItems(items){
 		for( let item of items){
 			this.addItem( item.name, item.type );
@@ -81,6 +82,7 @@ class UBO {
 
 		return this;
 	}
+
 
 	calculate( items ){
 
@@ -129,6 +131,7 @@ class UBO {
 
 		return offset;
 	}
+
 
 	getSize( type ){
 

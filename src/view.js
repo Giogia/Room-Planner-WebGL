@@ -51,19 +51,18 @@ function drawView(){
     app.removeEventListener('dblclick', selectObject);
 
     hide(draggableObjects);
-    hide(floorModel.children);
-    hide(roomCenters.children);
-    hide(wallsModel.children);
-    hide(skirtingModel.children);
-    show(drawModel.children);
+    hide(floorModel);
+    hide(wallsModel);
+    hide(skirtingModel);
+    show(drawModel);
 
-    tweenCamera(new Vector(-0.01, 30, 0));
+    tweenCamera(new Vector(-0.01, 20, 0));
 }
 
 
 function modelView(){
 
-    tweenCamera(new Vector(-0.01, 30, 0), 250, true);
+    tweenCamera(new Vector(-0.01, 20, 0), 250, true);
 
     setTimeout( ()=>{
 
@@ -85,12 +84,11 @@ function modelView(){
         app.addEventListener('mouseup', selectDraggableObject);
         app.addEventListener('dblclick', selectObject);
 
-        hide(drawModel.children);
-        show(floorModel.children);
-        show(skirtingModel.children);
-        show(wallsModel.children);
+        hide(drawModel);
+        show(floorModel);
+        show(skirtingModel);
+        show(wallsModel);
         show(draggableObjects);
-        show(roomCenters.children);
 
         setTimeout( () => {
             tweenCamera(new Vector(-7, 9, -16));
@@ -114,7 +112,7 @@ export function tweenCamera(targetPosition, duration=2500, resetMap=false){
 
         .to( targetPosition, duration )
 
-        .easing( TWEEN.Easing.Quartic.InOut )
+        .easing( TWEEN.Easing.Exponential.InOut )
 
         .onUpdate( () => {
             camera.position.set(position.x, position.y, position.z);

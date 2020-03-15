@@ -6,7 +6,7 @@ import textureShader from "./shaders/TextureShader.js";
 import basicColorShader from "./shaders/BasicColorShader";
 
 import {MDCDrawer} from "@material/drawer/component";
-//import {createButtons, downloadButton, showButton, viewButton} from "./buttons";
+import {createButtons, downloadButton, showButton, viewButton} from "./buttons";
 
 import Scene from "./entities/Scene.js";
 import Camera from "./entities/Camera.js";
@@ -24,16 +24,9 @@ import RenderLoop from "./entities/RenderLoop.js";
 import utils from "./maths/Utils.js";
 import Vector from "./maths/Vector.js";
 import {createModel} from "./walls.js";
-import Wall from "./primitives/Wall";
-import Column from "./primitives/Column";
-import {furniture} from "./furnitureList"
-import {importGlb} from "./loader";
+
 import {hideCloseWalls, tweenCamera} from "./view";
-import Line from "./primitives/Line";
-import Point from "./primitives/Point";
-import Texture from "./entities/Texture";
-import {createButtons, downloadButton, showButton, viewButton} from "./buttons";
-import {addObject, initObjects} from "./objects";
+import {addObject, initObjects, selectDraggableObject, selectObject} from "./objects";
 import * as TWEEN from "tween.js";
 
 let camera,
@@ -72,13 +65,12 @@ async function run(){
     addLight();
     addGround();
 
-    //list.addEventListener('click', addObject);
-    //app.addEventListener('mousedown', selectDraggableObject);
-    //app.addEventListener('click', selectDraggableObject);
-    //app.addEventListener('dblclick', selectObject);
+    list.addEventListener('click', addObject);
+    app.addEventListener('mousedown', selectDraggableObject);
+    app.addEventListener('click', selectDraggableObject);
+    app.addEventListener('dblclick', selectObject);
 
-
-    //await createModel();
+    await createModel();
     await initObjects();
 
     autoResize();
@@ -136,7 +128,7 @@ function createCamera(){
     camera.position.set(-16, 90, 7);
     camera.lookAt(0,0,0);
 
-    //tweenCamera(new Vector(-7, 9, -16), 3000);
+    //tweenCamera(new Vector(-7, 9, -16), 1000);
 }
 
 

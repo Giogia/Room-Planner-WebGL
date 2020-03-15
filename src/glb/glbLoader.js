@@ -26,16 +26,13 @@ class GlbLoader{
 
 		let scene = this.json.scenes[index];
 
-		//Setup Initial Stack
 		for(let node of scene.nodes) stack.push(node);
 
-		//Process Stack of nodes, check for children to add to stack
 		while(stack.length > 0){
 
 			let index = stack.pop();
 			let node = this.json.nodes[index];
 
-			//Add Children Nodes to the stack
 			if(node.children !== undefined)
 				for(let children of node.children) stack.push(children);
 

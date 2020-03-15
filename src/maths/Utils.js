@@ -4,7 +4,7 @@ import Quaternion from "./Quaternion.js";
 
 let utils = {
 
-    //***Custom functions
+    // *** Custom functions ***
 
 	degToRad: function(angle){
 		return(angle*Math.PI/180);

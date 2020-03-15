@@ -4,6 +4,9 @@ import {app, scene} from "./app";
 import {floorPlan, updateModel, updateScene} from "./walls";
 
 import {checkIntersection, colinearPointWithinSegment} from "line-intersect";
+import utils from "./maths/Utils";
+import Line from "./primitives/Line";
+import Vector from "./maths/Vector";
 //import {font, textMaterial} from "./materials";
 
 let currentLine;
@@ -83,18 +86,13 @@ function showLine(event){
     let position = pointWorldPosition(event);
     let point = _.find(floorPlan.points,{ selected: true });
 
-    let material = new LineMaterial({
-        color: 0xe2a149,
-        transparent: true,
-        opacity: 0.3,
-        linewidth: 0.007,
-    });
-
-    let geometry = new LineGeometry();
-    geometry.setPositions([point.x, 0.02, point.z, position.x, 0.02, position.z]);
+    let start = new Vector(point.x, 0.0, point.z);
+    let end = new Vector(position.x, 0.0, position.z);
 
     scene.remove(currentLine);
-    currentLine = new Line2(geometry, material);
+    currentLine = new Line(start, end);
+    currentLine.setColor('#e2a149');
+    console.log(currentLine);
     scene.add(currentLine);
 }
 

@@ -24,12 +24,15 @@ class Raycaster{
 
 		for(let object of objects){
 
-			let distance = this.intersectBoundingBox(object, ray);
+			if(object.visible){
 
-			if(distance !== null){
-				if(minimumDistance > distance || minimumDistance == null){
-					minimumDistance = distance;
-					intersected = object
+				let distance = this.intersectBoundingBox(object, ray);
+
+				if(distance !== null){
+					if(minimumDistance > distance || minimumDistance == null){
+						minimumDistance = distance;
+						intersected = object
+					}
 				}
 			}
 		}
@@ -50,8 +53,8 @@ class Raycaster{
 			tMax = 1000000,
 			tmp, min, max;
 
-		let boxMin = [box.min.x, box.min.y, box.min.z];
-		let boxMax = [box.max.x, box.max.y, box.max.z];
+		let boxMin = box.min.array(); //[box.min.x, box.min.y, box.min.z];
+		let boxMax = box.max.array(); //[box.max.x, box.max.y, box.max.z];
 
 		for (let i = 0; i < 3; i++) {
 
