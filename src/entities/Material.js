@@ -9,6 +9,7 @@ class Material{
 		this.name = name;
 
 		this.color = color;
+		this.ambientColor = color;
     	this.opacity = 1.0;
 
     	this.texture = null;
@@ -22,7 +23,15 @@ class Material{
 	}
 
 	setColor(color){
-		this.color = (color.length === 3)? color : utils.hexToRgb(color);
+
+		color = (color.length === 3)? color : utils.hexToRgb(color);
+		this.color = color;
+		this.ambientColor = color;
+	}
+
+	setAmbientColor(color){
+
+		this.ambientColor = (color.length === 3)? color : utils.hexToRgb(color);
 	}
 
 	setTexture(name, repeat = [1,1]){

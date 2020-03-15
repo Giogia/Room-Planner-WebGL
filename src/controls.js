@@ -33,8 +33,6 @@ function doMouseDown(event) {
 
 	if(object != null) {
 
-		console.log(object.name);
-
         let position = utils.getWorldPosition(event);
 
         delta = {
@@ -173,9 +171,7 @@ function mapMove(event){
 		lastMouseY = event.pageY;
 
 		if((dx !== 0) || (dy !== 0)) {
-            camera.position.x = camera.position.x + 0.05 * dy;
-            camera.position.z = camera.position.z + 0.05 * dx;
-            camera.up.set(0,1,0);
+            camera.position.set(camera.position.x + 0.05 * dy, camera.position.y, camera.position.z + 0.05 * dx);
             camera.lookAt(camera.target.x + 0.05 * dy, 0.0, camera.target.z + 0.05 * dx);
         }
     }

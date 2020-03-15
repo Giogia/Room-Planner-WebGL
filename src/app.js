@@ -179,7 +179,7 @@ function onRender(){
     camera.update();
     TWEEN.update();
     webGL.clearFrame();
-    //hideCloseWalls();
+    hideCloseWalls();
     render(scene);
 }
 

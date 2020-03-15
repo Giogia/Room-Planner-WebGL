@@ -2,6 +2,7 @@ import Vector from '../maths/Vector'
 import VAO from "../entities/VertexArray";
 import Renderable from "../entities/Renderable";
 import gl from "../webGL"
+import utils from "../maths/Utils";
 
 class BoundingBox{
     constructor(vertices){
@@ -18,6 +19,7 @@ class BoundingBox{
 
 		this.model.min = this.min;
 		this.model.max = this.max;
+		this.model.center = utils.add(this.max, this.min).multiply(0.5);
 
         return this.model
     }

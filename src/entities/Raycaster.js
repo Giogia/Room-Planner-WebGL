@@ -2,6 +2,7 @@ import {camera} from "../app";
 import Vector from "../maths/Vector";
 import utils from "../maths/Utils";
 import Line from "../primitives/Line";
+import render from "./Renderer";
 
 class Raycaster{
     constructor() {
@@ -83,7 +84,7 @@ class Raycaster{
 			}
 			else if (-nomLen + boxMin[i] > 0 || -nomLen + boxMax[i] < 0) return null; //are almost parallel check
 		}
-		return tMin;//rayDirection.set(tMin * rayDirection.x, tMin * rayDirection.y, tMin * rayDirection.z);
+		return tMin;//rayDirection.multiply(tMin);
 	}
 }
 

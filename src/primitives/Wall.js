@@ -21,6 +21,8 @@ class Wall{
 
 		this.vao = new VAO("Wall", this.vertices, this.indices, this.normals, this.uv);
 		this.model = new Renderable("Wall", this.vao, "WallMaterial");
+
+		this.model.width = this.width;
 		this.model.boundingBox = new BoundingBox(this.vertices);
 		this.model.boundingBox.setParent(this.model);
 

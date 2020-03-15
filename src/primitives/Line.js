@@ -2,7 +2,7 @@ import VAO from "../entities/VertexArray.js";
 import Renderable from "../entities/Renderable.js";
 
 class Line {
-    constructor(start, end, size = 0.05) {
+    constructor(start, end, size = 0.04) {
 
         this.vertices = [];
         this.normals = [0,1,0, 0,1,0, 0,1,0, 0,1,0];

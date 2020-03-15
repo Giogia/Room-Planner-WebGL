@@ -26,7 +26,7 @@ class Point {
 
         for(let i=0; i < this.slices; i++){
             vertices.push(Math.cos(2 * Math.PI / this.slices * i) * this.size);
-            vertices.push(0.0);
+            vertices.push(0.01);
 			vertices.push(Math.sin(2 * Math.PI / this.slices * i) * this.size);
         }
 

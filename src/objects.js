@@ -2,8 +2,7 @@ import {importModel, loadJson, saveJson} from "./loader";
 import {scene} from "./app";
 import {draggableObjects} from "./controls";
 import {hideButton, removeButton, showButton} from "./buttons";
-//import {selectedMaterial, setTexture} from "./materials";
-import {floorPlan} from "./walls";
+import {floorModel, floorPlan, wallsModel} from "./walls";
 import {floorMaterials, wallMaterials} from "./materialsList";
 import utils from "./maths/Utils";
 import {raycaster} from './app';
@@ -54,21 +53,15 @@ export async function addObject(event){
 
 export async function selectObject(event){
 
-    let intersects = utils.intersect(event, scene.children);
+    let floor = raycaster.intersect(event, floorModel);
 
-    let i = 0;
-    while (intersects[i].object.name === "" || (intersects[i].object.name === "wall" && intersects[i].distance < 10)) {
-        if(i===intersects.length-1){
-            return;
-        }
-        i++;
-    }
+    if (floor.name === "Floor")
+        lastFloorTexture = await updateTexture(floor, floorPlan.rooms, floorMaterials, lastFloorTexture);
 
-    if (intersects[i].object.name === "floor") {
-        lastFloorTexture = await updateTexture(intersects[i].object, floorPlan.rooms, floorMaterials, lastFloorTexture);
-    } else if (intersects[i].object.name === "wall") {
-        lastWallTexture = await updateTexture(intersects[i].object, floorPlan.walls, wallMaterials, lastWallTexture);
-    }
+    let wall = raycaster.intersect(event, wallsModel);
+
+    if (wall.name === "Wall") 
+        lastWallTexture = await updateTexture(wall, floorPlan.walls, wallMaterials, lastWallTexture);
 }
 
 async function updateTexture(object, objects, materials, lastTexture){
@@ -84,12 +77,10 @@ async function updateTexture(object, objects, materials, lastTexture){
         texture = lastTexture;
     }
 
-    let repeat = object.geometry.parameters.width? [object.geometry.parameters.width, 1] : [2,2];
-
-    setTexture(texture, object.material, repeat);
+    object.setTexture(texture, [object.width, 1]);
     mesh.texture = texture;
 
-    await saveJson('floorPlan', floorPlan);
+    //await saveJson('floorPlan', floorPlan);
 
     return texture;
 }
@@ -101,6 +92,8 @@ export function selectDraggableObject(event){
 
     if(object != null ) {
 
+        console.log(object.name);
+
         dragging = true;
         setTimeout(() => { dragging = false; }, 10);
 
@@ -108,14 +101,14 @@ export function selectDraggableObject(event){
 
             removeButton.removeEventListener('click', removeDraggableObject);
             document.removeEventListener('keydown', transformDraggableObject);
-            object.overrideMaterial = null;
+            selectedObject.resetAmbientColor();
             selectedObject = null;
         }
 
         if(selectedObject === null && event.type === 'mousedown'){
 
             selectedObject = object;
-            object.overrideMaterial = selectedMaterial;
+            selectedObject.setAmbientColor('#dbfaff');
             showButton(removeButton);
             removeButton.addEventListener('click', removeDraggableObject);
             document.addEventListener('keydown', transformDraggableObject);
@@ -126,7 +119,7 @@ export function selectDraggableObject(event){
             hideButton(removeButton);
             removeButton.removeEventListener('click', removeDraggableObject);
             document.removeEventListener('keydown', transformDraggableObject);
-            object.overrideMaterial = null;
+            selectedObject.resetAmbientColor();
             selectedObject = null;
         }
     }
@@ -136,6 +129,8 @@ export function selectDraggableObject(event){
         hideButton(removeButton);
         removeButton.removeEventListener('click', removeDraggableObject);
         document.removeEventListener('keydown', transformDraggableObject);
+
+        if(selectedObject !== null) selectedObject.resetAmbientColor();
         selectedObject = null;
     }
 }
@@ -147,7 +142,7 @@ export async function removeDraggableObject(){
 
     _.remove(draggableObjects, draggable => { return draggable.uuid === selectedObject.uuid });
     _.remove(currentObjects.objects, current => { return current.mesh === selectedObject.uuid });
-     await saveJson('currentObjects', currentObjects);
+     //await saveJson('currentObjects', currentObjects);
 
      hideButton(removeButton);
      removeButton.removeEventListener('click', removeDraggableObject);
@@ -173,13 +168,13 @@ export async function transformDraggableObject(event){
 
     if(event.key === 'ArrowLeft'){
         event.preventDefault();
-        selectedObject.rotation.y += Math.PI/8 ;
+        selectedObject.rotation.rotateY(Math.PI/8) ;
         moved.angle = utils.radToDeg(selectedObject.rotation.y);
     }
 
     if(event.key === 'ArrowRight'){
         event.preventDefault();
-        selectedObject.rotation.y -= Math.PI/8 ;
+        selectedObject.rotation.rotateY(- Math.PI/8);
         moved.angle = utils.radToDeg(selectedObject.rotation.y);
     }
 

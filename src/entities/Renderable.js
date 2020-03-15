@@ -41,11 +41,36 @@ class Renderable extends Transform{
 		for(let item of this.items.values()){
 			item.material.setColor(color);
 		}
+		for(let child of this.children){
+			child.setColor(color);
+		}
+	}
+
+	setAmbientColor(color){
+		for(let item of this.items.values()){
+			item.material.setAmbientColor(color);
+		}
+		for(let child of this.children){
+			child.setAmbientColor(color);
+		}
+	}
+
+
+	resetAmbientColor(){
+		for(let item of this.items.values()){
+			item.material.setAmbientColor(item.material.color);
+		}
+		for(let child of this.children){
+			child.resetAmbientColor();
+		}
 	}
 
 	setOpacity(opacity){
 		for(let item of this.items.values()){
 			item.material.opacity = opacity;
+		}
+		for(let child of this.children){
+			child.setOpacity(opacity);
 		}
 	}
 
@@ -53,6 +78,9 @@ class Renderable extends Transform{
 		for(let item of this.items.values()){
 			item.material.setTexture(name, repeat);
 			item.material.shader = webGL.env.shaders.get('textureShader');
+		}
+		for(let child of this.children){
+			child.setTexture(name, repeat);
 		}
 	}
 

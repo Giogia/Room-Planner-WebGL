@@ -56,6 +56,7 @@ function processMesh(renderable){
 		if(renderable.useAlphaCov !== SAMPLE_ALPHA_COV_STATE) gl[ ( (SAMPLE_ALPHA_COV_STATE = (!SAMPLE_ALPHA_COV_STATE)) )?"enable":"disable" ](gl.SAMPLE_ALPHA_TO_COVERAGE);
 
 		material.shader.setUniform('fs_color', [material.color[0],material.color[1],material.color[2], material.opacity]);
+		material.shader.setUniform('fs_ambient_color', [material.ambientColor[0],material.ambientColor[1],material.ambientColor[2], material.opacity]);
 		material.shader.setUniform('world_matrix', renderable.worldMatrix);
 
 		if(shader.name === 'textureShader'){

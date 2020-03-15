@@ -5,6 +5,7 @@ let ubos = [ "UBO" ];
 let uniforms = [
     {'name':'world_matrix', 'type':'mat4'},
     {'name':'fs_color', 'type':'vec4'},
+    {'name':'fs_ambient_color', 'type':'vec4'},
     {'name':'fs_texture', 'type':'sampler2D'},
     {'name':'fs_texture_repeat', 'type':'vec2'}];
 
@@ -69,6 +70,7 @@ let fragmentShader =
 	};
 	
 	uniform vec4 fs_color;
+	uniform vec4 fs_ambient_color;
 	uniform sampler2D fs_texture;
 	uniform vec2 fs_texture_repeat;
 	
@@ -86,7 +88,7 @@ let fragmentShader =
 	    vec3 eye_direction = normalize(camera_position - fs_position);
 	    vec3 specular = specular_color * light_color * pow(clamp(dot(eye_direction, r), 0.0, 1.0), specular_shine);
 	    
-	    vec3 ambient = ambient_light_color * fs_color.xyz;
+	    vec3 ambient = ambient_light_color * fs_ambient_color.xyz;
 	    
 		color = vec4(clamp(diffuse + specular + ambient, 0.0, 1.0), fs_color.a);
 		color = clamp( 0.4 * color + vec4( 0.6 * final_texture, fs_color.a), 0.0, 1.0);

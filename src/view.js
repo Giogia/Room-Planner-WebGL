@@ -56,13 +56,13 @@ function drawView(){
     hide(skirtingModel);
     show(drawModel);
 
-    tweenCamera(new Vector(-0.01, 20, 0));
+    tweenCamera(new Vector(-0.01, 15, 0.0));
 }
 
 
 function modelView(){
 
-    tweenCamera(new Vector(-0.01, 20, 0), 250, true);
+    tweenCamera(new Vector(-0.01, 15, 0.0), 250, true);
 
     setTimeout( ()=>{
 
@@ -99,7 +99,7 @@ function modelView(){
 }
 
 
-export function tweenCamera(targetPosition, duration=2500, resetMap=false){
+export function tweenCamera(targetPosition, duration=2000, resetMap=false){
 
     deactivateButtons();
 
@@ -120,8 +120,7 @@ export function tweenCamera(targetPosition, duration=2500, resetMap=false){
                 camera.lookAt(0,0,0);
             }
             if(resetMap){
-                camera.up.set(0,1,0);
-                camera.updateProjectionMatrix();
+                camera.lookAt(position.x + 0.01, 0.0, position.z);
             }
 
         })

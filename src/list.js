@@ -78,7 +78,7 @@ function getList(word = undefined){
                 model.src = './models/furniture/' + object + '.glb';
                 model.id = object;
                 model.autoRotate = 'true';
-                model.exposure = 0.3;
+                model.exposure = 0.25;
                 li.appendChild(model);
                 }
             },  50 * i );
