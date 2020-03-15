@@ -3,7 +3,7 @@ import {scene} from "./app";
 import {draggableObjects} from "./controls";
 import {hideButton, removeButton, showButton} from "./buttons";
 import {floorModel, floorPlan, wallsModel} from "./walls";
-import {floorMaterials, wallMaterials} from "./materialsList";
+import {floorMaterials, wallMaterials} from "./objects/materialsList";
 import utils from "./maths/Utils";
 import {raycaster} from './app';
 
@@ -55,8 +55,6 @@ export async function selectObject(event){
 
     let floor = raycaster.intersect(event, floorModel);
 
-    console.log(floor);
-
     if (floor != null && floor.name === "Floor")
         lastFloorTexture = await updateTexture(floor, floorPlan.rooms, floorMaterials, lastFloorTexture);
 
@@ -95,8 +93,6 @@ export function selectDraggableObject(event){
     let object = raycaster.intersect(event, draggableObjects);
 
     if(object != null ) {
-
-        console.log(object.name);
 
         dragging = true;
         setTimeout(() => { dragging = false; }, 10);

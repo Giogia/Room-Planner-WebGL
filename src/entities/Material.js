@@ -38,6 +38,28 @@ class Material{
 		this.texture = new Texture(name);
 		this.textureRepeat = repeat;
 	}
+
+	/*
+	export function setTexture(name, material, repeat=[2, 2]){
+
+		let maps = [];
+
+		let diffuseMap = textureLoader.load( "assets/materials/"+name.toString()+"_diffuse.jpg");
+		let bumpMap = textureLoader.load( "assets/materials/"+name.toString()+"_bump.jpg");
+		let roughnessMap = textureLoader.load( "assets/materials/"+name.toString()+"_roughness.jpg");
+
+		if(diffuseMap !== null){ maps.push(diffuseMap)}
+		if(bumpMap !== null){ maps.push(bumpMap)}
+		if(roughnessMap !== null){ maps.push(roughnessMap)}
+
+		setMaps(maps, repeat);
+
+		material.map = diffuseMap;
+		material.bumpMap = bumpMap;
+		material.roughnessMap = roughnessMap;
+		material.needsUpdate = true;
+	}
+	 */
 }
 
 export default Material;

@@ -284,7 +284,6 @@ export async function updateScene(){
 
     scene.remove(drawModel);
     drawModel = createDrawModel();
-    console.log(drawModel);
     scene.add(drawModel);
 
     //await saveJson('floorPlan', floorPlan);

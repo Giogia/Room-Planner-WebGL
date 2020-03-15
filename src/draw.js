@@ -30,9 +30,7 @@ function selectPoint(point){
 
     let points = floorPlan.points;
     let selected = _.find(points,{ selected: true });
-
-    // TODO use _.find
-    //let point _.find(points,{ x: position.x, z: position.z });
+    
     points[points.indexOf(point)].selected = !points[points.indexOf(point)].selected;
     updateScene();
 

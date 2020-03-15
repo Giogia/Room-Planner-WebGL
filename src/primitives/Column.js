@@ -73,6 +73,7 @@ class Column{
 		this.indices = indices;
 	}
 
+	//TODO set uvs
 	setUV(){
 
 		let uv = [];

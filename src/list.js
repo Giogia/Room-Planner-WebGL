@@ -1,6 +1,6 @@
 'use strict';
 import '@google/model-viewer';
-import {furniture} from "./furnitureList";
+import {furniture} from "./objects/furnitureList";
 import {MDCDrawer} from "@material/drawer/component";
 
 
@@ -81,7 +81,7 @@ function getList(word = undefined){
                 model.exposure = 0.25;
                 li.appendChild(model);
                 }
-            },  50 * i );
+            },  75 * i +1000);
         }
 
     },3400);

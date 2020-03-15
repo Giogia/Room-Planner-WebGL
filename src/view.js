@@ -112,7 +112,7 @@ export function tweenCamera(targetPosition, duration=2000, resetMap=false){
 
         .to( targetPosition, duration )
 
-        .easing( TWEEN.Easing.Exponential.InOut )
+        .easing( TWEEN.Easing.Quartic.InOut )
 
         .onUpdate( () => {
             camera.position.set(position.x, position.y, position.z);
