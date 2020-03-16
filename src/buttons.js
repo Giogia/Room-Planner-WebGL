@@ -132,11 +132,11 @@ export function showDrawButtons(){
 
     setTimeout(() => {
         showButton(editButton);
-    }, 100);
+    }, 200);
 
     setTimeout(() => {
         showButton(deleteButton);
-    }, 200);
+    }, 400);
 }
 
 
@@ -145,11 +145,11 @@ export function hideDrawButtons(){
 
     setTimeout(() => {
         hideButton(editButton);
-    }, 100);
+    }, 200);
 
     setTimeout( () => {
         drawButtons.style.display = 'none';
-    }, 200);
+    }, 400);
 
 }
 
@@ -158,7 +158,7 @@ export function showModelButtons(){
     modelButtons.style.display = 'flex';
 
     setTimeout( () => {
-    }, 100);
+    }, 200);
 
 }
 
@@ -167,7 +167,7 @@ export function hideModelButtons(){
 
     setTimeout( () => {
         modelButtons.style.display = 'none';
-    }, 100);
+    }, 200);
 }
 
 

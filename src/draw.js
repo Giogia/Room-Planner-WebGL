@@ -7,7 +7,6 @@ import {checkIntersection, colinearPointWithinSegment} from "line-intersect";
 import utils from "./maths/Utils";
 import Line from "./primitives/Line";
 import Vector from "./maths/Vector";
-//import {font, textMaterial} from "./materials";
 
 let currentLine = null;
 
@@ -30,7 +29,7 @@ function selectPoint(point){
 
     let points = floorPlan.points;
     let selected = _.find(points,{ selected: true });
-    
+
     points[points.indexOf(point)].selected = !points[points.indexOf(point)].selected;
     updateScene();
 

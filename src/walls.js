@@ -53,6 +53,7 @@ export function createDrawModel () {
     _.each(points, point => group.push(point));
     _.each(walls, wall => group.push(wall));
 
+    //TODO set text
     /*_.each(floorPlan.walls, wall => {
 
       let distanceX = wall.to.x - wall.from.x;
@@ -270,11 +271,6 @@ export function createFloorModel() {
             _.remove(floorPlan.rooms, discard =>{ return discard === room })
         }
     }
-
-    /*
-    let centersGroup = [];
-    _.each(getPointModels(centers), (wall) => centersGroup.push(wall));
-     */
 
     return floor;
 }
