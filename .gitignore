@@ -55,5 +55,5 @@ tmtagsHistory
 *.glb
 
 # Node Packet Manager
-node_modules/*
+#node_modules/*
 
