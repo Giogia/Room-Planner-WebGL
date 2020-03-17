@@ -10,6 +10,7 @@
 </head>
 <body>
 
+    <!--Animation screen-->
     <div id="loading-screen">
 
         <img id="loading-icon" src="assets/icon-white.png">
@@ -27,8 +28,22 @@
 
     </div>
 
+    <!--Logo-->
     <div id="logo"> Room Planner </div>
 
+    <div id="legenda">
+        <i class="material-icons"> chevron_left </i>
+        <i class="material-icons"> chevron_right </i>
+        <div class="instructions">rotate</div>
+
+        <div id="arrows">
+            <i class="material-icons"> expand_less </i>
+            <i class="material-icons"> expand_more </i>
+        </div>
+        <div class="instructions">elevate</div>
+    </div>
+
+    <!--Drawer-->
     <aside class="mdc-drawer mdc-drawer--dismissible mdc-elevation--z5" id="drawer">
 
         <form class="mdc-button mdc-button--raised" id="search-form">
@@ -42,6 +57,7 @@
 
     </aside>
 
+    <!--Buttons-->
     <div class="buttons fab-container">
         <div class="fab-container" id="draw-buttons"></div>
         <div class="fab-container" id="model-buttons"></div>
@@ -52,9 +68,10 @@
         </button>
     </div>
 
+    <!--App-->
     <div id="app">
         <div id="controls"></div>
-        <script src="build/app.js"></script>
+        <script type="module" src="build/app.js"></script>
     </div>
 
 </body>
