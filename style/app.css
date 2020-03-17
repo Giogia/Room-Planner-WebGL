@@ -129,7 +129,7 @@ canvas{
 #legenda {
     position: absolute;
     top: 2%;
-    right: 6%;
+    right: 4%;
     display: inline-flex;
     justify-content: center;
     align-content: baseline;
