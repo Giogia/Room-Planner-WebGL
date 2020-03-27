@@ -45,15 +45,13 @@ tmtagsHistory
 ######################
 *.mp4
 *.avi
-*.jpg
-*.png
 
 # 3D Objects
 ######################
 *.obj
 *.mtl
-*.glb
+#*.glb
 
 # Node Packet Manager
-#node_modules/*
+node_modules/*
 
