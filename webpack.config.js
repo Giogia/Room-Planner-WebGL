@@ -12,7 +12,7 @@ module.exports = {
         sourceMapFilename: '[file].map',
         devtoolModuleFilenameTemplate: 'webpack:///[resource-path]?[loaders]',
     },
-    mode: 'development',
+    mode: 'production',
     watch: true,
     watchOptions: {
         ignored: /node_modules/

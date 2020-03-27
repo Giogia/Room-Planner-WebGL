@@ -4,7 +4,7 @@
   "description": "room planner using webgl",
   "main": "src/app.js",
   "scripts": {
-    "build": "webpack & json-server -p 4000 --watch db.json",
+    "build": "webpack & json-server --watch db.json",
     "publish:demo": "npm run build && gh-pages -d build"
   },
   "repository": {
