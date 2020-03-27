@@ -7,7 +7,8 @@ import GlbParser from "./glb/glbParser.js"
 import GlbLoader from "./glb/glbLoader.js";
 import utils from "./maths/Utils";
 
-let jsonUrl = 'http://localhost:3000/';
+// let jsonUrl = 'http://localhost:3000/';
+let jsonUrl = 'http://room-planner-webgl.herokuapp.com:3000/';
 
 
 export async function loadJson(name){
