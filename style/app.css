@@ -63,24 +63,6 @@ canvas{
     }
 }
 
-@keyframes legenda {
-    0% {
-        opacity: 0;
-    }
-    25% {
-        opacity: 0.9;
-    }
-    50% {
-        opacity: 0.3;
-    }
-    75% {
-        opacity: 0.9;
-    }
-    100%{
-        opacity: 0.9;
-    }
-}
-
 
 #loading-screen {
     position: absolute;
@@ -107,8 +89,9 @@ canvas{
 
 #loading-icon {
     position: absolute;
+    height: 20%;
     background-color: transparent;
-    zoom: 75%;
+    zoom: 100%;
     animation: appear 0.5s both;
     animation-delay: 0.05s;
 }
@@ -135,8 +118,8 @@ canvas{
     align-content: baseline;
     z-index: 90;
     color: #ffffff;
-    animation: legenda 2.5s both;
-    animation-delay: 6s;
+    transition: opacity 0.5s;
+    opacity: 0;
 }
 
 #arrows{

@@ -13,10 +13,12 @@ let search = document.getElementById('search-icon');
 
 function run(){
 
-    createList();
-
     let drawer = new MDCDrawer.attachTo(document.getElementsByClassName("mdc-drawer")[0]);
-    setTimeout(()=>{drawer.open = true;},3100);
+
+    setTimeout(()=>{
+        drawer.open = true;
+        createList();
+    },3100);
 
     form.onsubmit = updateList;
     search.addEventListener('click', updateList);
@@ -25,7 +27,7 @@ function run(){
 
 function createList(){
 
-    completeList = getList();
+    completeList = getList(undefined, true);
     list.appendChild(completeList);
 }
 
@@ -39,34 +41,36 @@ function updateList(event){
     list.removeChild(ul);
     ul = (search)? getList(search.toLowerCase()) : completeList;
 
-    if(found === false){
+    setTimeout( ()=>{
 
-        let message = document.createElement('div');
-        message.className = "mdc-typography";
-        message.innerText = "No results found";
-        message.id = 'search-message';
-        ul.appendChild(message);
-    }
+        if(found === false){
 
-    list.appendChild(ul);
+            let message = document.createElement('div');
+            message.className = "mdc-typography";
+            message.innerText = "No results found";
+            message.id = 'search-message';
+            ul.appendChild(message);
+        }
+
+        list.appendChild(ul);
+
+    }, 0)
 }
 
 
-function getList(word = undefined){
+function getList(word = undefined, timeout= false){
 
     ul = document.createElement('ul');
 
     found = false;
 
-    setTimeout(()=>{
+    for (let i = 0; i < furniture.length; i++){
 
-        for (let i = 0; i < furniture.length; i++){
+        setTimeout(()=>{
 
-            setTimeout(()=>{
+            let object = furniture[i];
 
-                let object = furniture[i];
-
-                if(word === undefined || object.includes(word)){
+            if(word === undefined || object.includes(word)){
 
                 found = true;
 
@@ -80,11 +84,9 @@ function getList(word = undefined){
                 model.autoRotate = 'true';
                 model.exposure = 0.25;
                 li.appendChild(model);
-                }
-            },  75 * i +1000);
-        }
-
-    },3400);
+            }
+        },  timeout? 50 * i + 1000 : 0);
+    }
 
     return ul
 }

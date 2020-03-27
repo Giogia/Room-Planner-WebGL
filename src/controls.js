@@ -156,6 +156,10 @@ export function enableOrbitControls(){
 	controlZone.addEventListener("mouseup", doMouseUp, false);
 	controlZone.addEventListener("mousemove", orbitMove, false);
 	controlZone.addEventListener("mousewheel", orbitZoom, false);
+
+	controlZone.addEventListener("touchstart", doMouseDown, false);
+	controlZone.addEventListener("touchend", doMouseUp, false);
+	controlZone.addEventListener("touchmove", orbitMove, false);
 }
 
 

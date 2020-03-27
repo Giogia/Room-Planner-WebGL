@@ -1,7 +1,7 @@
 import {importModel, loadJson, saveJson} from "./loader";
 import {scene} from "./app";
 import {draggableObjects} from "./controls";
-import {hideButton, removeButton, showButton} from "./buttons";
+import {hideButton, hideLegenda, removeButton, showButton, showLegenda} from "./buttons";
 import {floorModel, floorPlan, wallsModel} from "./walls";
 import {floorMaterials, wallMaterials} from "./objects/materialsList";
 import utils from "./maths/Utils";
@@ -110,6 +110,7 @@ export function selectDraggableObject(event){
             selectedObject = object;
             selectedObject.setAmbientColor('#dbfaff');
             showButton(removeButton);
+            showLegenda();
             removeButton.addEventListener('click', removeDraggableObject);
             document.addEventListener('keydown', transformDraggableObject);
         }
@@ -117,6 +118,7 @@ export function selectDraggableObject(event){
         if(selectedObject === object && event.type === 'click' && !dragging){
 
             hideButton(removeButton);
+            hideLegenda();
             removeButton.removeEventListener('click', removeDraggableObject);
             document.removeEventListener('keydown', transformDraggableObject);
             selectedObject.resetAmbientColor();
@@ -127,6 +129,7 @@ export function selectDraggableObject(event){
     if(object == null){
 
         hideButton(removeButton);
+        hideLegenda();
         removeButton.removeEventListener('click', removeDraggableObject);
         document.removeEventListener('keydown', transformDraggableObject);
 
@@ -178,7 +181,7 @@ export async function transformDraggableObject(event){
         moved.angle = utils.radToDeg(selectedObject.rotation.y);
     }
 
-    await saveJson('currentObjects', currentObjects);
+    //await saveJson('currentObjects', currentObjects);
 }
 
 

@@ -5,6 +5,8 @@ import {deleteDrawing, editDrawing} from "./draw";
 import {app} from "./app";
 import {removeDraggableObject} from "./objects";
 
+let legenda = document.getElementById('legenda');
+
 export let drawButtons, modelButtons, viewButton, firstIcon, secondIcon, editButton, deleteButton, removeButton;
 export let currentMode;
 
@@ -189,6 +191,15 @@ export function showModelIcon(){
         firstIcon.style.display = 'block';
         showButton(firstIcon);
     }, 100);
+}
+
+
+export function showLegenda(){
+    legenda.style.opacity = 1;
+}
+
+export function hideLegenda(){
+    legenda.style.opacity = 0;
 }
 
 
