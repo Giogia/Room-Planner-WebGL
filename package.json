@@ -5,8 +5,7 @@
   "main": "src/app.js",
   "scripts": {
     "start": "json-server --watch db.json",
-    "build": "webpack",
-    "publish:demo": "npm run build && gh-pages -d build"
+    "publish:demo": "webpack && gh-pages -d build"
   },
   "repository": {
     "type": "git",
