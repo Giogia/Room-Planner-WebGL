@@ -2,10 +2,10 @@
   "name": "room-planner",
   "version": "1.0.0",
   "description": "room planner using webgl",
-  "main": "src/app.js",
+  "main": "build/app.js",
   "scripts": {
-    "start": "webpack & json-server --watch db.json",
-    "publish:demo": "npm run start && gh-pages -d build"
+    "start": "node index.js",
+    "publish:demo": "webpack && gh-pages -d build"
   },
   "repository": {
     "type": "git",
