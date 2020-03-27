@@ -56,13 +56,13 @@ function drawView(){
     hide(skirtingModel);
     show(drawModel);
 
-    tweenCamera(new Vector(-0.01, 15, 0.0));
+    tweenCamera(new Vector(-0.01, 20, 0.0));
 }
 
 
 function modelView(){
 
-    tweenCamera(new Vector(-0.01, 15, 0.0), 250, true);
+    tweenCamera(new Vector(-0.01, 20, 0.0), 250, true);
 
     setTimeout( ()=>{
 

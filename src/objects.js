@@ -148,6 +148,7 @@ export async function removeDraggableObject(){
      //await saveJson('currentObjects', currentObjects);
 
      hideButton(removeButton);
+     hideLegenda();
      removeButton.removeEventListener('click', removeDraggableObject);
      selectedObject = null;
 }

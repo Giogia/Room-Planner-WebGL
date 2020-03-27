@@ -26,8 +26,8 @@ let enable = {
 
 function doMouseDown(event) {
 
-	lastMouseX = event.pageX;
-	lastMouseY = event.pageY;
+	lastMouseX = event.touches? event.touches[0].pageX : event.pageX;
+	lastMouseY = event.touches? event.touches[0].pageY : event.pageY;
 
 	object = raycaster.intersect(event, draggableObjects);
 
@@ -53,7 +53,7 @@ function doMouseDown(event) {
 }
 
 
-async function doMouseUp(event) {
+async function doMouseUp() {
 
 	lastMouseX = -100;
 	lastMouseY = -100;
@@ -100,11 +100,14 @@ function orbitMove(event) {
 
 	if(enable.orbit && moveControls) {
 
-		let dx = lastMouseX - event.pageX;
-		let dy = event.pageY - lastMouseY;
+	    let mouseX = event.touches? event.touches[0].pageX : event.pageX;
+	    let mouseY = event.touches? event.touches[0].pageY : event.pageY;
 
-		lastMouseX = event.pageX;
-		lastMouseY = event.pageY;
+		let dx = lastMouseX - mouseX;
+		let dy = mouseY - lastMouseY;
+
+		lastMouseX = mouseX;
+	    lastMouseY = mouseY;
 
 		if((dx !== 0) || (dy !== 0)) {
 
@@ -168,11 +171,14 @@ function mapMove(event){
 
         viewMode();
 
-		let dx = lastMouseX - event.pageX;
-		let dy = event.pageY - lastMouseY;
+        let mouseX = event.touches? event.touches[0].pageX : event.pageX;
+	    let mouseY = event.touches? event.touches[0].pageY : event.pageY;
 
-		lastMouseX = event.pageX;
-		lastMouseY = event.pageY;
+		let dx = lastMouseX - mouseX;
+		let dy = mouseY - lastMouseY;
+
+		lastMouseX = mouseX;
+		lastMouseY = mouseY;
 
 		if((dx !== 0) || (dy !== 0)) {
             camera.position.set(camera.position.x + 0.05 * dy, camera.position.y, camera.position.z + 0.05 * dx);
@@ -200,6 +206,10 @@ export function enableMapControls(){
 	controlZone.addEventListener("mouseup", doMouseUp, false);
 	controlZone.addEventListener("mousemove", mapMove, false);
 	controlZone.addEventListener("mousewheel", mapZoom, false);
+
+	controlZone.addEventListener("touchstart", doMouseDown, false);
+	controlZone.addEventListener("touchend", doMouseUp, false);
+	controlZone.addEventListener("touchmove", mapMove, false);
 }
 
 
@@ -216,6 +226,9 @@ export function enableDragControls(){
 
     controlZone.addEventListener("mousedown", doMouseDown, false);
     controlZone.addEventListener("mousemove", drag, false);
+
+    controlZone.addEventListener("touchstart", doMouseDown, false);
+	controlZone.addEventListener("touchmove", drag, false);
 
 }
 

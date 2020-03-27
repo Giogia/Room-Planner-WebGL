@@ -64,9 +64,12 @@ let utils = {
 
 	getWorldPosition: function(event){
 
+		let x = event.touches? event.touches[0].clientX : event.clientX;
+		let y = event.touches? event.touches[0].clientY : event.clientY;
+
 		let vector = {
-			x: (event.clientX / app.clientWidth) * 2 - 1,
-			y: -(event.clientY / app.clientHeight) * 2 + 1,
+			x: ( x / app.clientWidth) * 2 - 1,
+			y: -( y / app.clientHeight) * 2 + 1,
 			z: -1
 		};
 

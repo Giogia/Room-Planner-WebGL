@@ -89,7 +89,7 @@ canvas{
 
 #loading-icon {
     position: absolute;
-    height: 20%;
+    height: 25%;
     background-color: transparent;
     zoom: 100%;
     animation: appear 0.5s both;
