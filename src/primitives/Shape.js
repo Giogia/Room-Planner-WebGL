@@ -46,7 +46,7 @@ class Shape{
 			uv.push(0,0, 0,0, 1,1, 1,0);
 		}
 
-        let vao = new VAO('Room', vertices, indices, normals, uv);
+        let vao = new VAO('Room', vertices, indices, normals); //, uv);
 
         let model = new Renderable('Room', vao, 'FloorMaterial');
         model.boundingBox = new BoundingBox(vertices);

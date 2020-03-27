@@ -119,7 +119,7 @@ function createScene(){
 
 function createCamera(){
 
-    const fov = 45;
+    const fov = 40;
     const aspect = app.clientWidth / app.clientHeight;
     const near = 0.1;
     const far = 100;
