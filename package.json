@@ -19,7 +19,7 @@
   "homepage": "https://github.com/Giogia/Room-Planner#readme",
   "devDependencies": {
     "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.10"
+    "webpack-cli": "^3.3.12"
   },
   "dependencies": {
     "@google/model-viewer": "^0.9.0",
